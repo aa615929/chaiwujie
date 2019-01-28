@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/walden.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layuiadmin-badge, .layuiadmin-btn-group, .layuiadmin-span-color {
+            position: absolute;
+            right: 15px;
+        }
+        .layuiadmin-badge {
+            top: 50%;
+            margin-top: -9px;
+            color: #01AAED;
+        }
+        .layuiadmin-card-list p.layuiadmin-big-font {
+            font-size: 36px;
+            color: #666;
+            line-height: 36px;
+            padding: 5px 0 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+        #tesss .layui-form-label{
+            width: 110px;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" value="" id="inp1">
+<input type="hidden" value="7" id="numb">
+<input type="hidden" value="DAY" id="numb2">
+<div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid" style="padding: 15px">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-sm4 layui-col-md2">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            访问总数
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge time">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font" id="p1">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm4 layui-col-md2">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            风险事件数量
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge time">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font" id="p3">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm4 layui-col-md2">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            敏感数据访问
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge time">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font" id="p5">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm4 layui-col-md2">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            业务识别数量
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge time">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font"  id="p2">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm4 layui-col-md2">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            应用用户数量
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge time">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font" id="p4">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm4 layui-col-md2">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            选择时间区间
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-btn layui-btn-normal layui-btn-xs" id="btnToday">今天</div>
+                            <div class="layui-btn layui-btn-normal layui-btn-xs" id="btnWeek">最近七天</div><br>
+                            <div class="layui-btn layui-btn-normal layui-btn-xs" id="btnMonth" style="margin-top: 5px">最近30天</div>
+                            <!--<div class="layui-btn layui-btn-normal layui-btn-xs" id="btn5" style="margin-top: 5px">-->
+                                <!--&lt;!&ndash;导出报表&ndash;&gt;-->
+                                <!--<a download="filename"  id="dashboard" style="color: #fff">导出报表</a>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12">
+                    <div class="row layui-col-space15">
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header">用户访问信息
+                                    <div style="float: right; margin-top: 2px">
+                                        <form class="layui-form" action="">
+                                            <div class="layui-input-inline"  class="layui-form">
+                                            <select name="quiz" id="sel" lay-filter="sel">
+                                                <option value="">查看所有系统</option>
+                                            </select>
+                                         </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div style="height: 300px" id="chart3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header">风险事件分布</div>
+                                <div class="layui-card-body">
+                                    <div style="height: 300px" id="chart2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12" style="padding-top: 0px">
+                    <div class="row layui-col-space15">
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    应用访问统计
+                                </div>
+                                <div class="layui-card-body">
+                                    <div style="height: 300px" id="chart1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    敏感数据访问统计
+                                </div>
+                                <div class="layui-card-body">
+                                        <div style="height: 300px" id="chart4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div id="tesss" style="display: none">
+    <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px;">
+        <div class="layui-form-item">
+            <div class="layui-input">
+                <input type="checkbox" name="like1[write]" lay-skin="primary" title="应用访问统计" lay-filter="check1">
+                <input type="checkbox" name="like1[read]" lay-skin="primary" title="风险事件分布" lay-filter="check2">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input">
+                <input type="checkbox" name="like1[write]" lay-skin="primary" title="查看所有系统" lay-filter="check3">
+                <input type="checkbox" name="like1[read]" lay-skin="primary" title="敏感数据访问统计" lay-filter="check4">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">系统名称</label>
+            <div class="layui-input-inline">
+                <select name="quiz" id="sel2" lay-filter="sel2" value="全部系统">
+                    <option value="全部系统">全部系统</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择风险等级</label>
+            <div class="layui-input-inline">
+                <select name="quiz" id="sel3" lay-filter="sel3" value="全部风险">
+                    <option value="全部">全部风险</option>
+                    <option value="低风险">低风险</option>
+                    <option value="中风险">中风险</option>
+                    <option value="高风险">高风险</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择事件类型</label>
+            <div class="layui-input-inline">
+                <select name="quiz" id="sel4" lay-filter="sel4" value="全部事件">
+                    <option value="全部事件">全部事件</option>
+                    <option value="登陆事件">登陆事件</option>
+                    <option value="访问事件">访问事件</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <button class="layui-btn"  id="submit" data-type="reload" lay-filter="formDemo" lay-submit>
+                    <a download="filename"  id="dashboard" style="color: #fff">确定</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function reqTtle(size,time,font) {
+        var dat = {
+            "date_Size" : size ,
+            "date_data" : time
+
+        };
+        $.ajax({
+            type: "post",
+            url:a+'/dbop/getReqlogTitle',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            data : JSON.stringify(dat),
+            success:function (data) {
+                console.log(data);
+                $('.time').text(font);
+                $('#p1').text(data.visitSum);
+                $('#p2').text(data.businessSum);
+                $('#p3').text(data.riskSum);
+                $('#p4').text(data.appUserSum);
+                $('#p5').text(data.sensitivitySum);
+            }
+        })
+    }
+    reqTtle("7","DAY","周");
+    layui.use(['form','element','jquery','layer'], function(){
+        var form = layui.form;
+        var layer = layui.layer;
+        var $ = jQuery = layui.$;
+        var $ = layui.jquery,
+            element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        var listone = $('#listo');
+        $('#listo').attr('layui-bg-blue','layui-bg-red');
+        console.log(listone);
+        $.ajax({
+            type: "get",
+            url:a+'/dbop/getAllName',
+            contentType:'application/json;',
+            async:'true',
+            success:function (data) {
+                console.log(data);
+                var dat = data.data;
+                if(dat == null){
+                }else{
+                    for(var i=0; i<dat.length; i++){
+                        $('#sel').append("<option>"+dat[i]+"</option>");
+                        $('#sel2').append("<option>"+dat[i]+"</option>");
+                    }
+                    form.render('select');
+                }
+            }
+        });
+        //监听导航点击
+        element.on('nav()', function(elem){
+            //console.log(elem)
+        });
+        form.on('select(sel2)',function (data) {
+            var nam = data.value;
+            console.log(nam);
+            $('#sel2').val(nam);
+        })
+        form.on('select(sel3)',function (data) {
+            var nam = data.value;
+            console.log(nam);
+            $('#sel3').val(nam);
+
+
+        })
+        form.on('select(sel4)',function (data) {
+            var nam = data.value;
+            console.log(nam);
+            $('#sel4').val(nam);
+        })
+        form.on('select(sel)',function (data) {
+            var nam = data.value;
+            console.log(nam);
+            var size = $('#numb').val();
+            var tim = $('#numb2').val();
+            console.log(data);
+//            fun1(size,tim,nam);
+//            funTwo(size,tim,nam);
+            funThree(size,tim,nam);
+            $('#btnToday').click(function () {
+                console.log(nam);
+//                fun1("12","HOUR",nam);
+//                funTwo("12","HOUR",nam);
+                funThree("12","HOUR",nam);
+                reqTtle("12","HOUR","日");
+                $('#numb').val('12');
+                $('#numb2').val('HOUR');
+            })
+            $('#btnWeek').click(function () {
+                //fun1是默认一周
+//                fun1("7","DAY",nam);
+//                funTwo("7","DAY",nam);
+                funThree("7","DAY",nam);
+                reqTtle("7","DAY","周");
+                $('#numb').val('7');
+                $('#numb2').val('DAY');
+            })
+            $('#btnMonth').click(function () {
+//                fun1("30","DAY",nam)
+//                funTwo("30","DAY",nam);
+                funThree("30","DAY",nam);
+                reqTtle("30","DAY","月");
+                $('#numb').val('30');
+                $('#numb2').val('DAY');
+            })
+        })
+
+        var myChart4 = echarts.init(document.getElementById('chart4'),'walden');
+    // 指定图表的配置项和数据
+    var option4 = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:[],
+            type: 'scroll',
+            orient: 'vertical',
+            show: true,
+            right: 0,
+            top: 20,
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '16%',
+            bottom: '3%',
+            containLabel: true
+        },
+
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data:[],
+            orient: 'vertical',
+            axisLabel: {
+                interval:0,
+                rotate:40
+            }
+
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+        ]
+    };
+    var myChart = echarts.init(document.getElementById('chart1'),'walden');
+    // 指定图表的配置项和数据
+    var option1 = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:[],
+            type: 'scroll',
+            orient: 'vertical',
+            show: true,
+            right: 0,
+            top: 20,
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '16%',
+            bottom: '3%',
+            containLabel: true
+        },
+
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data:[],
+            orient: 'vertical',
+            axisLabel: {
+                interval:0,
+                rotate:40
+            }
+
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+        ]
+    };
+
+    var myChart2 = echarts.init(document.getElementById('chart2'),'walden');
+    // 指定图表的配置项和数据
+    var option2 = {
+        legend: {
+            data:[]
+        },
+        grid: {
+            left: '0%',
+            right: '0%',
+            bottom: '0%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:[
+                    {value:335, name:'直接访问'},
+                    {value:310, name:'邮件营销'},
+                    {value:234, name:'联盟广告'},
+                    {value:135, name:'视频广告'},
+                    {value:1548, name:'搜索引擎'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    var myChart3 = echarts.init(document.getElementById('chart3'),'walden');
+    option3 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        grid: {
+            left: '3%',
+            bottom: '3%',
+            containLabel: true
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            show: true,
+            right: 0,
+            top: 20,
+            data:[]
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+                axisPointer: {
+                    type: 'shadow'
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '次数',
+                axisLabel: {
+                    formatter: '{value} 次'
+                }
+            },
+        ],
+        series: [
+            {
+                name:'次数',
+                type:'bar',
+                data:[21, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            },
+            {
+                name:'平均次数',
+                type:'line',
+                data:[2, 2.0, 2.0,2, 2.0, 2.0, 2.0, 2.0, 2.0,2.0, 2.0, 2.0, ]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    function funfour(size,tim,nam){
+        myChart4.showLoading();
+        var dat = {
+            "date_Size": size,
+            "date_Data": tim,
+            "name" : nam
+        };
+        $.ajax({
+            type: "post",
+            url:a+'/dbop/getRickWireSeriesByDate',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            data: JSON.stringify(dat),
+            success:function (data) {
+                console.log(data);
+                if(data.status == 200){
+                    myChart4.hideLoading();
+                }
+                var lists = data.tableData.series;
+                if(lists.length == 0){
+                    myChart4.showLoading({text:'暂无数据'});
+                }
+                option4.series  = lists.slice(0);
+                option4.legend.data = data.tableData.legend;
+                option4.xAxis.data = data.tableData.xAxis;
+                myChart4.setOption(option4);
+            }
+        })
+    }
+    function fun1(size,tim,nam){
+        myChart.showLoading();
+        var dat = {
+            "date_Size": size,
+            "date_Data": tim,
+            "name" : nam
+        };
+        $.ajax({
+            type: "post",
+            url:a+'/dbop/getWireSeriesByDate',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            data: JSON.stringify(dat),
+            success:function (data) {
+                console.log(data);
+                if(data.status == 200){
+                    myChart.hideLoading();
+                }
+                var lists = data.tableData.series;
+                if(lists.length == 0){
+                    myChart.showLoading({text:'暂无数据'});
+                }
+                option1.series  = lists.slice(0);
+                option1.legend.data = data.tableData.legend;
+                option1.xAxis.data = data.tableData.xAxis;
+                myChart.setOption(option1);
+            }
+        })
+    }
+    function funTwo(size,tim,nam){
+        myChart2.showLoading();
+        var dat = {
+            "date_Size":size,
+            "date_data" : tim,
+            "name" : nam
+        };
+        $.ajax({
+            type: "post",
+            url:a+'/dbop/getRiskEvent',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            data : JSON.stringify(dat),
+            success:function (data) {
+                console.log(data);
+                if(data.status == 200){
+                    myChart2.hideLoading();
+                }
+                var lists = data.tableData.series;
+                console.log(lists);
+                if(lists.length == 0){
+                    myChart2.showLoading({text:'暂无数据'});
+                }
+                option2.series[0].data  = lists.slice(0);
+                option2.legend.data = data.tableData.legend;
+                // 使用刚指定的配置项和数据显示图表。
+                myChart2.setOption(option2);
+            }
+        })
+    }
+    function funThree(size,tim,nam){
+        myChart3.showLoading();
+        var dat = {
+            "date_Size":size,
+            "date_data" : tim,
+            "name" : nam
+        };
+        $.ajax({
+            type: "post",
+            url:a+'/dbop/getBarGraphByDate',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            data:JSON.stringify(dat),
+            success:function (data) {
+                console.log(data);
+                if(data.status == 200){
+                    myChart3.hideLoading();
+                }
+                var lists = data.tableData.series;
+                console.log(lists);
+                if(lists.length == 0){
+                    myChart3.showLoading({text:'暂无数据'});
+                }
+                option3.series  = lists.slice(0);
+                option3.legend.data = data.tableData.legend;
+                option3.xAxis[0].data = data.tableData.xAxis;
+                myChart3.setOption(option3);
+            }
+        })
+    }
+    //进入页面每个图标渲染一次
+    fun1("7","DAY","");
+    funTwo("7","DAY","");
+    funThree("7","DAY","");
+    funfour("7","DAY","");
+    $('#btnToday').click(function () {
+            fun1("12","HOUR","");
+            funTwo("12","HOUR","");
+            funThree("12","HOUR","");
+            funfour("12","HOUR","");
+            reqTtle("12","HOUR","日");
+            $('#numb').val('12');
+            $('#numb2').val('HOUR');
+        })
+        $('#btnWeek').click(function () {
+            //fun1是默认一周
+            fun1("7","DAY","");
+            funTwo("7","DAY","");
+            funThree("7","DAY","");
+            funfour("7","DAY","");
+            reqTtle("7","DAY","周");
+            $('#numb').val('7');
+            $('#numb2').val('DAY');
+        })
+        $('#btnMonth').click(function () {
+            fun1("30","DAY","")
+            funTwo("30","DAY","");
+            funThree("30","DAY","");
+            funfour("30","DAY","");
+            reqTtle("30","DAY","月");
+            $('#numb').val('30');
+            $('#numb2').val('DAY');
+        })
+    window.addEventListener("resize",function(){
+        myChart.resize();
+        myChart2.resize();
+        myChart3.resize();
+        myChart4.resize();
+    });
+
+        var mycanvas = '';
+        var mycanvas2 = '';
+        var mycanvas3 = '';
+        var mycanvas4 = '';
+        var base1 = '';
+        var base2 = '';
+        var base3 = '';
+        var base4 = '';
+        var title = '';
+        var title2 = '';
+        var title3 = '';
+        var title4 = '';
+        form.on('checkbox(check1)', function(data){
+            console.log(data.elem.checked); //开关是否开启，true或者false
+            if(data.elem.checked == true){
+                mycanvas = $("#chart1").find("canvas")[0];
+                base1 = mycanvas.toDataURL();
+                title = "应用访问统计";
+            }else{
+                mycanvas = '';
+                base1 = '';
+                title = '';
+            }
+            console.log(mycanvas);
+            console.log(base1);
+            console.log(title);
+        });
+        form.on('checkbox(check2)', function(data){
+            console.log(data.elem.checked); //开关是否开启，true或者false
+            if(data.elem.checked == true){
+                mycanvas2 = $("#chart2").find("canvas")[0];
+                base2 = mycanvas2.toDataURL();
+                title2 = "风险事件分布";
+            }else{
+                mycanvas2 = '';
+                base2 = '';
+                title2 = '';
+            }
+            console.log(mycanvas2);
+        });
+        form.on('checkbox(check3)', function(data){
+            console.log(data.elem.checked); //开关是否开启，true或者false
+            if(data.elem.checked == true){
+                mycanvas3 = $("#chart3").find("canvas")[0];
+                base3 = mycanvas3.toDataURL();
+                title3 = "查看所有系统";
+            }else{
+                mycanvas3 = '';
+                base3 = '';
+                title3 = '';
+            }
+            console.log(mycanvas3);
+        });
+        form.on('checkbox(check4)', function(data){
+            console.log(data.elem.checked); //开关是否开启，true或者false
+            if(data.elem.checked == true){
+                mycanvas4 = $("#chart4").find("canvas")[0];
+                base4 = mycanvas4.toDataURL();
+                title4 = "敏感数据访问统计";
+            }else{
+                mycanvas4 = '';
+                base4 = '';
+                title4 = '';
+            }
+            console.log(mycanvas4);
+        });
+//        var mycanvas = $("#chart1").find("canvas")[0];
+//        var mycanvas2 = $("#chart2").find("canvas")[0];
+//        var mycanvas3 = $("#chart3").find("canvas")[0];
+//        var mycanvas4 = $("#chart4").find("canvas")[0];
+//        var text1 = option1.title.text;
+//        var text2 = option2.title.text;
+//        var text3 = option3.title.text;
+//        var base1 = mycanvas.toDataURL();
+//        var base2 = mycanvas2.toDataURL();
+//        var base3 = mycanvas3.toDataURL();
+//        var base4 = mycanvas4.toDataURL();
+   // 获取base64
+    $('#btn5').click(function () {
+            layer.open({
+                type: 1 //Page层类型
+                ,area: ['420px', '420px']
+                ,title: '选择您查看的报表'
+                ,shade: 0.6 //遮罩透明度
+                ,anim: 0 //0-6的动画形式，-1不开启
+                ,content: $('#tesss')
+                ,success: function(layero){
+                    $('#nodown').click(function () {
+                        layer.closeAll();
+                    });
+                }
+            });
+
+        form.on('submit(formDemo)', function(data){
+            console.log(title);
+            console.log(base1);
+            var appn = $('#sel2').val();
+            var risk = $('#sel3').val();
+            var eventType = $('#sel4').val();
+            var str= {
+                "title": title,
+                "base": base1,
+                "title1": title2,
+                "base1": base2,
+                "title2":title3,
+                "base2": base3,
+                "title3": title4,
+                "base3": base4,
+                "appName": appn,
+                "risk" : risk,
+                "eventType" : eventType
+            }
+            $.ajax({
+                type: "post",
+                url:a+'/getReports',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                data:JSON.stringify(str),
+                success:function (data) {
+                    console.log(data);
+                    console.log(data.path);
+//                    $('# href="http://web.jisupdf.com/" target="_blank" ')
+//                    layer.closeAll();
+                    layer.confirm('您确定导出吗？', {
+                        btn: ['是','否'] //按钮
+                    }, function(){
+                        layer.closeAll();
+                        layer.msg('请您核实导出的报表', {icon: 1});
+                    }, function(){
+                        layer.closeAll();
+                    });
+                    $('.layui-layer-btn0').attr("href",data.path);
+
+                },
+                error: function () {
+                    layer.msg('请检查您的网络连接',{icon:5});
+                }
+            })
+            return false;
+        });
+     })
+});
+</script>
+
+</body>
+</html>

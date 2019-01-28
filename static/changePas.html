@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/changePas.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-input-block{
+            width: 190px;
+        }
+        .layui-input{
+            height: 36px;
+        }
+        .layui-form-label{
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+        <!-- 内容主体区域 -->
+        <div class="layui-fluid" style="margin-top: 15px">
+            <div class="lay-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">修改密码</div>
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="" method="post">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户名：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text"  required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" id="username">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">原密码：</label>
+                                    <div class="layui-input-block">
+                                        <input type="password" name="" required  lay-verify="required" placeholder="请输入原密码" autocomplete="off" class="layui-input" id="oldPasswd">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">验证码：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="" required  lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input" id="verifyValue">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"></label>
+                                    <div class="layui-input-block">
+                                        <img width="200"  src=""  id="getImg"/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">新密码：</label>
+                                    <div class="layui-input-block">
+                                        <input type="password" name="" required  lay-verify="required" placeholder="请输入新密码" autocomplete="off" class="layui-input" id="newPasswd">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">请再次输入新密码：</label>
+                                    <div class="layui-input-block">
+                                        <input type="password" name="" required  lay-verify="required" placeholder="请再次输入新密码" autocomplete="off" class="layui-input" id="newPasswd2">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" style="margin-top:-20px; display: none" id="ifShow">
+                                    <label class="layui-form-label"></label>
+                                    <div class="layui-input-block" style="color: red; min-height: 20px">
+                                        *两次密码输入不一致
+                                    </div>
+                                </div>
+                                <input type="hidden" value="1" id="key" lay-verify="required"  autocomplete="off" class="layui-input" name="idKey">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit">确认修改</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<script>
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+//            layer.msg(elem.text());
+        });
+    });
+    $('#out').click(function () {
+        $.ajax({
+            type: "GET",
+            url:'http://60.205.104.216:8000/userLogout',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                window.location.href = 'login.html';
+            }
+        })
+    });
+    $.ajax({
+        type: "get",
+        url:a+'/api/getCaptcha',
+        contentType:'application/json; charset=utf-8',
+        async:'false',
+        success:function (data) {
+            console.log(data);
+            $('#getImg').attr('src',data.data);
+            $('#key').attr('value',data.captchaId);
+            console.log($('#key').val());
+        }
+    })
+    $('#getImg').click(function () {
+        $.ajax({
+            type: "GET",
+            url:a+'/api/getCaptcha',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                $('#getImg').attr('src',data.data);
+                $('#key').attr('value',data.captchaId);
+                console.log($('#key').val());
+            }
+        })
+    })
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            // console.log(data);
+            // layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+
+        $('#newPasswd2').blur(function () {
+            var newPasswd = $('#newPasswd').val();
+            var newPasswd2 = $('#newPasswd2').val();
+            if(newPasswd2==newPasswd){
+                setTimeout(function () {
+                    $('#ifShow').css('display','none');
+                },100)
+                $('#submit').click(function () {
+                    var name = $('#username').val();
+                    var oldPasswd = $('#oldPasswd').val();
+                    var newPasswd = $('#newPasswd').val();
+                    var idkey = $('#key').val();
+                    var verifyValue = $('#verifyValue').val();
+                    var dlogin =
+                        {
+                            "userName": name,                       //用户名
+                            "oldPasswd": oldPasswd,                 //旧密码
+                            "newPasswd":newPasswd,                  //新密码
+                            "idKey": idkey,                         //图片校验id
+                            "verifyValue":verifyValue               //图片校验内容
+                        }
+                    // {
+                    //     "username": name,                  //用户名
+                    //     "passwd": passwd ,                   //密码
+                    //     "idKey": idkey,                     //校验id
+                    //     "verifyValue":verifyValue           //校验内容
+                    // },
+                    $.ajax({
+                        type: "POST",
+                        url:a+'/changePassword',
+                        dataType:'json',
+                        contentType:'application/json; charset=utf-8',
+                        data: JSON.stringify(dlogin),
+                        async:'false',
+                        success:function (data) {
+                            console.log(data);
+                        }
+                    })
+
+                })
+            }else{
+                $('#ifShow').css('display','block');
+            }
+        })
+
+
+
+</script>
+</body>
+</html>

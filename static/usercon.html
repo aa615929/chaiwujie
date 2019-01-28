@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+</head>
+<body>
+<input type="hidden" value="" id="inphid">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-fluid">
+        <div class="layui-card" style="margin-top: 15px">
+            <div class="layui-card-header" >
+                <div class="layui-inline">已添加用户</div>
+                <div class="layui-inline" style="margin-left: 60px"><div class="layui-btn layui-btn-normal layui-btn-sm" id="add">添加新用户</div></div>
+            </div>
+            <div class="layui-card-body">
+                <div class="layui-row">
+                    <div class="layui-col-md12" id="tab">
+                        <table id="demo" lay-filter="test" data-type="reload"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tesss" style="display: none">
+        <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="loginname" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" id="nameOne">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input" id="ip1">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="role" lay-verify="" placeholder="请输入密码" autocomplete="off" class="layui-input" id="ip2">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+            <div class="layui-form-item" lay-filter="sex">
+                <label class="layui-form-label">权限</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="管理员" title="管理员" lay-filter="erweima">
+                    <input type="radio" name="sex" value="审计员" title="审计员" lay-filter="erweima">
+                    <input type="radio" name="sex" value="操作员" title="操作员" lay-filter="erweima">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn"  id="submit" data-type="reload" lay-filter="formDemo" lay-submit>添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tesss2" style="display: none">
+        <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="loginname" lay-verify="" placeholder="请输入用户名" autocomplete="off" class="layui-input" id="nameTwo">
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input" id="ipone">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">重置密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="role" lay-verify="" placeholder="请输入密码" autocomplete="off" class="layui-input" id="iptwo">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+            <div class="layui-form-item" style="margin-top: 20px">
+                <div class="layui-input-block">
+                    <button class="layui-btn" data-type="reload" lay-filter="formDemo2" lay-submit>提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function(elem){
+
+        });
+    });
+    layui.use(['form','table','jquery','layer'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = jQuery = layui.$;
+        //获取单选框值
+        form.on('radio(erweima)', function (data) {
+            if(data.value == "管理员" ){
+                data.value = 0;
+            }else if(data.value == "审计员" ){
+                data.value = 1;
+            }else{
+                data.value = 2;
+            }
+            $("#inphid").val(data.value);
+//            console.log($('#inphid').val())
+        });
+        $('#add').click(function () {
+            layer.open({
+                type: 1 //Page层类型
+                ,area: ['420px', '420px']
+                ,title: '请输入您的信息'
+                ,shade: 0.6 //遮罩透明度
+                ,anim: 0 //0-6的动画形式，-1不开启
+                ,content: $('#tesss')
+                ,success: function(layero){
+                    $('#nodown').click(function () {
+                        layer.closeAll();
+                    });
+                }
+            });
+        })
+
+        form.verify({
+            ip:function (value,item) {
+                if(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value)){
+                } else if(/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9]):\d{0,5}$/.test(value)){
+                }else{
+                    return '地址不符合规则'
+                }
+            }
+        });
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: a+'/dbop/getSysuserAndUpdate' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            ,where: {
+                "id":0,
+                "Username":"",
+                "email":"",
+                "passwd" : ""
+            }
+            ,even: true //开启隔行背景
+            ,page:true
+            , align: 'center'
+            ,cellMinWidth: 80
+            , cols: [[ //表头
+                {field: 'id', title: 'id',}
+                , {field: 'username', title: '用户名',}
+                , {field: 'power', title: '权限',}
+                , {field: 'email', title: '邮箱',}
+                , {field: 'last_login_time', title: '最后登录时间',}
+                , {field: 'last_login_ip', title: '最后登录ip',}
+                ,{fixed: 'right', width:200 ,height:40, align:'center', toolbar: '#barDemo',title: '操作'}
+            ]]
+            , response: {
+                statusName: 'code' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+                console.log(curr);
+                console.log(count);
+            }
+        });
+        form.on('submit(formDemo)', function(data){
+            var name = $('#nameOne').val();
+            var inpId1 = $('#ip1').val();
+            var inpId2 = $('#ip2').val();
+            var inpId3 = $('#inphid').val();
+            var kk = {
+                "Username":name,
+                "email":inpId1,
+                "passwd":inpId2,
+                "power":inpId3
+            };
+            $.ajax({
+                type: "post",
+                url: a + '/dbop/insertUser',
+                contentType: 'application/json; charset=utf-8',
+                async: 'false',
+                data: JSON.stringify(kk),
+                success: function (data) {
+                    console.log(data);
+                    var msg = data.msg;
+                    if(data.status == 200){
+                        table.reload('demo',{
+                            where: {
+                                "id":0,
+                                "Username":"",
+                                "email":"",
+                            },
+                            done:function (res) {
+                                console.log(res);
+                                if(res.code==200){
+                                    layer.msg(res.msg,{icon:1});
+                                }else{
+                                    layer.msg(res.msg,{icon:5});
+                                }
+                            }
+                        });
+                    }else {
+//                        console.log(data.msg);
+                        layer.msg(msg,{icon:5});
+                    }
+                }
+            })
+
+            layer.closeAll();
+            return false;
+        });
+        //监听工具条
+        table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'del'){
+                console.log(data);
+                console.log(data.id);
+//                if(data.power == 1 || data.power == 2 || data.power == 3){
+//                    layer.msg("不可删除系统用户",{icon:5});
+//                }else{
+                    layer.confirm('真的删除这行么', function(index){
+                        var ind = {
+                            "id" : data.id
+                        };
+                        $.ajax({
+                            type: "DELETE",
+                            url:a+'/dbop/deleteUser',
+                            dataType:'json',
+                            contentType:'application/json;',
+                            async:'false',
+                            data:JSON.stringify(ind),
+                            success:function (data) {
+                                console.log(data);
+                                if(data.status !=404){
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.close(index);
+                                    //向服务端发送删除指令
+                                    layer.msg(data.msg,{icon:1});
+                                }else{
+                                    layer.msg(data.msg,{icon:5});
+                                }
+                            }
+                        })
+
+                    });
+//                }
+            } else if(layEvent === 'edit'){
+                var id = data.id;
+                var name = data.username;
+                var email = data.email;
+                $('#nameTwo').val(name);
+                $('#nameTwo').addClass('layui-disabled');
+                $('#ipone').val(email);
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['420px', '420px']
+                    ,title: '请输入您的信息'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#tesss2')
+                    ,success: function(layero){
+//                        $('#nodown').click(function () {
+//                            layer.closeAll();
+//                        });
+                    }
+                });
+                form.on('submit(formDemo2)', function(data){
+                    layer.closeAll();
+                    var pas = $('#iptwo').val();
+                    var mail = $('#ipone').val();
+                    table.reload('demo',{
+                        where: {
+                            "id": id,
+                            "Username": name,
+                            "email":mail,
+                            "passwd": pas
+                        } ,done:function (res) {
+                            console.log(res);
+                            if(res.code==200){
+                                layer.msg(res.msg,{icon:1});
+                            }else{
+                                layer.msg(res.msg,{icon:5});
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            }
+        });
+    });
+
+
+
+</script>
+</body>
+</html>

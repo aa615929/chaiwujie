@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2, user-scalable=yes">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.all.js"></script>
+    <script src="js/pp.js"></script>
+</head>
+<body>
+<input type="hidden" value="" id="numb">
+<!--<div style="position: absolute; font-size: 30px; font-weight: 600; right: 15%; top: 44%; color: white">美创业务安全访问审计系统</div>-->
+<div id="log">
+        <div id="logRight">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="text-align: left; width: 30px">
+                        <i class="layui-icon"  style="font-size: 30px; color: #ffffff">&#xe66f;</i>
+                    </label>
+                    <div class="layui-input-block" style="margin-left: 22%">
+                        <input type="text" name="CAREid" required  lay-verify="required" placeholder="请在此处输入用户名" autocomplete="off" class="layui-input" id="username">
+                    </div>
+                    <p style="width: 100%; height: 1px; background-color: white"></p>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="text-align: left; width: 30px">
+                        <i class="layui-icon"  style="font-size: 30px; color: #ffffff">&#xe673;</i>
+                    </label>
+                    <div class="layui-input-block" style="margin-left: 22%">
+                        <input type="password" name="passwd" required  lay-verify="required" placeholder="请在此处输入密码" autocomplete="off" class="layui-input" id="passwd">
+                    </div>
+                    <p style="width: 100%; height: 1px; background-color: white"></p>
+                </div>
+                <div class="layui-form-item" style="position: relative; display: none" id="validate">
+                    <label class="layui-form-label" style="text-align: left; width: 30px">
+                        <i class="layui-icon"  style="font-size: 30px; color: #ffffff">&#xe679;</i>
+                    </label>
+                    <div class="layui-input-block" style="margin-left:22%">
+                        <input type="text" name="verifyValue"  placeholder="输入验证码" autocomplete="off" class="layui-input" id="verifyValue" style="width: 60%">
+                        <!--<img style=""  src=""  id="getImg"/>-->
+                    </div>
+                    <img style=""  src=""  id="getImg"/>
+                    <p style="width: 70%; height: 1px; background-color: white"></p>
+                </div>
+                
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label"></label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<img style="width: 200px"  src=""  id="getImg"/>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="margin-left: 0px; width: 100%" >
+                        <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit" >登 录</button>
+                    </div>
+                    <!--<div class="layui-inline" style="margin-left: 0px">-->
+                        <!--<button class="layui-btn"  id="reset">重置</button>-->
+                    <!--</div>-->
+                </div>
+                <input type="hidden" value="" id="key">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            var otime = localStorage.getItem("otime");
+            if(otime == "1"){
+                if (window.history && window.history.pushState) {
+                    $(window).on('popstate', function () {
+                        window.history.pushState('forward', null, '');
+                        window.history.forward(1);
+                    });
+                }
+                window.history.pushState('forward', null, ''); //在IE中必须得有这两行
+                window.history.forward(1);
+            }
+        })
+
+        // fun();
+        layui.use(['form','layer'], function(){
+            var form = layui.form;
+            var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+//            form.verify({
+//                yzm : function (value) {
+//                    if( != value){
+//                        return '验证码输入有误'
+//                    }
+//                }
+//            })
+            //监听提交
+            var b = 0;
+            form.on('submit(formDemo)', function(data){
+                b = b+1;
+                console.log(b);
+                if(b>=3){
+
+                    $('#validate').css('display','block');
+//                        $('input[name="verifyValue"]').attr('lay-verify','required');
+                    $.ajax({
+                        type: "GET",
+                        url:a+'/api/getCaptcha',
+                        contentType:'application/json; charset=utf-8',
+                        async:'false',
+                        success:function (data) {
+                            console.log(data);
+                            $('#getImg').attr('src',data.data);
+                            $('#key').attr('value',data.captchaId);
+                            console.log($('#key').val());
+                        },
+                        error: function () {
+                            layer.msg('请检查您的网络连接',{icon:5});
+                        }
+                    })
+                }
+                var name = $('#username').val();
+                var passwd = $('#passwd').val();
+                var idkey = $('#key').val();
+                var verifyValue = $('#verifyValue').val();
+                var numb = $('#numb').val();
+                var dlogin = {
+                    "username": name,                  //用户名
+                    "passwd": passwd ,                   //密码
+                    "idKey": idkey,                     //校验id
+                    "verifyValue":verifyValue,           //校验内容
+                }
+                // http://192.168.1.103:8000
+                $.ajax({
+                    type: "POST",
+                    url:a+'/userLogin',
+                    dataType:'json',
+                    contentType:'application/json; charset=utf-8',
+                    data: JSON.stringify(dlogin),
+                    async:'false',
+                    success:function (data) {
+                        console.log(data);
+                        if(data.code!=200){
+                            layer.msg(data.data,{icon:5});
+                        }else{
+                            window.location.href='index.html';
+                        }
+                    },
+                    error: function () {
+                        layer.msg('请检查您的网络连接',{icon:5});
+                    }
+                })
+                 return false;
+            });
+        });
+        $('#getImg').click(function () {
+            $.ajax({
+                type: "GET",
+                url:a+'/api/getCaptcha',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    $('#getImg').attr('src',data.data);
+                    $('#key').attr('value',data.captchaId);
+                    console.log($('#key').val());
+                },
+                error: function () {
+                    layer.msg('请检查您的网络连接',{icon:5});
+                }
+            })
+        })
+
+
+    </script>
+
+</body>
+</html>

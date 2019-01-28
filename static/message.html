@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .bgd{
+            background-color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-fluid" id="LAY-app-message">
+        <!--<div class="layui-card">-->
+            <!--<div class="layui-tab layui-tab-brief">-->
+                <!--<ul class="layui-tab-title">-->
+                    <!--<li class="layui-this">全部消息</li>-->
+                <!--</ul>-->
+                <!--<div class="layui-tab-content">-->
+                    <!--<div class="layui-tab-item layui-show">-->
+                        <!--<div class="layui-btn-group demoTable" style="margin-bottom: 10px;">-->
+                            <!--<button class="layui-btn layui-btn-primary layui-btn-sm" data-type="all" data-events="del">删除</button>-->
+                            <!--<button class="layui-btn layui-btn-primary layui-btn-sm" data-type="all" data-events="ready" data-type="getCheckData">标记已读</button>-->
+                            <!--<button class="layui-btn layui-btn-primary layui-btn-sm" data-type="all" data-events="readyAll">全部已读</button>-->
+                        <!--</div>-->
+                        <!--<div id="cont">-->
+        <div style="margin-bottom: 5px;">
+        </div>
+
+        <div class="layui-btn-group demoTable">
+            <button class="layui-btn" data-type="getCheckData">标记已读</button>
+            <button class="layui-btn" data-type="getdel">删除</button>
+            <!--<button class="layui-btn" data-type="isAll">全部已读</button>-->
+        </div>
+        <div id="div">
+            <table id="test" lay-filter="test" class="" ></table>
+        </div>
+                        <!--</div>-->
+
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<script>
+//    window.onhashchange = function(){
+//        var hash = location.hash;
+//        hash = hash.substring(1,hash.length);
+//        alert(hash);
+//    }
+//    document.addEventListener('DOMContentLoaded', function () {
+//        console.log(1);
+//        var hash = location.hash;
+//        var url = hash.substring(1,hash.length);
+//        $("#baseIframe").attr("src", url);
+//    }, false)
+    layui.use(['form','table','jquery','layer'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = jQuery = layui.$;
+        //第一个实例
+        table.render({
+            elem: '#test'
+            , url: a+'/dbop/getSysMessageTerms' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            ,page:true
+            , align: 'center'
+            , cols: [[ //表头
+                {type: 'checkbox'}
+                ,{field:'id', title:'id' , width: 100 }
+                ,{field:'title', title:'标题((双击标题栏可查看信息内容))'}
+            ]]
+            , response: {
+                statusName: 'status' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'resultLine' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+                if(res.resultLine<=0){
+                    $("#cirlcered", parent.document).css('display','none');
+                }else{
+                    $("#cirlcered", parent.document).css('display','block');
+                }
+                $('#div').find('.layui-table-body').find("table" ).find("tbody").children("tr").on('dblclick',function() {
+                    console.log(this);
+//                    console.log($(this));
+                    $(this).addClass('bgd');
+                    var id = JSON.stringify($('#div').find('.layui-table-body').find("table").find("tbody").find(".layui-table-hover").data('index'));
+                    var obj = res.data[id];
+////                    layer.alert(obj);
+                    console.log(obj);
+                    console.log(obj.id);
+                    var info = obj.id;
+                    var dat = {
+                        id : info
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url:a+'/dbop/setSysMessageUnread',
+                        dataType:'json',
+                        contentType:'application/json; charset=utf-8',
+                        data: JSON.stringify(dat),
+                        async:'false',
+                        success:function (data) {
+                            console.log(data);
+                            if(data.status==200){
+
+                                layer.alert(data.dataLine, {
+                                    icon: 1,
+                                    title: "信息"
+                                });
+
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        }
+                    })
+                })
+            }
+        });
+//
+        //监听表格复选框选择
+        table.on('checkbox(test)', function(obj){
+            console.log(obj)
+        });
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('test')
+                    ,data = checkStatus.data;
+                console.log(checkStatus);
+                console.log(data);
+                var brr = [];
+                for(var i=0; i<data.length; i++){
+                    console.log(data[i].id);
+                    brr.push(data[i].id);
+                }
+                console.log(brr);
+                if(brr.length == 0){
+                    layer.msg("请先选中再点击",{icon:5});
+                }else{
+                    var dat = {
+                        data : brr
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url:a+'/dbop/setSysMessageUnreadTerms',
+                        dataType:'json',
+                        contentType:'application/json; charset=utf-8',
+                        data: JSON.stringify(dat),
+                        async:'false',
+                        success:function (data) {
+                            console.log(data);
+                            if(data.status == 200){
+                                table.reload('test', {
+                                    url: a+'/dbop/getSysMessageTerms'
+                                    ,done: function (res, curr, count) {
+                                        console.log(res);
+                                        if(res.resultLine<=0){
+                                            $("#cirlcered", parent.document).css('display','none');
+                                        }
+                                        if(res.status == 200){
+                                            layer.msg(data.msg,{icon:1});
+                                        }else{
+                                            layer.msg(data.msg,{icon:5});
+                                        }
+                                        $('#div').find('.layui-table-body').find("table" ).find("tbody").children("tr").on('dblclick',function() {
+                                            $(this).addClass('bgd');
+                                            var id = JSON.stringify($('#div').find('.layui-table-body').find("table").find("tbody").find(".layui-table-hover").data('index'));
+                                            var obj = res.data[id];
+////                    layer.alert(obj);
+                                            console.log(obj);
+                                            console.log(obj.id);
+                                            var info = obj.id;
+                                            var dat = {
+                                                id : info
+                                            };
+                                            $.ajax({
+                                                type: "POST",
+                                                url:a+'/dbop/setSysMessageUnread',
+                                                dataType:'json',
+                                                contentType:'application/json; charset=utf-8',
+                                                data: JSON.stringify(dat),
+                                                async:'false',
+                                                success:function (data) {
+                                                    console.log(data);
+                                                    if(data.status==200){
+                                                        layer.alert(data.dataLine, {
+                                                            icon: 1,
+                                                            title: "信息"
+                                                        });
+
+                                                    }else{
+                                                        layer.msg(data.msg,{icon:5});
+                                                    }
+                                                }
+                                            })
+                                        })
+                                    }
+                                });
+                            }else{
+
+                            }
+                        }
+                    })
+                }
+            },
+            getdel: function(){
+                layer.confirm('真的删除这行么', function(index){
+                    var checkStatus = table.checkStatus('test')
+                        ,data = checkStatus.data;
+                    console.log(checkStatus);
+                    console.log(data);
+                    var brr = [];
+                    for(var i=0; i<data.length; i++){
+                        console.log(data[i].id);
+                        brr.push(data[i].id);
+                    }
+                    console.log(brr);
+                    if(brr.length == 0){
+                        layer.msg("请先选中再点击",{icon:5});
+                    }else{
+                        var dat = {
+                            data : brr
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url:a+'/dbop/setSysMessageUnreadTerms',
+                            dataType:'json',
+                            contentType:'application/json; charset=utf-8',
+                            data: JSON.stringify(dat),
+                            async:'false',
+                            success:function (data) {
+                                console.log(data);
+                                if(data.status == 200){
+                                    table.reload('test', {
+                                        url: a+'/dbop/getSysMessageTerms'
+                                        ,done: function (res, curr, count) {
+                                            console.log(res);
+                                            if(res.resultLine<=0){
+                                                $("#cirlcered", parent.document).css('display','none');
+                                            }
+                                            if(res.status == 200){
+                                                layer.msg(data.msg,{icon:1});
+                                            }else{
+                                                layer.msg(data.msg,{icon:5});
+                                            }
+                                            $('#div').find('.layui-table-body').find("table" ).find("tbody").children("tr").on('dblclick',function() {
+                                                $(this).addClass('bgd');
+                                                var id = JSON.stringify($('#div').find('.layui-table-body').find("table").find("tbody").find(".layui-table-hover").data('index'));
+                                                var obj = res.data[id];
+                                                console.log(obj);
+                                                console.log(obj.id);
+                                                var info = obj.id;
+                                                var dat = {
+                                                    id : info
+                                                };
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url:a+'/dbop/setSysMessageUnread',
+                                                    dataType:'json',
+                                                    contentType:'application/json; charset=utf-8',
+                                                    data: JSON.stringify(dat),
+                                                    async:'false',
+                                                    success:function (data) {
+                                                        console.log(data);
+                                                        if(data.status==200){
+                                                            layer.alert(data.dataLine, {
+                                                                icon: 1,
+                                                                title: "信息"
+                                                            });
+
+                                                        }else{
+                                                            layer.msg(data.msg,{icon:5});
+                                                        }
+                                                    }
+                                                })
+                                            })
+                                        }
+                                    });
+                                }else{
+
+                                }
+                            }
+                        })
+                    }
+
+                });
+            }
+
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    })
+
+
+
+
+</script>
+
+
+</body>
+</html>

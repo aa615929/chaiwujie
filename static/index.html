@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layuiadmin-badge, .layuiadmin-btn-group, .layuiadmin-span-color {
+            position: absolute;
+            right: 15px;
+        }
+        .layuiadmin-badge {
+            top: 50%;
+            margin-top: -9px;
+            color: #01AAED;
+        }
+        .layuiadmin-card-list p.layuiadmin-big-font {
+            font-size: 36px;
+            color: #666;
+            line-height: 36px;
+            padding: 5px 0 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+        .layui-layout-admin .layui-body .layadmin-tabsbody-item {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+        }
+        .layui-show {
+            display: block!important;
+        }
+        .layadmin-iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+        dd{
+            cursor: pointer;
+        }
+        #leftMenu-child{
+            display: none;
+        }
+
+        #cirlce{
+            border: 3px solid red;/*设置红色*/
+            border-radius:3px;/*设置圆角*/
+            position: absolute;
+            z-index: 1000;
+            right: 0%;
+            margin-right: 34px;
+            margin-top: 15px;
+        }
+        #cirlce2{
+            border: 3px solid red;/*设置红色*/
+            border-radius:3px;/*设置圆角*/
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #listTit{
+            position: absolute;
+            width: 140px;
+            height: 300px;
+            /*border: 1px solid blue;*/
+            display: none;
+            right: 94px;
+            top:-4px;
+            border: 1px solid #9F9F9F;
+            padding: 10px;
+            background-color: skyblue;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #ullist li{
+            height: 30px;
+            line-height: 30px;
+        }
+        #listtext{
+            position: absolute;
+            /*width: 200px;*/
+            /*height: auto;*/
+            /*border: 1px solid blue;*/
+            display: none;
+            right: 248px;
+            top:-4px;
+            border: 1px solid #9F9F9F;
+            padding: 10px;
+            background-color: skyblue;
+            border-radius: 10px;
+        }
+        a{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div id="header">
+            <div id="headerLeft">
+                <a href=""><img src="img/logo.png" width="100px"></a>
+            </div>
+            <div id="headerRight">
+                <p id="headTit">首页</p>
+            </div>
+            <ul class="layui-nav layui-layout-right" style="z-index: 999; position: relative;">
+                <li class="layui-nav-item" lay-unselect="">
+                    <a layadmin-event="message" lay-text="消息中心" onclick="goToPage('message.html','消息中心')">
+                        <i class="layui-icon layui-icon-notice" style="font-size: 16px"></i>
+                        <!-- 如果有新消息，则显示小圆点 -->
+                        <span class="layui-badge-dot" style="margin: 0px; top: 32%; right: 31%; display: block" id="cirlcered"></span>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite id="user">测试员</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <!--<dd id="hov" lay-unselect>-->
+                            <!--<a>未读消息</a>-->
+                            <!--<span id="cirlce2"></span>-->
+                            <!--<div id="listTit">-->
+                                <!--<ul id="ullist">-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<div id="listtext">-->
+                            <!--</div>-->
+                        <!--</dd>-->
+                        <dd id="changepas"><a onclick="goToPage('changePas.html','修改密码')">修改密码</a></dd>
+                        <dd layadmin-event="logout" style="text-align: center;"><a style="cursor: pointer" id="out">退出</a></dd>
+                    </dl>
+                </li>
+
+                <!--<span id="cirlce"></span>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-side layui-bg-black addslide">
+        <div class="layui-side-scroll" id="leftMenu">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test" id="leftMenu-child">
+                <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+                <li class="layui-nav-item layui-nav-itemed uncheck ooo">
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this btnThis">
+                            <a onclick="goToPage('indexone.html','首页')">首页</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item uncheck ooo">
+                    <a href="javascript:;">业务访问审计</a>
+                    <dl class="layui-nav-child">
+                        <dd class="btnThis"><a onclick="goToPage('indexone.html','首页')">概览</a></dd>
+                        <dd class="btnThis"><a onclick="goToPage('opAudit.html','业务访问审计')">访问日志</a></dd>
+                        <dd class="btnThis"><a onclick="goToPage('appser.html','应用业务配置')">配置</a></dd>
+                        <dd class="btnThis"><a onclick="goToPage('outdash.html','统计报表')">统计报表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item uncheck ooo">
+                    <a href="javascript:;">风险管理</a>
+                    <dl class="layui-nav-child">
+                        <!--<dd class="btnThis"><a onclick="goToPage('none.html','概览')">概览</a></dd>-->
+                        <dd class="btnThis"><a onclick="goToPage('dangercon.html','应用风险概览')">应用风险</a></dd>
+                        <!--<dd class="btnThis"><a onclick="goToPage('none.html','行为异常')">行为异常</a></dd>-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('none.html','高危操作')">高危操作</a></dd>-->
+                        <dd class="btnThis"><a onclick="goToPage('appattack.html','应用攻击')">应用攻击</a></dd>
+                        <dd class="btnThis"><a onclick="goToPage('setalarm.html','邮件告警配置')">邮件告警</a></dd>
+                        <!--<dd class="btnThis"><a onclick="goToPage('changePas.html','密码管理')">修改密码</a></dd>-->
+                    </dl>
+                </li>
+                <li class="layui-nav-item uncheck ooo">
+                    <a href="javascript:;">数据安全</a>
+                    <dl class="layui-nav-child">
+                        <!--<dd class="btnThis"><a onclick="goToPage('none.html','业务访问审计')">概览</a></dd>-->
+                        <dd class="btnThis"><a onclick="goToPage('antisdata.html','网页脱敏')">网页脱敏</a></dd>
+                        <!--<dd class="btnThis"><a onclick="goToPage('none.html','下载管理')">下载管理</a></dd>-->
+                        <dd class="btnThis"><a onclick="goToPage('watermask.html','动态水印')">动态水印</a></dd>
+                        <!--<dd class="btnThis"><a onclick="goToPage('none.html','数据安全配置')">配置</a></dd>-->
+                    </dl>
+                </li>
+                <li class="layui-nav-item" id="usec">
+                    <a href="javascript:;">系统管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="btnThis uncheck" id="ywdl"><a onclick="goToPage('appmana.html','业务代理设置')">应用配置</a></dd>
+                        <dd class="btnThis uncheck"><a onclick="goToPage('usercon.html','用户管理设置')">用户管理</a></dd>
+                        <dd class="btnThis" style="display: block" id="czsj"><a onclick="goToPage('sysoplog.html','系统操作日志')">操作审计</a></dd>
+                        <dd class="btnThis uncheck"><a onclick="goToPage('systemconfig.html','系统配置')">系统配置</a></dd>
+                        <dd class="btnThis uncheck"><a onclick="goToPage('netcon.html','网络配置')">网络配置</a></dd>
+                    </dl>
+                </li>
+                <!--<li class="layui-nav-item layui-nav-itemed">-->
+                    <!--<a href="javascript:;">日志审计</a>-->
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('opAudit.html','业务访问审计')">操作审计</a></dd>-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('appser.html','应用业务配置')">应用业务配置</a></dd>-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('dangercon.html','应用风险概览')">操作风险</a></dd>-->
+                    <!--</dl>-->
+                <!--</li>-->
+                <!--<li class="layui-nav-item layui-nav-itemed">-->
+                    <!--<a href="javascript:;">告警配置</a>-->
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('setalarm.html','邮件告警配置')">告警配置</a></dd>-->
+                    <!--</dl>-->
+                <!--</li>-->
+                <!--<li class="layui-nav-item layui-nav-itemed">-->
+                    <!--<a href="javascript:;">系统配置</a>-->
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('appmana.html','业务代理设置')">应用管理</a></dd>-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('usercon.html','用户管理设置')">用户管理</a></dd>-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('changePas.html','修改密码')">修改密码</a></dd>-->
+                        <!--<dd class="btnThis"><a onclick="goToPage('sysoplog.html','系统操作日志')">审计日志</a></dd>-->
+                    <!--</dl>-->
+                <!--</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!--<div class="layui-tab" lay-filter="mytab" lay-allowClose="true">-->
+            <!--<ul class="layui-tab-title">-->
+                <!--<li class="layui-this">-->
+                    <!--<i class="layui-icon">-->
+                        <!--&#xe620;-->
+                        <!--<cite>控制面板</cite>-->
+                    <!--</i>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+            <div class="layadmin-tabsbody-item layui-show">
+                <iframe src="" frameborder="0" class="layadmin-iframe" id="myIframe"></iframe>
+            </div>
+
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+
+<script>
+//        $('#changepas').click(function () {
+////                var mm = $('.btnThis');
+////                console.log(mm);
+//            $('.btnThis').removeClass('layui-this');
+//            $('#chang').addClass('layui-this');
+//        })
+    setTimeout(function () {
+        var acookie=document.cookie.split("; ");
+        console.log(acookie);
+        for(var i=0; i<acookie.length; i++){
+            if(acookie[i].search("chinglin_Power") != -1){
+                console.log(acookie[i]);
+                var adminpower = acookie[i].substring(15);
+            }else if(acookie[i].search("chinglin_UserName") != -1){
+                console.log(acookie[i]);
+                var adminname = acookie[i].substring(18);
+            }
+        }
+        console.log(adminpower);
+        console.log(adminname);
+        $('#user').text(adminname);
+        if(adminpower == 0){
+            $("#myIframe").attr("src","indexone.html");
+            $('#leftMenu-child').css('display','block');
+//            $('#czsj').css('display','none');
+//            $('.ooo').css('display','none');
+//            $('#ywdl').addClass("layui-this");
+//            $('#headTit').text('业务代理设置');
+        }else if(adminpower == 1){
+            $("#myIframe").attr("src","sysoplog.html");
+            $('#leftMenu-child').css('display','block');
+            $('.uncheck').css('display','none');
+            $('#czsj').addClass("layui-this");
+            $('#headTit').text('系统操作日志');
+        }else{
+            $("#myIframe").attr("src","indexone.html");
+            $('#leftMenu-child').css('display','block');
+            $('#usec').css('display','none');
+        }
+    },100)
+
+    var src;
+    //带参数函数
+    function goToPage(param,query){
+        console.log($(this));
+        $('#headTit').text(query);
+        document.getElementById("myIframe").src= param;
+        src=param;
+    }
+    //退出登录
+    $('#out').click(function () {
+        $.ajax({
+            type: "GET",
+            url:a+'/userLogout',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                if(data.code == 200){
+                    window.location.href = 'login.html';
+                }else {
+
+                    layer.msg(data.msg,{icon:5});
+                }
+
+            }
+        })
+    });
+    var siz = {
+        PageNo : 1,
+        PageSize : 10
+    }
+    $.ajax({
+        type: "post",
+        url: a + '/dbop/getSysMessageTerms',
+        contentType: 'application/json; charset=utf-8',
+        async: 'false',
+        data: JSON.stringify(siz),
+        success: function (data) {
+            console.log(data);
+            if(data.resultLine<=0){
+                $("#cirlcered", parent.document).css('display','none');
+            }else{
+                $("#cirlcered", parent.document).css('display','block');
+            }
+        }
+    })
+    var kk = {
+        PageNo : 1,
+        PageSize : 10
+    };
+    $.ajax({
+        type: "post",
+        url: a + '/dbop/getSysMessageTerms',
+        contentType: 'application/json; charset=utf-8',
+        async: 'false',
+        data: JSON.stringify(kk),
+        success: function (data) {
+            console.log(data);
+            console.log(data.data);
+            var dat = data.data;
+            for(var i=0; i<dat.length; i++){
+//                console.log(dat[i]);
+                $('#ullist').append("<li"+" id="+dat[i].id+">"+dat[i].title+"</li>");
+            }
+        }
+    })
+//    $('#hov').mouseenter(function () {
+//        $('#listTit').show(300);
+//        return false;
+//    })
+//    $('#hov').mouseleave(function () {
+//        $('#listTit').hide(300);
+//        $('#listtext').hide(300);
+//        return false;
+//    })
+        $('#hov').hover(function () {
+            $('#listTit').show(300);
+            return false;
+        },function () {
+//            $('#listTit').hide(300);
+//            $('#listtext').hide(300);
+            return false;
+        })
+        $('#listTit').mouseleave(function () {
+            $('#listTit').hide(300);
+            $('#listtext').hide(300);
+            return false;
+        })
+    $('#ullist').on("click","li",function () {
+        console.log(this.id);
+        var id = this.id;
+        var kk = {
+            PageNo : 1,
+            PageSize : 10,
+            id : id
+        }
+        $.ajax({
+            type: "post",
+            url: a + '/dbop/setSysMessageUnread',
+            contentType: 'application/json; charset=utf-8',
+            async: 'false',
+            data: JSON.stringify(kk),
+            success: function (data) {
+                console.log(data);
+                $('#listtext').show(300);
+                $('#listtext').text(data.dataLine);
+                $('#ullist li').remove();
+                var dat = data.data;
+                for(var i=0; i<dat.length; i++){
+//                console.log(dat[i]);
+                    $('#ullist').append("<li"+" id="+dat[i].id+">"+dat[i].title+"</li>");
+                };
+                console.log($('#listtext').text());
+            }
+        })
+    })
+    layui.use(['element','jquery','layer'], function(){
+        var layer = layui.layer;
+        var $ = jQuery = layui.$;
+        var $ = layui.jquery,
+        element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        var listone = $('#listo');
+        $('#listo').attr('layui-bg-blue','layui-bg-red');
+        console.log(listone);
+        //监听导航点击
+        element.on('nav()', function(elem){
+            //console.log(elem)
+        });
+    });
+</script>
+</body>
+</html>

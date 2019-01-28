@@ -1,0 +1,25 @@
+#conte{
+}
+#font2{
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 微软雅黑;
+    background-color: #e8e8e8;
+    padding-left: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#pp{
+    height: 1px;
+    background-color: #e8e8e8;
+}
+#list{
+    height: 200px;
+    border: 1px solid #eeeeee;
+    overflow-y:scroll;;
+}
+#list p{
+    height: 36px;
+    line-height: 36px;
+    padding-left: 9px;
+}

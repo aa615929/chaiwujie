@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/walden.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layuiadmin-badge, .layuiadmin-btn-group, .layuiadmin-span-color {
+            position: absolute;
+            right: 15px;
+        }
+        .layuiadmin-badge {
+            top: 50%;
+            margin-top: -9px;
+            color: #01AAED;
+        }
+        .layuiadmin-card-list p.layuiadmin-big-font {
+            font-size: 36px;
+            color: #666;
+            line-height: 36px;
+            padding: 5px 0 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid" style="padding-top: 15px">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-sm6 layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            事件总数
+                            <span class="layui-badge layui-bg-blue layuiadmin-badge">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font" id="p1">9,999,666</p>
+                            <!--<p>-->
+                                <!--总计访问量-->
+                                <!--<span class="layuiadmin-span-color">88万 <i class="layui-inline layui-icon layui-icon-flag"></i></span>-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            账户风险事件
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font" id="p2">33,555</p>
+                            <!--<p>-->
+                                <!--新下载-->
+                                <!--<span class="layuiadmin-span-color">10% <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            业务风险事件
+                            <span class="layui-badge layui-bg-green layuiadmin-badge">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+
+                            <p class="layuiadmin-big-font" id="p3">999,666</p>
+                            <!--<p>-->
+                                <!--总收入-->
+                                <!--<span class="layuiadmin-span-color">*** <i class="layui-inline layui-icon layui-icon-dollar"></i></span>-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            风险趋势
+                            <span class="layui-badge layui-bg-orange layuiadmin-badge">周</span>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+
+                            <p class="layuiadmin-big-font" id="p4">66,666</p>
+                            <!--<p>-->
+                                <!--最近一个月-->
+                                <!--<span class="layuiadmin-span-color">15% <i class="layui-inline layui-icon layui-icon-user"></i></span>-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">风险分布情况</div>
+                        <div class="layui-card-body">
+                            <div id="chart1" style="height: 300px"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-card" style="margin-top: 15px">
+                <div class="layui-card-header" >
+                    <div class="layui-inline">已添加用户</div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md12" id="tab">
+                            <table id="demo" lay-filter="test" data-type="reload"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script>
+
+    $.ajax({
+        type: "post",
+        url:a+'/dbop/getEventLogTitle',
+        dataType:'json',
+        contentType:'application/json; charset=utf-8',
+        async:'false',
+        success:function (data) {
+            console.log(data);
+            $('#p1').text(data.eventSum);
+            $('#p2').text(data.accountSum);
+            $('#p3').text(data.businessSum);
+            $('#p4').text(0);
+        }
+    })
+    var myChart = echarts.init(document.getElementById('chart1'),'walden');
+    option1 = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:['邮件营销','联盟广告']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : ['周一','周二','周三','周四','周五','周六','周日']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'邮件营销',
+                type:'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                data:[120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name:'联盟广告',
+                type:'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                data:[220, 182, 191, 234, 290, 330, 310]
+            },
+        ]
+    };
+    $.ajax({
+        type: "get",
+        url:a+'/dbop/getPileByDay',
+        dataType:'json',
+        contentType:'application/json; charset=utf-8',
+        async:'false',
+        success:function (data) {
+            console.log(data);
+            option1.legend.data = data.tableData.legend;
+            option1.xAxis[0].data = data.tableData.xAxis;
+            var lists = data.tableData.series;
+            option1.series  = lists.slice(0);
+            myChart.setOption(option1);
+        }
+    });
+
+    layui.use(['element','jquery','layer','table'], function() {
+        var layer = layui.layer;
+        var table = layui.table;
+        var $ = jQuery = layui.$;
+        var $ = layui.jquery,
+            element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function (elem) {
+            //console.log(elem)
+//            layer.msg(elem.text());
+        });
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: a+'/dbop/getEventLog' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            ,even: true //开启隔行背景
+            ,page:true
+            , align: 'center'
+            , cols: [[ //表头
+                {field: 'id', title: '事件ID',}
+                , {field: 'event_type', title: '事件类型',}
+                , {field: 'event_name', title: '事件名称',}
+                , {field: 'event_rank', title: '事件等级',}
+                , {field: 'subject_uname', title: '主体名称',}
+                , {field: 'subject_ip', title: '主体IP',}
+                , {field: 'object_name', title: '客体名称',}
+                , {field: 'log_date', title: '日期',}
+                , {field: 'object_info', title: '事件信息',}
+            ]]
+            , response: {
+                statusName: 'code' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+                console.log(curr);
+                console.log(count);
+            }
+        });
+
+    })
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

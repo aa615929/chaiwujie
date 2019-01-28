@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-form-checkbox[lay-skin=primary] span{
+            width: 72px;
+        }
+    </style>
+</head>
+<body>
+<!--第二-->
+<input type="hidden" value="" id="idcard1">
+<input type="hidden" value="" id="tel1">
+<input type="hidden" value="" id="num1">
+<input type="hidden" value="" id="read1">
+<!--第三-->
+<input type="hidden" value="" id="num3">
+<input type="hidden" value="1" id="read3">
+<input type="hidden" value="" id="idcardTr">
+<input type="hidden" value="" id="telTr">
+
+<input type="hidden" value="1" id="idcard">
+<input type="hidden" value="1" id="tel">
+<input type="hidden" value="1" id="num">
+<input type="hidden" value="1" id="read">
+
+<input id="paycard"  type="hidden" value="1">
+<input id="coad" type="hidden" value="1">
+<input id="idphoto" type="hidden" value="1">
+<input id="jigou" type="hidden" value="1">
+<input id="onecoad" type="hidden" value="1">
+<input id="tbcard" type="hidden" value="1">
+<input id="hongcard" type="hidden" value="1">
+<input id="shuiwu" type="hidden" value="1">
+<input id="ip" type="hidden" value="1">
+<input id="msn" type="hidden" value="1">
+
+<input id="paycardT"  type="hidden" value="">
+<input id="coadT" type="hidden" value="">
+<input id="idphotoT" type="hidden" value="">
+<input id="jigouT" type="hidden" value="">
+<input id="onecoadT" type="hidden" value="">
+<input id="tbcardT" type="hidden" value="">
+<input id="hongcardT" type="hidden" value="">
+<input id="shuiwuT" type="hidden" value="">
+<input id="ipT" type="hidden" value="">
+<input id="msnT" type="hidden" value="">
+
+<input id="paycardTr"  type="hidden" value="">
+<input id="coadTr" type="hidden" value="">
+<input id="idphotoTr" type="hidden" value="">
+<input id="jigouTr" type="hidden" value="">
+<input id="onecoadTr" type="hidden" value="">
+<input id="tbcardTr" type="hidden" value="">
+<input id="hongcardTr" type="hidden" value="">
+<input id="shuiwuTr" type="hidden" value="">
+<input id="ipTr" type="hidden" value="">
+<input id="msnTr" type="hidden" value="">
+
+<!--switch默认-->
+<input type="hidden" value="" id="info">
+<input type="hidden" value="" id="page">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-fluid">
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">策略配置</li>
+                <!--<li>结果统计</li>-->
+                <!--<li>视图</li>-->
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-card">
+                        <div class="layui-card-header" >
+                            <div class="layui-inline">策略全局开关</div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row">
+                                <form class="layui-form" action="">
+                                    <!--<div class="layui-form-item">-->
+                                        <!--<label class="layui-form-label" style="width: 100px">敏感信息统计</label>-->
+                                        <!--<div class="layui-input-inline">-->
+                                            <!--<input type="checkbox" name="yyy" lay-skin="switch" lay-text="是|否"  lay-filter="info" id="switch1" value="" checked="">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" style="width: 100px">网页动态脱敏</label>
+                                        <div class="layui-input-inline">
+                                            <input type="checkbox" name="yyy" lay-skin="switch" lay-text="是|否"  lay-filter="page" id="switch2" value="" checked="">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-card" style="margin-top: 15px">
+                        <div class="layui-card-header" >
+                            <div class="layui-inline">明细策略</div>
+                            <div class="layui-inline" style="margin-left: 60px"><div class="layui-btn layui-btn-normal layui-btn-sm" id="add">添加策略</div></div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row">
+                                <div class="layui-col-md12" id="tab">
+                                    <table id="demo" lay-filter="test" data-type="reload"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-card" style="margin-top: 15px">
+                        <div class="layui-card-header" >
+                            <div class="layui-inline">敏感信息发现</div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    <table id="demo2" lay-filter="demo2" data-type="reload"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="layui-tab-item">2</div>-->
+                <!--<div class="layui-tab-item">3</div>-->
+            </div>
+        </div>
+    </div>
+    <div id="tesss" style="display: none">
+        <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+            <div class="layui-form-item">
+                <div>
+                    <label class="layui-form-label">规则名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="loginname" lay-verify="testInp" placeholder="请输入规则" autocomplete="off" class="layui-input" id="nameOne">
+                    </div>
+                    <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+                </div>
+                <div>
+                    <div class="layui-inline" style="padding-left: 38px; color:#999999 ">最多30个字符，格式为英文、汉字或数字</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">URL包含</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="role" lay-verify="" placeholder="请输入url" autocomplete="off" class="layui-input" id="urlCont">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+                <div>
+                    <div class="layui-inline" style="padding-left: 38px; color:#999999 ">可同时输入多个关键字，请用英文逗号分隔</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">敏感信息</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="checkall" lay-skin="primary" title="全选" checked="" lay-filter="checkall"><br/>
+                    <input type="checkbox" name="like" lay-skin="primary" title="身份证" checked="" lay-filter="idcard" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="手机号码" checked="" lay-filter="tel" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="银行卡" checked="" lay-filter="paycard"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="邮政编码" checked="" lay-filter="coad"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="护照" checked="" lay-filter="idphoto"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="组织机构" checked="" lay-filter="jigou"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="社会信用" checked="" lay-filter="onecoad"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="台胞证" checked="" lay-filter="tbcard"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="港澳通行证" checked="" lay-filter="hongcard"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="税务登记" checked="" lay-filter="shuiwu"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="IP地址" checked="" lay-filter="ip"  value="" class="checkone">
+                    <input type="checkbox" name="like" lay-skin="primary" title="邮箱" checked="" lay-filter="msn"  value="" class="checkone">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">执行动作</label>
+                <div class="layui-input-block">
+                    <!--<input type="checkbox" name="like1[write]" lay-skin="primary" title="统计数量" checked="" lay-filter="num">-->
+                    <input type="checkbox" name="like1[read]" lay-skin="primary" title="动态脱敏" checked="" lay-filter="read">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn"  id="submit" data-type="reload" lay-filter="formDemo" lay-submit>提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tesss2" style="display: none">
+        <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+            <div class="layui-form-item">
+                <div>
+                    <label class="layui-form-label">规则名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="loginname" lay-verify="testInp" placeholder="请输入规则名称" autocomplete="off" class="layui-input" id="nameOne1">
+                    </div>
+                    <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+                </div>
+                <div>
+                    <div class="layui-inline" style="padding-left: 38px; color:#999999 ">最多30个字符，格式为英文、汉字或数字</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">URL包含</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="role" lay-verify="" placeholder="请输入密码" autocomplete="off" class="layui-input" id="urlCont1">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+                <div>
+                    <div class="layui-inline" style="padding-left: 38px; color:#999999 ">可同时输入多个关键字，请用英文逗号分隔</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">敏感信息</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="checkallT" lay-skin="primary" title="全选" lay-filter="checkallT"><br/>
+                    <input type="checkbox" name="sfz" lay-skin="primary" title="身份证" lay-filter="idcard1" id="sfz" class="checktwo">
+                    <input type="checkbox" name="sjh" lay-skin="primary" title="手机号码"  lay-filter="tel1" id="sjh" class="checktwo">
+                    <input type="checkbox" name="yhk" lay-skin="primary" title="银行卡" checked="" lay-filter="paycardT" id="yhk" class="checktwo">
+                    <input type="checkbox" name="yzbm" lay-skin="primary" title="邮政编码" checked="" lay-filter="coadT" id="yzbm" class="checktwo">
+                    <input type="checkbox" name="hz" lay-skin="primary" title="护照" checked="" lay-filter="idphotoT" id="hz" class="checktwo">
+                    <input type="checkbox" name="zzjg" lay-skin="primary" title="组织机构" checked="" lay-filter="jigouT" id="zzjg" class="checktwo">
+                    <input type="checkbox" name="shxy" lay-skin="primary" title="社会信用" checked="" lay-filter="onecoadT" id="shxy" class="checktwo">
+                    <input type="checkbox" name="tbz" lay-skin="primary" title="台胞证" checked="" lay-filter="tbcardT" id="tbz" class="checktwo">
+                    <input type="checkbox" name="hatyz" lay-skin="primary" title="港澳通行证" checked="" lay-filter="hongcardT" id="hatyz" class="checktwo">
+                    <input type="checkbox" name="swdj" lay-skin="primary" title="税务登记" checked="" lay-filter="shuiwuT" id="swdj" class="checktwo">
+                    <input type="checkbox" name="ipdz" lay-skin="primary" title="IP地址" checked="" lay-filter="ipT" id="ipdz" class="checktwo">
+                    <input type="checkbox" name="yx" lay-skin="primary" title="邮箱" checked="" lay-filter="msnT" id="yx" class="checktwo">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">执行动作</label>
+                <div class="layui-input-block">
+                    <!--<input type="checkbox" name="num1" lay-skin="primary" title="统计数量"  lay-filter="num1" id="tjs">-->
+                    <input type="checkbox" name="read1" lay-skin="primary" title="动态脱敏"  lay-filter="read1" id="dtt">
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 20px">
+                <div class="layui-input-block">
+                    <button class="layui-btn" data-type="reload" lay-filter="formDemo2" lay-submit>提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tesss3" style="display: none">
+        <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+            <div class="layui-form-item">
+                <div>
+                    <label class="layui-form-label">规则名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="loginname" lay-verify="testInp" placeholder="请输入规则" autocomplete="off" class="layui-input" id="nameT">
+                    </div>
+                    <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+                </div>
+                <div>
+                    <div class="layui-inline" style="padding-left: 38px; color:#999999 ">最多30个字符，格式为英文、汉字或数字</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">URL包含</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="role" lay-verify="" placeholder="请输入url" autocomplete="off" class="layui-input" id="urlCont3">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+                <div>
+                    <div class="layui-inline" style="padding-left: 38px; color:#999999 ">可同时输入多个关键字，请用英文逗号分隔</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">敏感信息</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="checkallTr" lay-skin="primary" title="全选" lay-filter="checkallTr"><br/>
+                    <input type="checkbox" name="idcardTr" lay-skin="primary" title="身份证" checked="" lay-filter="idcardTr" id="sfzTr" class="checkthr">
+                    <input type="checkbox" name="telTr" lay-skin="primary" title="手机号码" checked="" lay-filter="telTr" id="sjhTr" class="checkthr">
+                    <input type="checkbox" name="paycardTr" lay-skin="primary" title="银行卡" checked="" lay-filter="paycardTr"  value="" id="yhkTr" class="checkthr">
+                    <input type="checkbox" name="coadTr" lay-skin="primary" title="邮政编码" checked="" lay-filter="coadTr"  value="" id="yzbmTr" class="checkthr">
+                    <input type="checkbox" name="idphotoTr" lay-skin="primary" title="护照" checked="" lay-filter="idphotoTr"  value="" id="hzTr" class="checkthr">
+                    <input type="checkbox" name="jigouTr" lay-skin="primary" title="组织机构" checked="" lay-filter="jigouTr"  value="" id="zzjgTr" class="checkthr">
+                    <input type="checkbox" name="onecoadTr" lay-skin="primary" title="社会信用" checked="" lay-filter="onecoadTr"  value="" id="shxyTr" class="checkthr">
+                    <input type="checkbox" name="tbcardTr" lay-skin="primary" title="台胞证" checked="" lay-filter="tbcardTr"  value="" id="tbzTr" class="checkthr">
+                    <input type="checkbox" name="hongcardTr" lay-skin="primary" title="港澳通行证" checked="" lay-filter="hongcardTr"  value="" id="hatyzTr" class="checkthr">
+                    <input type="checkbox" name="shuiwuTr" lay-skin="primary" title="税务登记" checked="" lay-filter="shuiwuTr"  value="" id="swdjTr" class="checkthr">
+                    <input type="checkbox" name="ipTr" lay-skin="primary" title="IP地址" checked="" lay-filter="ipTr"  value="" id="ipdzTr" class="checkthr">
+                    <input type="checkbox" name="msnTr" lay-skin="primary" title="邮箱" checked="" lay-filter="msnTr"  value="" id="yxTr" class="checkthr">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">执行动作</label>
+                <div class="layui-input-block">
+                    <!--<input type="checkbox" name="num3" lay-skin="primary" title="统计数量" checked="" lay-filter="num3" id="tjsTr">-->
+                    <input type="checkbox" name="read3" lay-skin="primary" title="动态脱敏"  lay-filter="read3" id="dttTr" checked="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn"  data-type="reload" lay-filter="formDemo3" lay-submit>提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <script type="text/html" id="barDemo2">
+        <a class="layui-btn layui-btn-sm" lay-event="add">添加策略</a>
+    </script>
+    <script>
+        layui.use('element', function(){
+            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+            //监听导航点击
+            element.on('nav()', function(elem){
+            });
+        });
+        layui.use(['form','table','jquery','layer'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            var $ = jQuery = layui.$;
+            $('[name=like1]').each(function(i,item){
+//                $(item).prop('disabled',true);
+//                form.render('radio');
+                console.log(i,item);
+            });
+            form.on('checkbox(idcard)', function(data){
+                var idcard = "";
+                console.log(data.elem); //得到checkbox原始DOM对象
+                console.log(data.elem.checked); //是否被选中，true或者false
+                console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                if(data.elem.checked == true){
+                    idcard = 1;
+                }else{
+                    idcard = 0;
+                }
+                console.log(idcard);
+                $('#idcard').val(idcard);
+            });
+            form.on('checkbox(tel)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var tel = "";
+                if(data.elem.checked == true){
+                    tel = 1;
+                }else{
+                    tel = 0;
+                }
+                console.log(tel);
+                $('#tel').val(tel);
+            });
+            var dlogin = {
+                "anti_sdata": "",
+                "waf_sratus": "" ,
+                "Record_sdata":"",
+            }
+            $.ajax({
+                type: "POST",
+                url:a+'/dbop/setGlobalSetting',
+                dataType:'json',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(dlogin),
+                async:'false',
+                success:function (data) {
+                      console.log(data);
+                      if(data.record == "1"){
+                          $('#info').val("true");
+                          $('#switch1').next().addClass('layui-form-onswitch');
+                          $('#switch1').attr('checked',true);
+                      }else{
+                          $('#page').val("false");
+                          $('#switch1').next().removeClass('layui-form-onswitch');
+                          $('#switch1').attr('checked',false);
+                      }
+                    if(data.anti == "1"){
+                        $('#page').val("true");
+                        $('#switch2').next().addClass('layui-form-onswitch');
+                        $('#switch2').attr('checked',true);
+                    }else{
+                        $('#page').val("false");
+                        $('#switch2').next().removeClass('layui-form-onswitch');
+                        $('#switch2').attr('checked',false);
+                    }
+                },
+                error: function () {
+                    layer.msg('请检查您的网络连接',{icon:5});
+                }
+            })
+            form.on('switch(info)', function(data){
+                console.log(data.elem); //得到checkbox原始DOM对象
+                console.log(data.elem.checked); //开关是否开启，true或者false
+                console.log(data.value); //开关value值，也可以通过data.elem.value得到
+                console.log(data.othis); //得到美化后的DOM对象
+                $('#info').val(data.elem.checked);
+                var info = $('#info').val();
+                var dlogin = {
+                    "anti_sdata": "",
+                    "waf_sratus": "" ,
+                    "Record_sdata": info,
+                }
+                // http://192.168.1.103:8000
+                $.ajax({
+                    type: "POST",
+                    url:a+'/dbop/setGlobalSetting',
+                    dataType:'json',
+                    contentType:'application/json; charset=utf-8',
+                    data: JSON.stringify(dlogin),
+                    async:'false',
+                    success:function (data) {
+                        console.log(data);
+                        if(data.status==200){
+                            layer.msg(data.msg,{icon:1});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('请检查您的网络连接',{icon:5});
+                    }
+                })
+            });
+            form.on('switch(page)', function(data){
+                console.log(data.elem); //得到checkbox原始DOM对象
+                console.log(data.elem.checked); //开关是否开启，true或者false
+                console.log(data.value); //开关value值，也可以通过data.elem.value得到
+                console.log(data.othis); //得到美化后的DOM对象
+                $('#page').val(data.elem.checked);
+                var page = $('#page').val();
+                var dlogin = {
+                    "anti_sdata": page,
+                    "waf_sratus": "" ,
+                    "Record_sdata": "",
+                }
+                // http://192.168.1.103:8000
+                $.ajax({
+                    type: "POST",
+                    url:a+'/dbop/setGlobalSetting',
+                    dataType:'json',
+                    contentType:'application/json; charset=utf-8',
+                    data: JSON.stringify(dlogin),
+                    async:'false',
+                    success:function (data) {
+                        console.log(data);
+                        if(data.status==200){
+
+                            layer.msg(data.msg,{icon:1});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('请检查您的网络连接',{icon:5});
+                    }
+                })
+
+            });
+            //全选
+            form.on('checkbox(checkall)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    $('.checkone').prop("checked", true);
+                    $('#paycard').val("1");
+                    $('#coad').val("1");
+                    $('#idphoto').val("1");
+                    $('#jigou').val("1");
+                    $('#onecoad').val("1");
+                    $('#tbcard').val("1");
+                    $('#hongcard').val("1");
+                    $('#ip').val("1");
+                    $('#msn').val("1");
+                    $('#shuiwu').val("1");
+                    $('#idcard').val("1");
+                    $('#tel').val("1");
+                    form.render('checkbox');
+                }else{
+                    $('.checkone').prop("checked", false);
+                    $('#paycard').val("0");
+                    $('#coad').val("0");
+                    $('#idphoto').val("0");
+                    $('#jigou').val("0");
+                    $('#onecoad').val("0");
+                    $('#tbcard').val("0");
+                    $('#hongcard').val("0");
+                    $('#ip').val("0");
+                    $('#msn').val("0");
+                    $('#shuiwu').val("0");
+                    $('#idcard').val("0");
+                    $('#tel').val("0");
+                    form.render('checkbox');
+                }
+            });
+            form.on('checkbox(checkallT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    $('.checktwo').prop("checked", true);
+                    $('#paycardT').val("1");
+                    $('#coadT').val("1");
+                    $('#idphotoT').val("1");
+                    $('#jigouT').val("1");
+                    $('#onecoadT').val("1");
+                    $('#tbcardT').val("1");
+                    $('#hongcardT').val("1");
+                    $('#ipT').val("1");
+                    $('#msnT').val("1");
+                    $('#shuiwuT').val("1");
+                    $('#idcard1').val("1");
+                    $('#tel1').val("1");
+                    form.render('checkbox');
+                }else{
+                    $('.checktwo').prop("checked", false);
+                    $('#paycardT').val("0");
+                    $('#coadT').val("0");
+                    $('#idphotoT').val("0");
+                    $('#jigouT').val("0");
+                    $('#onecoadT').val("0");
+                    $('#tbcardT').val("0");
+                    $('#hongcardT').val("0");
+                    $('#ipT').val("0");
+                    $('#msnT').val("0");
+                    $('#shuiwuT').val("0");
+                    $('#idcard1').val("0");
+                    $('#tel1').val("0");
+                    form.render('checkbox');
+                }
+            });
+            form.on('checkbox(checkallTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    $('.checkthr').prop("checked", true);
+                    $('#paycardTr').val("1");
+                    $('#coadTr').val("1");
+                    $('#idphotoTr').val("1");
+                    $('#jigouTr').val("1");
+                    $('#onecoadTr').val("1");
+                    $('#tbcardTr').val("1");
+                    $('#hongcardTr').val("1");
+                    $('#ipTr').val("1");
+                    $('#msnTr').val("1");
+                    $('#shuiwuTr').val("1");
+                    $('#idcardTr').val("1");
+                    $('#telTr').val("1");
+                    form.render('checkbox');
+                }else{
+                    $('.checkthr').prop("checked", false);
+                    $('#paycardTr').val("0");
+                    $('#coadTr').val("0");
+                    $('#idphotoTr').val("0");
+                    $('#jigouTr').val("0");
+                    $('#onecoadTr').val("0");
+                    $('#tbcardTr').val("0");
+                    $('#hongcardTr').val("0");
+                    $('#ipTr').val("0");
+                    $('#msnTr').val("0");
+                    $('#shuiwuTr').val("0");
+                    $('#idcardTr').val("0");
+                    $('#telTr').val("0");
+                    form.render('checkbox');
+                }
+            });
+            form.on('checkbox(paycard)', function(data){
+                var paycard = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    paycard = 1;
+                }else{
+                    paycard = 0;
+                }
+                $('#paycard').val(paycard);
+            });
+            form.on('checkbox(coad)', function(data){
+                var coad = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    coad = 1;
+                }else{
+                    coad = 0;
+                }
+                $('#coad').val(coad);
+            });
+            form.on('checkbox(idphoto)', function(data){
+                var idphoto = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    idphoto = 1;
+                }else{
+                    idphoto = 0;
+                }
+                $('#idphoto').val(idphoto);
+            });
+            form.on('checkbox(jigou)', function(data){
+                var jigou = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    jigou = 1;
+                }else{
+                    jigou = 0;
+                }
+                $('#jigou').val(jigou);
+            });
+            form.on('checkbox(onecoad)', function(data){
+                var onecoad = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    onecoad = 1;
+                }else{
+                    onecoad = 0;
+                }
+                $('#onecoad').val(onecoad);
+            });
+            form.on('checkbox(tbcard)', function(data){
+                var tbcard = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    tbcard = 1;
+                }else{
+                    tbcard = 0;
+                }
+                $('#tbcard').val(tbcard);
+            });
+
+            form.on('checkbox(hongcard)', function(data){
+                var hongcard = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    hongcard = 1;
+                }else{
+                    hongcard = 0;
+                }
+                $('#hongcard').val(hongcard);
+            });
+            form.on('checkbox(shuiwu)', function(data){
+                var shuiwu = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    shuiwu = 1;
+                }else{
+                    shuiwu = 0;
+                }
+                $('#shuiwu').val(shuiwu);
+            });
+            form.on('checkbox(ip)', function(data){
+                var ip = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    ip = 1;
+                }else{
+                    ip = 0;
+                }
+                $('#ip').val(ip);
+            });
+            form.on('checkbox(msn)', function(data){
+                var msn = "";
+                console.log(data.elem.checked); //是否被选中，true或者false
+                if(data.elem.checked == true){
+                    msn = 1;
+                }else{
+                    msn = 0;
+                }
+                $('#msn').val(msn);
+            });
+
+
+            form.on('checkbox(num)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var num = "";
+                if(data.elem.checked == true){
+                    num = 1;
+                }else{
+                    num = 0;
+                }
+                console.log(num);
+                $('#num').val(num);
+            });
+            form.on('checkbox(read)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read = "";
+                if(data.elem.checked == true){
+                    read = 1;
+                }else{
+                    read = 0;
+                }
+                console.log(read);
+                $('#read').val(read);
+            });
+            form.on('checkbox(idcard1)', function(data){
+                var idcard1 = "";
+                console.log(data.elem); //得到checkbox原始DOM对象
+                console.log(data.elem.checked); //是否被选中，true或者false
+                console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                if(data.elem.checked == true){
+                    idcard1 = 1;
+                }else{
+                    idcard1 = 0;
+                }
+                console.log(idcard1);
+                $('#idcard1').val(idcard1);
+            });
+            form.on('checkbox(tel1)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var tel1 = "";
+                if(data.elem.checked == true){
+                    tel1 = 1;
+                }else{
+                    tel1 = 0;
+                }
+                console.log(tel1);
+                $('#tel1').val(tel1);
+            });
+            form.on('checkbox(paycardT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var paycardT = "";
+                if(data.elem.checked == true){
+                    paycardT = 1;
+                }else{
+                    paycardT = 0;
+                }
+                $('#paycardT').val(paycardT);
+            });
+            form.on('checkbox(coadT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var coadT = "";
+                if(data.elem.checked == true){
+                    coadT = 1;
+                }else{
+                    coadT = 0;
+                }
+                $('#coadT').val(coadT);
+            });
+            form.on('checkbox(idphotoT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var idphotoT = "";
+                if(data.elem.checked == true){
+                    idphotoT = 1;
+                }else{
+                    idphotoT = 0;
+                }
+                $('#idphotoT').val(idphotoT);
+            });
+            form.on('checkbox(jigouT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var jigouT = "";
+                if(data.elem.checked == true){
+                    jigouT = 1;
+                }else{
+                    jigouT = 0;
+                }
+                $('#jigouT').val(jigouT);
+            });
+            form.on('checkbox(onecoadT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var onecoadT = "";
+                if(data.elem.checked == true){
+                    onecoadT = 1;
+                }else{
+                    onecoadT = 0;
+                }
+                $('#onecoadT').val(onecoadT);
+            });
+            form.on('checkbox(tbcardT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var tbcardT = "";
+                if(data.elem.checked == true){
+                    tbcardT = 1;
+                }else{
+                    tbcardT = 0;
+                }
+                $('#tbcardT').val(tbcardT);
+            });
+            form.on('checkbox(hongcardT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var hongcardT = "";
+                if(data.elem.checked == true){
+                    hongcardT = 1;
+                }else{
+                    hongcardT = 0;
+                }
+                $('#hongcardT').val(hongcardT);
+            });
+            form.on('checkbox(shuiwuT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var shuiwuT = "";
+                if(data.elem.checked == true){
+                    shuiwuT = 1;
+                }else{
+                    shuiwuT = 0;
+                }
+                $('#shuiwuT').val(shuiwuT);
+            });
+            form.on('checkbox(ipT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var ipT = "";
+                if(data.elem.checked == true){
+                    ipT = 1;
+                }else{
+                    ipT = 0;
+                }
+                $('#ipT').val(ipT);
+            });
+            form.on('checkbox(msnT)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var msnT = "";
+                if(data.elem.checked == true){
+                    msnT = 1;
+                }else{
+                    msnT = 0;
+                }
+                $('#msnT').val(msnT);
+            });
+            form.on('checkbox(num1)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var num1 = "";
+                if(data.elem.checked == true){
+                    num1 = 1;
+                }else{
+                    num1 = 0;
+                }
+                console.log(num1);
+                $('#num1').val(num1);
+            });
+            form.on('checkbox(read1)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#read1').val(read1);
+            });
+
+
+            //第三个
+            form.on('checkbox(read3)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#read3').val(read1);
+            });
+            //身份证
+            form.on('checkbox(idcardTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#idcardTr').val(read1);
+            });
+            //手机号telTr
+            form.on('checkbox(telTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#telTr').val(read1);
+            });
+            //银行卡paycardTr
+            form.on('checkbox(paycardTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#paycardTr').val(read1);
+            });
+            //邮政编码coadTr
+            form.on('checkbox(coadTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#coadTr').val(read1);
+            });
+            //护照idphotoTr
+            form.on('checkbox(idphotoTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#idphotoTr').val(read1);
+            });
+            //组织机构jigouTr
+            form.on('checkbox(jigouTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#jigouTr').val(read1);
+            });
+            //社会信用onecoadTr
+            form.on('checkbox(onecoadTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#onecoadTr').val(read1);
+            });
+            //台胞证tbcardTr
+            form.on('checkbox(tbcardTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#tbcardTr').val(read1);
+            });
+            //港澳通行证hongcardTr
+            form.on('checkbox(hongcardTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#hongcardTr').val(read1);
+            });
+            //税务登记shuiwuTr
+            form.on('checkbox(shuiwuTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#shuiwuTr').val(read1);
+            });
+            //IP地址
+            form.on('checkbox(ipTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#ipTr').val(read1);
+            });
+            //邮箱msnTr
+            form.on('checkbox(msnTr)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var read1 = "";
+                if(data.elem.checked == true){
+                    read1 = 1;
+                }else{
+                    read1 = 0;
+                }
+                console.log(read1);
+                $('#msnTr').val(read1);
+            });
+
+            $('#add').click(function () {
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['420px', '420px']
+                    ,title: '编辑规则'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#tesss')
+                    ,success: function(layero){
+                        $('#nodown').click(function () {
+                            layer.closeAll();
+                        });
+                    }
+                });
+            });
+            form.verify({
+                testInp:function (value,item) {
+                    if(/^[0-9a-zA-Z\u4e00-\u9fa5]{1,30}$/.test(value)){
+                    }else{
+                        return '规则名称有误'
+                    }
+                }
+            });
+            //第一个实例
+            table.render({
+                elem: '#demo'
+                , url: a+'/dbop/getAnitSdataPolicy' //数据接口
+                , contentType: 'application/json'
+                , method: 'post'
+                ,where: {
+                }
+                ,even: true //开启隔行背景
+                ,page:true
+                , align: 'center'
+                , cols: [[ //表头
+                    {field: 'id', title: 'id',}
+                    ,{field: 'name', title: '规则名称',}
+                    , {field: 'url', title: 'url包含',}
+                    , {field: 'type', title: '敏感信息包含',}
+                    , {field: 'info', title: '动作',}
+                    ,{fixed: 'right', toolbar: '#barDemo',title: '操作'}
+                ]]
+                , response: {
+                    statusName: 'code' //数据状态的字段名称，默认：code
+                    , statusCode: 200 //成功的状态码，默认：0
+                    , msgName: 'error' //状态信息的字段名称，默认：msg
+                    , countName: 'count' //数据总数的字段名称，默认：count
+                    , dataName: 'data' //数据列表的字段名称，默认：data
+                }
+                , request: {
+                    pageName: 'pageNo',
+                    limitName: 'pageSize'
+                }
+                , done: function (res, curr, count) {
+                    console.log(res);
+                    console.log(curr);
+                    console.log(count);
+                }
+            });
+            form.on('submit(formDemo)', function(data){
+                var name = $('#nameOne').val();
+                var urlCont = $('#urlCont').val();
+                var read = $('#read').val();
+                var num = $('#num').val();
+                var idcard = $('#idcard').val();  //身份
+                var tel = $('#tel').val();         //手机
+                var paycard = $("#paycard").val(); //银行卡
+                var coad = $("#coad").val();        //邮政编码
+                var idphoto = $("#idphoto").val();     //护照
+                var jigou = $("#jigou").val();     //组织机构
+                var onecoad = $("#onecoad").val();     //统一社会信用
+                var tbcard = $("#tbcard").val();     //台胞证
+                var hongcard = $("#hongcard").val();     //港澳通行
+                var shuiwu = $("#shuiwu").val();     //税务登记
+                var ip = $("#ip").val();     //ip
+                var msn = $("#msn").val();     //邮箱
+                var typp = idcard+""+tel+""+paycard+""+coad+""+idphoto+""+jigou+""+onecoad+""+tbcard+""+hongcard+""+shuiwu+""+ip+""+msn
+                console.log(typp);
+                var kk = {
+                    "name" : name,
+                    "url" : urlCont,
+                    "anti" : read,      //脱敏
+                    "record" : "0",  //统计数量
+                    "type" : typp,    //身份证+电话号
+                    "info"     :""
+                };
+                // if(read == 0 && num == 0){
+                //     layer.msg('统计数量和动态脱敏最少选择一个',{icon:5});
+                // }else
+                if(idcard == 0 && tel == 0){
+                    layer.msg('身份证和手机号码最少选择一个',{icon:5});
+                }  else{
+                    $.ajax({
+                        type: "post",
+                        url: a+'/dbop/insertAnitSdataPolicy',
+                        contentType: 'application/json; charset=utf-8',
+                        async: 'false',
+                        data: JSON.stringify(kk),
+                        success: function (data) {
+                            console.log(data);
+                            if(data.code == 200){
+                                layer.closeAll();
+                                layer.msg(data.msg,{icon:1});
+                            table.reload('demo',{
+                                where: kk
+                            });
+                            }else {
+                                layer.closeAll();
+                                layer.msg(data.mag,{icon:5});
+                            }
+                        }
+                    })
+                }
+                return false;
+            });
+            //监听工具条
+            table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                } else if(layEvent === 'del'){
+                    console.log(data);
+                    console.log(data.id);
+                    layer.confirm('真的删除这行么', function(index){
+                        var ind = {
+                            "id" : data.id
+                        };
+                        $.ajax({
+                            type: "DELETE",
+                            url:a+'/dbop/deleteAnitSdataPolicy',
+                            dataType:'json',
+                            contentType:'application/json;',
+                            async:'false',
+                            data:JSON.stringify(ind),
+                            success:function (data) {
+                                console.log(data);
+                                if(data.code == 200){
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.close(index);
+                                    //向服务端发送删除指令
+                                    layer.msg(data.msg,{icon:1});
+                                }else{
+                                    layer.msg(data.msg,{icon:5});
+                                }
+                            }
+                        })
+
+                    });
+//                }
+                } else if(layEvent === 'edit'){
+                    console.log(data);
+                    var id = data.id;
+                    var name = data.name;
+                    var url = data.url;
+                    var mgtype = data.type;
+                    var dz = data.info;
+//                    console.log(mgtype);
+//                    console.log(dz);
+                    $('#nameOne1').val(name);
+                    $('#urlCont1').val(url);
+                    if(dz.search("脱敏")!=-1){
+                        console.log('脱敏1');
+                        $('#read1').val(1);
+                        $("#dtt").next().addClass('layui-form-checked');
+                        $('[name=read1]').prop('checked',true);
+                    }else{
+                        console.log('脱敏2');
+                        $('#read1').val(0);
+                        $("#dtt").next().removeClass('layui-form-checked');
+                        $('[name=read1]').prop('checked',false);
+                    }
+                    if(dz.search("统计")!=-1){
+                        console.log('统计1');
+                        $('#num1').val(1);
+                        $("#tjs").next().addClass('layui-form-checked');
+                        $('[name=num1]').prop('checked',true);
+                    }else{
+                        console.log('统计2');
+                        $('#num1').val(0);
+                        $("#tjs").next().removeClass('layui-form-checked');
+                        $('[name=num1]').prop('checked',false);
+                    }
+                    if(mgtype.search("身份证")!=-1){
+                        $('#idcard1').val(1);
+                        $("#sfz").next().addClass('layui-form-checked');
+                        $('[name=sfz]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#idcard1').val(0);
+                        $("#sfz").next().removeClass('layui-form-checked');
+                        $('[name=sfz]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("手机号")!=-1){
+                        $('#tel1').val(1);
+                        $("#sjh").next().addClass('layui-form-checked');
+                        $('[name=sjh]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#tel1').val(0);
+                        $("#sjh").next().removeClass('layui-form-checked');
+                        $('[name=sjh]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("银行卡")!=-1){
+                        $('#paycardT').val(1);
+                        $("#yhk").next().addClass('layui-form-checked');
+                        $('[name=yhk]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#paycardT').val(0);
+                        $("#yhk").next().removeClass('layui-form-checked');
+                        $('[name=yhk]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("邮政编码")!=-1){
+                        $('#coadT').val(1);
+                        $("#yzbm").next().addClass('layui-form-checked');
+                        $('[name=yzbm]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#coadT').val(0);
+                        $("#yzbm").next().removeClass('layui-form-checked');
+                        $('[name=yzbm]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("护照")!=-1){
+                        $('#idphotoT').val(1);
+                        $("#hz").next().addClass('layui-form-checked');
+                        $('[name=hz]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#idphotoT').val(0);
+                        $("#hz").next().removeClass('layui-form-checked');
+                        $('[name=hz]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("组织机构代码")!=-1){
+                        $('#jigouT').val(1);
+                        $("#zzjg").next().addClass('layui-form-checked');
+                        $('[name=zzjg]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#jigouT').val(0);
+                        $("#zzjg").next().removeClass('layui-form-checked');
+                        $('[name=zzjg]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("统一社会信用代码")!=-1){
+                        $('#onecoadT').val(1);
+                        $("#shxy").next().addClass('layui-form-checked');
+                        $('[name=shxy]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#onecoadT').val(0);
+                        $("#shxy").next().removeClass('layui-form-checked');
+                        $('[name=shxy]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("台胞证")!=-1){
+                        $('#tbcardT').val(1);
+                        $("#tbz").next().addClass('layui-form-checked');
+                        $('[name=tbz]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#tbcardT').val(0);
+                        $("#tbz").next().removeClass('layui-form-checked');
+                        $('[name=tbz]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("港澳通行证")!=-1){
+                        $('#hongcardT').val(1);
+                        $("#hatyz").next().addClass('layui-form-checked');
+                        $('[name=hatyz]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#hongcardT').val(0);
+                        $("#hatyz").next().removeClass('layui-form-checked');
+                        $('[name=hatyz]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("税务登记")!=-1){
+                        $('#shuiwuT').val(1);
+                        $("#swdj").next().addClass('layui-form-checked');
+                        $('[name=swdj]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#shuiwuT').val(0);
+                        $("#swdj").next().removeClass('layui-form-checked');
+                        $('[name=swdj]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("IP地址")!=-1){
+                        $('#ipT').val(1);
+                        $("#ipdz").next().addClass('layui-form-checked');
+                        $('[name=ipdz]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#ipT').val(0);
+                        $("#ipdz").next().removeClass('layui-form-checked');
+                        $('[name=ipdz]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("邮箱")!=-1){
+                        $('#msnT').val(1);
+                        $("#yx").next().addClass('layui-form-checked');
+                        $('[name=yx]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#msnT').val(0);
+                        $("#yx").next().removeClass('layui-form-checked');
+                        $('[name=yx]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    layer.open({
+                        type: 1 //Page层类型
+                        ,area: ['420px', '420px']
+                        ,title: '请输入您的信息'
+                        ,shade: 0.6 //遮罩透明度
+                        ,anim: 0 //0-6的动画形式，-1不开启
+                        ,content: $('#tesss2')
+                        ,success: function(){
+//
+                        }
+                    });
+                    form.on('submit(formDemo2)', function(data){
+                        var read1 = $('#read1').val();
+                        var num1 = $('#num1').val();
+                        var idcard1 = $('#idcard1').val();
+                        var tel1 = $('#tel1').val();
+                        var paycardT = $("#paycardT").val(); //银行卡
+                        var coadT = $("#coadT").val();        //邮政编码
+                        var idphotoT = $("#idphotoT").val();     //护照
+                        var jigouT = $("#jigouT").val();     //组织机构
+                        var onecoadT = $("#onecoadT").val();     //统一社会信用
+                        var tbcardT = $("#tbcardT").val();     //台胞证
+                        var hongcardT = $("#hongcardT").val();     //港澳通行
+                        var shuiwuT = $("#shuiwuT").val();     //税务登记
+                        var ipT = $("#ipT").val();     //ip
+                        var msnT = $("#msnT").val();     //邮箱
+                        var typp1 = idcard1+""+tel1+""+paycardT+""+coadT+""+idphotoT+""+jigouT+""+onecoadT+""+tbcardT+""+hongcardT+""+shuiwuT+""+ipT+""+msnT
+                        var namm = $('#nameOne1').val();
+                        var urll = $('#urlCont1').val();
+                        console.log(typp1);
+                        console.log(namm);
+                        // if(read1 == 0 && num1 == 0){
+                        //     layer.msg('统计数量和动态脱敏最少选择一个',{icon:5});
+                        // }else
+                        if(idcard1 == 0 && tel1 == 0){
+                            layer.msg('身份证和手机号码最少选择一个',{icon:5});
+                        }  else{
+                            var mm={
+                                    "id": id,
+                                    "name" : namm,
+                                    "url" : urll,
+                                    "anti" : read1,      //脱敏
+                                    "record" : "0",  //统计数量
+                                    "type" : typp1,    //身份证+电话号
+                                    "info"     :""
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: a+'/dbop/updataAnitSdataPolicy',
+                                contentType: 'application/json; charset=utf-8',
+                                async: 'false',
+                                data: JSON.stringify(mm),
+                                success: function (data) {
+                                    console.log(data);
+                                    layer.closeAll();
+                                    if(data.code == 200){
+                                        layer.msg(data.msg,{icon:1});
+                                        table.reload('demo',{
+                                            where: JSON.stringify(mm),
+                                            done:function (res) {
+                                                console.log(res);
+                                                if(res.code==200){
+                                                    // layer.closeAll();
+                                                }else{
+                                                    layer.closeAll();
+                                                    layer.msg(res.msg,{icon:5});
+                                                }
+                                            }
+                                        });
+                                    }else {
+                                        layer.msg(data.msg,{icon:5});
+                                    }
+                                },
+                                error:function () {
+                                    layer.msg('请检查您的网络连接',{icon:5});
+                                }
+
+                            })
+//                            table.reload('demo',{
+//                                where: {
+//                                    "id": id,
+//                                    "name" : namm,
+//                                    "url" : urll,
+//                                    "anti" : read1,      //脱敏
+//                                    "record" : num1,  //统计数量
+//                                    "type" : typp1,    //身份证+电话号
+//                                    "info"     :""
+//                                },
+//                                done: function (res, curr, count) {
+//                                    console.log(res);
+//                                    if(res.code == 200){
+//                                        layer.closeAll();
+//                                        layer.msg(res.msg,{icon:1});
+//                                    }else{
+//                                        layer.msg(res.msg,{icon:5});
+//                                    }
+//                            }
+//                            });
+                        }
+
+                        return false;
+                    });
+                }
+            });
+            //第二个实例
+            table.render({
+                elem: '#demo2'
+                , url: a+'/dbop/getAnitSdataPolicyByAnti' //数据接口
+                , contentType: 'application/json'
+                , method: 'post'
+                ,where: {
+                }
+                ,even: true //开启隔行背景
+                ,page:true
+                , align: 'center'
+                , cols: [[ //表头
+                    {field: 'id', title: 'id',}
+                    ,{field: 'name', title: '系统',}
+                    , {field: 'url', title: 'URL',}
+                    , {field: 'type', title: '发现的敏感信息',}
+                    , {field: 'info', title: '识别的敏感信息',}
+                    ,{fixed: 'right', toolbar: '#barDemo2',title: '执行脱敏'}
+                ]]
+                , response: {
+                    statusName: 'code' //数据状态的字段名称，默认：code
+                    , statusCode: 200 //成功的状态码，默认：0
+                    , msgName: 'error' //状态信息的字段名称，默认：msg
+                    , countName: 'count' //数据总数的字段名称，默认：count
+                    , dataName: 'data' //数据列表的字段名称，默认：data
+                }
+                , request: {
+                    pageName: 'pageNo',
+                    limitName: 'pageSize'
+                }
+                , done: function (res, curr, count) {
+                    console.log(res);
+                    console.log(curr);
+                    console.log(count);
+                }
+            });
+            table.on('tool(demo2)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'add') {
+                        layer.open({
+                            type: 1 //Page层类型
+                            ,area: ['420px', '420px']
+                            ,title: '请输入您的信息'
+                            ,shade: 0.6 //遮罩透明度
+                            ,anim: 0 //0-6的动画形式，-1不开启
+                            ,content: $('#tesss3')
+                            ,success: function(){
+
+                            }
+                        });
+                    console.log(data);
+                    var id = data.id;
+                    var name = data.name;
+                    var url = data.url;
+                    var mgtype = data.type;
+                    var dz = data.info;
+//                    console.log(mgtype);
+//                    console.log(dz);
+//                     $('#nameOne1').val(name);
+                    $('#urlCont3').val(url);
+                    //不要判断了 直接默认选中
+                    // if(dz.search("脱敏")!=-1){
+                    //     console.log('脱敏1');
+                    //     $('#read3').val(1);
+                    //     $("#dttTr").next().addClass('layui-form-checked');
+                    //     $('[name=read3]').prop('checked',true);
+                    // }else{
+                    //     console.log('脱敏2');
+                    //     $('#read3').val(0);
+                    //     $("#dttTr").next().removeClass('layui-form-checked');
+                    //     $('[name=read3]').prop('checked',false);
+                    // }
+                    if(dz.search("统计")!=-1){
+                        console.log('统计3');
+                        $('#num3').val(1);
+                        $("#tjsTr").next().addClass('layui-form-checked');
+                        $('[name=num3]').prop('checked',true);
+                    }else{
+                        console.log('统计3');
+                        $('#num3').val(0);
+                        $("#tjsTr").next().removeClass('layui-form-checked');
+                        $('[name=num3]').prop('checked',false);
+                    }
+                    if(mgtype.search("身份证")!=-1){
+                        $('#idcardTr').val(1);
+                        $("#sfzTr").next().addClass('layui-form-checked');
+                        $('[name=idcardTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#idcardTr').val(0);
+                        $("#sfzTr").next().removeClass('layui-form-checked');
+                        $('[name=idcardTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("手机号")!=-1){
+                        $('#telTr').val(1);
+                        $("#sjhTr").next().addClass('layui-form-checked');
+                        $('[name=telTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#telTr').val(0);
+                        $("#sjhTr").next().removeClass('layui-form-checked');
+                        $('[name=telTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("银行卡")!=-1){
+                        $('#paycardTr').val(1);
+                        $("#yhkTr").next().addClass('layui-form-checked');
+                        $('[name=paycardTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#paycardTr').val(0);
+                        $("#yhkTr").next().removeClass('layui-form-checked');
+                        $('[name=paycardTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("邮政编码")!=-1){
+                        $('#coadTr').val(1);
+                        $("#yzbmTr").next().addClass('layui-form-checked');
+                        $('[name=coadTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#coadTr').val(0);
+                        $("#yzbmTr").next().removeClass('layui-form-checked');
+                        $('[name=coadTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("护照")!=-1){
+                        $('#idphotoTr').val(1);
+                        $("#hzTr").next().addClass('layui-form-checked');
+                        $('[name=idphotoTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#idphotoTr').val(0);
+                        $("#hzTr").next().removeClass('layui-form-checked');
+                        $('[name=idphotoTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("组织机构代码")!=-1){
+                        $('#jigouTr').val(1);
+                        $("#zzjgTr").next().addClass('layui-form-checked');
+                        $('[name=jigouTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#jigouTr').val(0);
+                        $("#zzjgTr").next().removeClass('layui-form-checked');
+                        $('[name=jigouTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("统一社会信用代码")!=-1){
+                        $('#onecoadTr').val(1);
+                        $("#shxyTr").next().addClass('layui-form-checked');
+                        $('[name=onecoadTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#onecoadTr').val(0);
+                        $("#shxyTr").next().removeClass('layui-form-checked');
+                        $('[name=onecoadTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("台胞证")!=-1){
+                        $('#tbcardTr').val(1);
+                        $("#tbzTr").next().addClass('layui-form-checked');
+                        $('[name=tbcardTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#tbcardTr').val(0);
+                        $("#tbzTr").next().removeClass('layui-form-checked');
+                        $('[name=tbcardTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("港澳通行证")!=-1){
+                        $('#hongcardTr').val(1);
+                        $("#hatyzTr").next().addClass('layui-form-checked');
+                        $('[name=hongcardTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#hongcardTr').val(0);
+                        $("#hatyzTr").next().removeClass('layui-form-checked');
+                        $('[name=hongcardTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("税务登记")!=-1){
+                        $('#shuiwuTr').val(1);
+                        $("#swdjTr").next().addClass('layui-form-checked');
+                        $('[name=shuiwuTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#shuiwuTr').val(0);
+                        $("#swdjTr").next().removeClass('layui-form-checked');
+                        $('[name=shuiwuTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("IP地址")!=-1){
+                        $('#ipTr').val(1);
+                        $("#ipdzTr").next().addClass('layui-form-checked');
+                        $('[name=ipTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#ipTr').val(0);
+                        $("#ipdzTr").next().removeClass('layui-form-checked');
+                        $('[name=ipTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+                    if(mgtype.search("邮箱")!=-1){
+                        $('#msnTr').val(1);
+                        $("#yxTr").next().addClass('layui-form-checked');
+                        $('[name=msnTr]').prop('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $('#msnTr').val(0);
+                        $("#yxTr").next().removeClass('layui-form-checked');
+                        $('[name=msnTr]').prop('checked',false);
+                        form.render('checkbox');
+                    }
+
+
+                    //TIJIAO
+                    form.on('submit(formDemo3)', function(data){
+                        var read1 = $('#read3').val();
+                        var num1 = $('#num3').val();
+                        var idcard1 = $('#idcardTr').val();  //身份
+                        var tel1 = $('#telTr').val();       //电话
+                        var paycardT = $("#paycardTr").val(); //银行卡
+                        var coadT = $("#coadTr").val();        //邮政编码
+                        var idphotoT = $("#idphotoTr").val();     //护照
+                        var jigouT = $("#jigouTr").val();     //组织机构
+                        var onecoadT = $("#onecoadTr").val();     //统一社会信用
+                        var tbcardT = $("#tbcardTr").val();     //台胞证
+                        var hongcardT = $("#hongcardTr").val();     //港澳通行
+                        var shuiwuT = $("#shuiwuTr").val();     //税务登记
+                        var ipT = $("#ipTr").val();     //ip
+                        var msnT = $("#msnTr").val();     //邮箱
+                        var typp1 = idcard1+""+tel1+""+paycardT+""+coadT+""+idphotoT+""+jigouT+""+onecoadT+""+tbcardT+""+hongcardT+""+shuiwuT+""+ipT+""+msnT
+                        var namm = $('#nameT').val();
+                        var urll = $('#urlCont3').val();
+                        console.log(typp1);
+                        console.log(namm);
+                        // if(read1 == 0 && num1 == 0){
+                        //     layer.msg('统计数量和动态脱敏最少选择一个',{icon:5});
+                        // }else
+                        if(idcard1 == 0 && tel1 == 0){
+                            layer.msg('身份证和手机号码最少选择一个',{icon:5});
+                        }  else{
+                            var mm={
+                                "id": id,
+                                "name" : namm,
+                                "url" : urll,
+                                "anti" : read1,      //脱敏
+                                "record" : "0",  //统计数量
+                                "type" : typp1,    //身份证+电话号
+                                "info"     :""
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: a+'/dbop/updataAnitSdataPolicy',
+                                contentType: 'application/json; charset=utf-8',
+                                async: 'false',
+                                data: JSON.stringify(mm),
+                                success: function (data) {
+                                    console.log(data);
+                                    if(data.code == 200){
+                                        layer.closeAll();
+                                        layer.msg(data.msg,{icon:1});
+                                        table.reload('demo2',{
+                                            where: JSON.stringify(mm)
+                                        });
+                                    }else {
+                                        layer.closeAll();
+                                        layer.msg(data.mag,{icon:5});
+                                    }
+                                },
+                                error:function () {
+                                    layer.msg('请检查您的网络连接',{icon:5});
+                                }
+
+                            })
+                        }
+                        return false;
+                    });
+                }
+            })
+        });
+
+
+
+    </script>
+</body>
+</html>

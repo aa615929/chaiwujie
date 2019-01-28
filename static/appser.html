@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-form-label{
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+
+        <div class="layui-fluid" style="padding-top: 15px">
+            <!-- 内容主体区域 -->
+            <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">应用业务配置</li>
+                <li>应用用户配置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-card" style="padding-top: 15px">
+                        <div class="layui-card-header" style=" height: auto;">
+                            <form class="layui-form" action="" method="post" style="margin-top: 20px">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">系统名称</label>
+                                        <div class="layui-input-inline">
+                                            <select name="quiz" id="sel" lay-filter="sel">
+                                                <option value="">选择指定系统</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">页面路径</label>
+                                        <div class="layui-input-inline">
+                                            <input type="" name=""  autocomplete="off" class="layui-input" id="inp1">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label" style="width: 40px"></label>
+                                        <div class="layui-input-inline">
+                                            <input type="checkbox" name="" title="已定义的敏感页面" lay-skin="primary" id="numberPage" lay-filter="filter">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <input type="checkbox" name="" title="已定义的敏感信息" lay-skin="primary" lay-filter="filter2">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <input type="checkbox" name="" title="不审计的页面" lay-skin="primary" lay-filter="filter3">
+                                        </div>
+                                        <input type="hidden" value="false" id="numb1">
+                                        <input type="hidden" value="false" id="numb2">
+                                        <input type="hidden" value="false" id="numb3">
+                                        <input type="hidden" value="false" id="numb6">
+                                        <div class="layui-input-inline">
+                                            <div class="layui-btn"  id="submit" data-type="reload">提交</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body">
+                            <table id="demo" lay-filter="test" data-type="reload"></table>
+                            <script type="text/html" id="barDemo">
+                                <a class="layui-btn layui-btn-xs" lay-event="edit">设置</a>
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-card" style="padding-top: 15px">
+                        <div class="layui-card-header" style=" height: auto;">
+                            <form class="layui-form" action="" method="post" style="margin-top: 20px">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">系统名称</label>
+                                        <div class="layui-input-inline">
+                                            <select name="quiz" id="sel2" lay-filter="sel2">
+                                                <option value="选择指定系统">选择指定系统</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">用户标记</label>
+                                        <div class="layui-input-inline">
+                                            <select name="quiz" id="sel3" lay-filter="sel3">
+                                                <option value="已标记的用户">已标记的用户</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <a class="" style="cursor: pointer; font-style: oblique; text-decoration:underline; margin-left: 50px" id="allup">全部更新</a>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">应用用户名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="" class="layui-input" id="appname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">标记的姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="" class="layui-input" id="signname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                            <div class="layui-btn"  data-type="reload" style="margin-left: 50px" lay-filter="formDemo2" lay-submit>提交</div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body">
+                            <table id="test2" lay-filter="test2" data-type="reload"></table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            </div>
+            <input type="hidden" id="date1" value="">
+            <input type="hidden" id="date2" value="">
+        </div>
+</div>
+<input type="hidden" value="" id="risk">
+<input type="hidden" value="" id="xtname">
+<input type="hidden" value="" id="yhlog">
+<script type="text/html" id="switchTpl">
+        <input type="checkbox" name="是否包含敏感信息" value="{{d.Have_sdate}}" lay-skin="switch" lay-text="是|否" numbe="{{d.Id}}"
+       lay-filter="sexDemo"  data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.Have_sdate == true ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="switchTp2">
+    <input type="checkbox" name="是否敏感操作" value="{{d.Is_risk_op}}" lay-skin="switch" lay-text="是|否"  numbe="{{d.Id}}" lay-filter="sexDemo2"
+           data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.Is_risk_op == true ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="switchTp3">
+    <input type="checkbox" name="是否审计" value="{{d.Is_need_log}}" lay-skin="switch" lay-text="是|否"  numbe="{{d.Id}"
+           lay-filter="sexDemo3" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.Is_need_log == true ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="switchTp4">
+    <input type="checkbox" name="敏感账户" value="{{d.risk}}" lay-skin="switch" lay-text="是|否"  numbe="{{d.Id}"
+           lay-filter="sexDemo4" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.risk == true ? 'checked' : '' }}>
+</script>
+<div id="selop" style="display: none">
+    <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+        <div class="layui-form-item" lay-filter="sex">
+            <label class="layui-form-label">风险级别</label>
+            <div class="layui-input-block">
+                <select  lay-filter="risk" style="width: 200px">
+                    <option value="">选择风险级别</option>
+                    <option value="高风险">高风险</option>
+                    <option value="低风险">低风险</option>
+                    <option value="中风险">中风险</option>
+                    <option value="无风险">无风险</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn"  id="subm" data-type="reload" lay-filter="formDemo" lay-submit>提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="allupa" style="display: none">
+    <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">1.下载模板</label>
+            <label class="layui-form-label" style="margin-left: 36px"><a class="" style="cursor: pointer; font-style: oblique; text-decoration:underline;" id="daochu">用户标记模板</a></label>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">2.导入模板</label>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline" style="padding-left: 50px">
+                <!--<button class="layui-btn"style="margin-left: 50px" type="file" name="file" id="file1" accept="*"><i class="layui-icon"></i>导入文件</button>-->
+                <input type="file" name="file" id="file1" accept="*" />
+                <input type="button" id="upload" value="导入"  class="layui-btn" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+
+    layui.use(['form','table','jquery','layer','upload'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var $ = jQuery = layui.$;
+        var $ = layui.jquery,
+        layer = layui.layer;
+        upload = layui.upload;
+        $("#upload").click(function () {
+            var formData = new FormData();
+            formData.append("file", document.getElementById("file1").files[0]);
+            console.log(formData);
+            var flag = formData.get("file");
+            console.log(flag);
+            if(flag == "undefined"){
+                layer.msg('请先选择文件', {icon: 5});
+            }else{
+                $.ajax({
+                    url: a+"/uploadAppuser",
+                    type: "POST",
+                    data: formData,
+                    /**
+                     *必须false才会自动加上正确的Content-Type
+                     */
+                    contentType: false,
+                    /**
+                     * 必须false才会避开jQuery对 formdata 的默认处理
+                     * XMLHttpRequest会对 formdata 进行正确的处理
+                     */
+
+                    //返回json和杨波商定。 现在后台接口是返回文件路径url
+                    processData: false,
+                    success: function (data) {
+                        if(data.code == 200){
+                            layer.msg(data.error,{icon:1});
+                        }
+                        else{
+                            layer.msg(data.error,{icon:5});
+                        }
+                    },
+                error: function () {
+                    layer.msg('请检查您的网络接口',{icon:5});
+                    }
+                });
+            }
+        });
+        $('#daochu').click(function () {
+            $.ajax({
+                type: "get",
+                url:a+'/downloadAppuser',
+                dataType:'json',
+                contentType:'application/json; charset=utf-8',
+                data: {},
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    if(data.code == 200){
+                        layer.confirm('您确定导出吗？', {
+                            btn: ['是','否'] //按钮
+                        }, function(){
+                            $('.layui-layer-btn0').attr("href",data.path);
+                            layer.closeAll();
+                            layer.msg('请您核实导出的报表', {icon: 1});
+                        }, function(){
+                            layer.closeAll();
+                        });
+                    }else{
+                        layer.msg('导出失败', {icon: 5});
+                    }
+                },
+                error: function () {
+                    layer.msg('请检查您的网络接口',{icon:5});
+                }
+            })
+
+        })
+        table.on('tool(test)', function(obj){
+            console.log(obj);
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'edit'){
+                console.log(data);
+                console.log(data.Id);
+                console.log(data.Risk);
+                var id = data.Id;
+                var risk = data.Risk;
+
+                form.on('select(risk)', function(data){
+                    console.log(data.elem); //得到select原始DOM对象
+                    console.log(data.value); //得到被选中的值]
+                    var risk = data.value;
+                    $('#risk').attr('value', risk);
+//                    form.render('select');
+                    console.log($('#risk').val());
+                });
+
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['470px', '420px']
+                    ,title: '请输入您的信息'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#selop')
+                    ,success: function(layero){
+                        $('#subm').click(function () {
+                            var dat ={
+                                "id":id,
+                                "file_info":"",
+                                "have_sdate":"",
+                                "is_risk_op":"",
+                                "is_need_log":"",
+                                "Risk":$('#risk').val()
+                            };
+                            var datt = JSON.stringify(dat);
+                            $.ajax({
+                                type: "post",
+                                url:a+'/dbop/setAppInterfaceBySensitive',
+                                contentType:'application/json;',
+                                async:'false',
+                                data : datt,
+                                success:function (data) {
+                                    console.log(data);
+                                    if(data.code == 200){
+                                        layer.closeAll();
+                                        layer.msg(data.msg,{icon:1});
+                                    }
+                                    else{
+                                        layer.msg(data.msg,{icon:5});
+                                    }
+
+                                }
+                            });
+
+                        })
+                    }
+                });
+            }
+
+        });
+//        upload.render({
+//            elem: '#dr'
+//            ,method : 'post'
+//            ,url:a+'/dbop/uploadAppuser'
+//            ,accept: 'file' //普通文件
+////            ,data :{
+////                path :''
+////            }
+//            ,before: function (obj) {
+//                console.log(obj);
+////                layer.load(); //上传loading
+////                this.data={key:value};
+//            }
+//            ,done: function(res){
+//                console.log(res)
+//            }
+//        });
+        $('#allup').click(function () {
+            layer.open({
+                type: 1 //Page层类型
+                , area: ['470px', '420px']
+                , title: '请输入您的信息'
+                , shade: 0.6 //遮罩透明度
+                , anim: 0 //0-6的动画形式，-1不开启
+                , content: $('#allupa')
+                , success: function () {
+
+                }
+            })
+        })
+        //下拉框动态取值  必须form.render()再次渲染一下
+        $.ajax({
+            type: "get",
+            url:a+'/dbop/getAllName',
+            contentType:'application/json;',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                var dat = data.data;
+                if(dat == null){
+
+                }else{
+                    for(var i=0; i<dat.length; i++){
+                        $('#sel').append("<option>"+dat[i]+"</option>");
+                        $('#sel2').append("<option>"+dat[i]+"</option>");
+                    }
+                    form.render('select');
+                }
+            }
+        })
+//        table.on('tool(test)', function(obj) {
+//            var data = obj.data;
+//            console.log(data);
+//        })
+        //监听单元格编辑
+        table.on('edit(test)', function(obj){
+            console.log(obj);
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field //得到字段
+                ,id = data.Id
+            console.log(id);
+            console.log(data);
+//            layer.msg("修改为:"+value);
+            var dat ={
+                "id":id,
+                "file_info":value,
+                "have_sdate":"",
+                "is_risk_op":"",
+                "is_need_log":""
+            };
+            var datt = JSON.stringify(dat);
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppInterfaceBySensitive',
+                contentType:'application/json;',
+                async:'false',
+                data : datt,
+                success:function (data) {
+                    if(data.code==200){
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+        });
+
+
+        //监听是否1
+        form.on('switch(sexDemo)', function (obj) {
+            console.log(obj);
+            layer.tips(this.name + '：'+ obj.elem.checked, obj.othis);
+            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+            json = table.clearCacheKey(json);
+            console.log(json); //当前行数据
+            // console.log(this.value);
+            var name = this.name;
+            var id = json.Id;
+            var alert_value =this.checked ? '是' : '否';
+            var dat ={
+                "id":id,
+                "file_info":"",
+                "have_sdate":alert_value,
+                "is_risk_op":"",
+                "is_need_log":""
+            };
+            var datt = JSON.stringify(dat);
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppInterfaceBySensitive',
+                contentType:'application/json;',
+                async:'false',
+                data : datt,
+                success:function (data) {
+                    if(data.code==200){
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+        });
+        //监听是否
+        form.on('switch(sexDemo2)', function (obj) {
+            layer.tips(this.name + '：'+ obj.elem.checked, obj.othis);
+            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+            json = table.clearCacheKey(json);
+            console.log(json); //当前行数据
+            var name = this.name;
+            var id = json.Id;
+            var alert_value =this.checked ? '是' : '否';
+            var dat ={
+                "id":id,
+                "file_info":"",
+                "have_sdate":"",
+                "is_risk_op":alert_value,
+                "is_need_log":""
+            };
+            var datt = JSON.stringify(dat);
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppInterfaceBySensitive',
+                contentType:'application/json;',
+                async:'false',
+                data : datt,
+                success:function (data) {
+                    if(data.code==200){
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+        });
+        //监听是否
+        form.on('switch(sexDemo3)', function (obj) {
+            console.log(obj);
+            console.log(this.numbe);
+            layer.tips(this.name + '：'+ obj.elem.checked, obj.othis);
+            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+            json = table.clearCacheKey(json);
+            console.log(json); //当前行数据
+            var name = this.name;
+            var id = json.Id;
+            var alert_value =this.checked ? '是' : '否';
+            var dat ={
+                "id":id,
+                "file_info":"",
+                "have_sdate":"",
+                "is_risk_op":"",
+                "is_need_log":alert_value
+            };
+            var datt = JSON.stringify(dat);
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppInterfaceBySensitive',
+                contentType:'application/json;',
+                async:'false',
+                data : datt,
+                success:function (data) {
+                    if(data.code==200){
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+        });
+        //监听是否4
+        form.on('switch(sexDemo4)', function (obj) {
+            console.log(obj);
+            layer.tips(this.name + '：'+ obj.elem.checked, obj.othis);
+            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+            json = table.clearCacheKey(json);
+            console.log(json); //当前行数据
+            var name = this.name;
+            var id = json.id;
+            var risk =this.checked ? 'true' : 'false';
+            var dat ={
+                "id": id,
+                "name" : '',
+                "risk" : risk
+            };
+            var datt = JSON.stringify(dat);
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppuserBySensitive',
+                contentType:'application/json;',
+                async:'false',
+                data : datt,
+                success:function (data) {
+                    if(data.code==200){
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+        });
+        form.on('checkbox(filter)', function (data) {
+            var page1 = data.elem.checked;
+            $('#numb1').attr('value', page1);
+        });
+        form.on('checkbox(filter2)', function (data) {
+            var page2 = data.elem.checked;
+            $('#numb2').attr('value', page2);
+        });
+        form.on('checkbox(filter3)', function (data) {
+            var page3 = data.elem.checked;
+            $('#numb3').attr('value', page3);
+        });
+
+        form.on('select(sel)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值]
+            var num6 = data.value;
+            $('#numb6').attr('value', num6);
+            form.render('select');
+        });
+//        form.on('select(risk)', function(data){
+//
+//            form.render('select');
+//        });
+        var inpurl = $('#inp1').val();
+        var inp1 = $('#numb1').val();
+        var inp2 = $('#numb2').val();
+        var inp3 = $('#numb3').val();
+        var inp4 = $('#numb6').val();//系统名称
+        var aa = {
+                "path_file"    :inpurl,               //页面路径
+                "host_name"    :inp4,         //系统名称
+                "have_sdate"   :inp1,             //是否感数据页
+                "is_risk_op"   :inp2,             //是否敏感操作
+                "is_need_log"  :inp3             //是否需要审计
+            }
+        // var ddd = JSON.stringify(aa);
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: a+'/dbop/getAppInterfaceByTerms' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            ,where: aa
+            , cellMinWidth: 180
+            , cellMinHeight: 36
+            , align: 'center'
+            , page: true //开启分页
+            ,even:true
+            ,id: 'testReload'
+            , cols: [[ //表头
+                {field: 'Id', title: 'ID', width :'80', unresize: true}
+                ,{field: 'Host',  title: '应用服务地址及端口',}
+                , {field: 'Path_file',  title: '页面路径',}
+                , {field: 'Hous_name',  title: '应用名称',}
+                , {field: 'File_info', title: '页面描述',edit: 'text'}
+                ,{ field: 'Risk',title: '风险等级'}
+                , {title: '是否包含敏感信息',templet: '#switchTpl', unresize: true }
+//                , {field: 'Have_sdate', title: '是否1',hide:true}
+                , {title: '是否敏感操作',templet: '#switchTp2', unresize: true }
+//                , {field: 'Is_risk_op', title: '是否2'}
+                , {title: '是否审计',templet: '#switchTp3', unresize: true ,}
+//                , {field: 'Is_need_log', title: '是否3' }
+//                ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo',title: '操作'}
+            ]]
+            , response: {
+                statusName: 'status' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+
+//                $(".layui-table-box").find("[data-field='Have_sdate']").css("display","none");
+//                $(".layui-table-box").find("[data-field='Is_risk_op']").css("display","none");
+//                $(".layui-table-box").find("[data-field='Is_need_log']").css("display","none");
+
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function(){
+                var inpurl = $('#inp1').val();
+                var inp1 = $('#numb1').val();
+                var inp2 = $('#numb2').val();
+                var inp3 = $('#numb3').val();
+                var inp4 = $('#numb6').val();//系统名称
+                var risk = $('#risk').val();
+                var aa = {
+                    "path_file"    :inpurl,               //页面路径
+                    "host_name"    :inp4,         //系统名称
+                    "have_sdate"   :inp1,             //是否感数据页
+                    "is_risk_op"   :inp2,             //是否敏感操作
+                    "is_need_log"  :inp3,             //是否需要审计
+                    "Risk" : risk
+                }
+                // //执行重载
+                // var dd = {}
+                // var content = JSON.stringify(dtext);
+                table.reload('testReload', {
+                    type:'post'
+                    ,where: aa
+                    , done: function (res, curr, count) {
+                        if(res.status==200){
+                            layer.msg(res.msg,{icon:1});
+                        }else{
+                            layer.msg(res.msg,{icon:5});
+                        }
+                        $(".layui-table-box").find("[data-field='Have_sdate']").css("display","none");
+                        $(".layui-table-box").find("[data-field='Is_risk_op']").css("display","none");
+                        $(".layui-table-box").find("[data-field='Is_need_log']").css("display","none");
+                        // console.log(res);
+                    }
+                });
+            }
+        };
+
+        $('#submit').click(function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        })
+
+        //应用用户配置的表格
+        table.render({
+            elem: '#test2'
+            , url: a+'/dbop/getAppuserByTerms' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            ,where: {
+                App_name :'',
+                Username : '',
+                Ture_name :'',
+                Risk : ''
+            }
+            , cellMinWidth: 180
+            , cellMinHeight: 36
+            , align: 'center'
+            , page: true //开启分页
+            ,even:true
+            , cols: [[ //表头
+                {field: 'id', title: 'Id',}
+                ,{field: 'app_name',  title: '应用系统',}
+                , {field: 'username',  title: '应用用户',}
+                , {field: 'ture_name',  title: '姓名',edit: 'text'}
+                , {title: '敏感账户',templet: '#switchTp4', unresize: true ,}
+            ]]
+            , response: {
+                statusName: 'status' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+
+            }
+        });
+
+        //监听姓名列编辑
+        table.on('edit(test2)', function(obj){
+            console.log(obj);
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,id = data.id
+            console.log(id);
+            console.log(data);
+//            layer.msg("修改为:"+value);
+            var dat ={
+                "id":id,
+                "name":value,
+                "risk":''
+            };
+            var datt = JSON.stringify(dat);
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppuserBySensitive',
+                contentType:'application/json;',
+                async:'false',
+                data : datt,
+                success:function (data) {
+                    if(data.code==200){
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+        });
+        //应用用户配置的系统名称
+        form.on('select(sel2)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值]
+            var xtname = data.value;
+            $('#xtname').attr('value', xtname);
+            console.log($('#xtname').val());
+        });
+        form.on('select(sel3)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值]
+            var yhlog = data.value;
+            $('#yhlog').attr('value', yhlog);
+            console.log($('#yhlog').val());
+        });
+        form.on('submit(formDemo2)', function(data){
+            var xtname = $('#xtname').val();
+//            var risk = $('#apprisk').val();
+            var appname = $('#appname').val();
+            var signname = $('#signname').val();
+            table.reload('test2',{
+                where: {
+                    "App_name" : xtname,
+                    "Username" : appname,
+                    "Ture_name": signname,
+                    "Risk" : ''
+                },
+                done: function (res, curr, count) {
+                    console.log(res);
+                    if(res.status == 200){
+                        layer.msg(res.msg,{icon:1});
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                }
+            });
+            return false;
+        });
+
+
+
+    });
+
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function(elem){
+            //console.log(elem)
+//            layer.msg(elem.text());
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

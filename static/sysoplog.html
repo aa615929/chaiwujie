@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/applied.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid">
+            <!-- 内容主体区域 -->
+            <div class="layui-row" style="margin-top: 15px; background-color: #eeeeee" >
+                <div class="layui-col-md12" id="form1" >
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="phone" lay-verify="title" autocomplete="off" class="layui-input" placeholder="请输入用户名" id="inp1">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 100px;text-align: center">访问时间范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="test6">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <div class="layui-input-block">
+                                <div class="layui-btn"  id="submit" data-type="reload">查询</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row" style="margin-top: 10px;">
+                <div class="layui-col-md12" id="tab">
+                    <table id="demo" lay-filter="test" data-type="reload"></table>
+                    <input type="hidden" id="date1" value="">
+                    <input type="hidden" id="date2" value="">
+                </div>
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#out').click(function () {
+        $.ajax({
+            type: "GET",
+            url:'http://60.205.104.216:8000/userLogout',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                window.location.href = 'login.html';
+            }
+        })
+    });
+        layui.use('element', function(){
+            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+            //监听导航点击
+            element.on('nav()', function(elem){
+                //console.log(elem)
+//                layer.msg(elem.text());
+            });
+        });
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#test6' //指定元素,
+                ,range: true
+                ,type: 'datetime'
+                ,done:function (value, date, endDate) {
+                    console.log(date);
+                    if(JSON.stringify(date) == "{}"){
+                        $('#date1').attr('value','');
+                        $('#date2').attr('value','');
+                    }else{
+                        var beginYear = date.year;
+                        var beginMonth = date.month;
+                        var beginDay = date.date;
+                        var beginHours = date.hours;
+                        var beginMinutes = date.minutes;
+                        var beginSeconds = date.seconds;
+                        var endYear = endDate.year;
+                        var endMonth = endDate.month;
+                        var endDay = endDate.date;
+                        var endHours = date.hours;
+                        var endMinutes = date.minutes;
+                        var endSeconds = date.seconds;
+                        var begin = beginYear+"-"+beginMonth+"-"+beginDay+" "+beginHours+":"+beginMinutes+":"+beginSeconds;
+                        var end = endYear+"-"+endMonth+"-"+endDay+" "+endHours+":"+endMinutes+":"+endSeconds;
+                        console.log(begin);
+                        console.log(end);
+                        $('#date1').attr('value',begin);
+                        $('#date2').attr('value',end);
+                    }
+                }
+            });
+
+        });
+        layui.use(['form','table','jquery','layer'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var $ = jQuery = layui.$;
+            var $ = layui.jquery, layer = layui.layer;
+            //第一个实例
+            table.render({
+                elem: '#demo'
+                ,even: true
+                ,height: 500
+                , url: a+'/dbop/getSyslogByUserAndTime' //数据接口
+                , contentType: 'application/json'
+                , method: 'post'
+                , page: true
+                ,text: {
+                    none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+                }
+                , align: 'center'
+                ,id: 'testReload'
+                , cols: [[ //表头
+                    {field: 'Id', title: '事件ID',}
+                    , {field: 'Username', title: '用户名',}
+                    , {field: 'Op_action', title: '动作',}
+                    , {field: 'Op_status', title: '结果',}
+                    , {field: 'Log_data', title: '访问时间',}
+                    , {field: 'User_ip', title: '访问IP',}
+                ]]
+                , response: {
+                    statusName: 'status' //数据状态的字段名称，默认：code
+                    , statusCode: 200 //成功的状态码，默认：0
+                    , msgName: 'error' //状态信息的字段名称，默认：msg
+                    , countName: 'count' //数据总数的字段名称，默认：count
+                    , dataName: 'data' //数据列表的字段名称，默认：data
+                }
+                , request: {
+                    pageName: 'pageNo',
+                    limitName: 'pageSize'
+                }
+                , done: function (res, curr, count) {
+                    if(res.status==200){
+                            var $ = layui.$, active = {
+                            reload: function(){
+                                var nam = $('#inp1').val();
+                                var dd1 = $('#date1').val();
+                                var dd2 = $('#date2').val();
+                                var aa = {
+                                    "User_Name":nam ,          //用户名-可以为空
+                                    "Start_time":dd1,           //开始时间-可以为空
+                                    "End_time" :dd2,           //结束时间-
+                                }
+                                // //执行重载
+                                table.reload('testReload', {
+                                    type:'post',
+                                    where: aa,
+                                    done:function (res) {
+                                        if(res.status==200){
+                                            layer.msg(res.msg,{icon:1});
+                                        }else{
+                                            layer.msg(res.msg,{icon:5});
+                                        }
+                                    }
+                                });
+                            }
+                        };
+                        $('#submit').click(function () {
+                            var type = $(this).data('type');
+                            active[type] ? active[type].call(this) : '';
+                        })
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                }
+            });
+        });
+
+
+
+
+
+
+</script>
+</body>
+</html>

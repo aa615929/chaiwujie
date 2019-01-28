@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>美创业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+</head>
+<body>
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid" style="padding-top: 15px">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header" style="font-weight: 600; font-size: 18px">管理地址范围</div>
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 120px">管理地址范围</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input" id="address" style="width: 200px" value="">
+                                    </div>
+                                    <div class="layui-input-inline" style="margin-left: 20px">
+                                        <button class="layui-btn" data-type="reload" lay-filter="formDemo" lay-submit>确定</button>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 120px"></label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header" style="font-weight: 600; font-size: 18px">系统配置</div>
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 120px">NTP服务器地址</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input" id="ntp" style="width: 200px" value="">
+                                    </div>
+                                    <div class="layui-input-inline" style="margin-left: 20px">
+                                        <button class="layui-btn"  data-type="reload" lay-filter="formDemo2" lay-submit>确定</button>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 120px"></label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header" style="font-weight: 600; font-size: 18px">实时监控</div>
+                        <div class="layui-card-body" style="height: 200px">
+                            <p style=" padding-bottom: 5px; padding-left: 20px ">cpu使用情况</p>
+                            <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="listsone" id="one" style="width: 300px">
+                                <div class="layui-progress-bar layui-bg-blue" lay-percent="50%" id="listo">
+                                </div>
+                            </div>
+                            <p style="padding-top: 15px; padding-bottom: 5px; padding-left: 20px">硬盘使用情况</p>
+                            <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="liststwo" id="two" style="width: 300px">
+                                <div class="layui-progress-bar layui-bg-blue" lay-percent="20%"></div>
+                            </div>
+                            <p style="padding-top: 15px; padding-bottom: 5px; padding-left: 20px">内存使用情况</p>
+                            <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="liststhree" id="three" style="width: 300px">
+                                <div class="layui-progress-bar layui-bg-blue" lay-percent="20%"></div>
+                            </div>
+                            <!--<div style="position: absolute; bottom: 20px; right: 20px; font-size: 18px; color: #999; font-style: italic">版本信息 : V1.0.0</div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header" style="font-weight: 600; font-size: 18px">管理硬件报警范围</div>
+                        <div class="layui-card-body"  style="height: 200px">
+                            <form class="layui-form" action="">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 120px">硬盘使用阈值</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="numsize" placeholder="" autocomplete="off" class="layui-input" id="" style="width: 200px" value="" lay-verify="num">
+                                    </div>
+                                    <div class="layui-input-inline" style="margin-left: 20px">
+                                        <button class="layui-btn" data-type="reload" lay-filter="formDemo3" lay-submit>确定</button>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 120px"></label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3" style="position: absolute; right: 30px; bottom: 30px">
+                <div style="font-weight: 600; font-size: 18px;font-style: italic">版本信息</div>
+                <div>
+                    <div style=" font-size: 18px; color: #999; font-style: italic">wag server : v1.0</div>
+                    <div style=" font-size: 18px; color: #999; font-style: italic">wag web : v1.0</div>
+                </div>
+        </div>
+    </div>
+    <script>
+
+        layui.use(['form','table','jquery','layer','element'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            var $ = jQuery = layui.$;
+            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+            var listone = $('#listo');
+            $('#listo').attr('layui-bg-blue','layui-bg-red');
+            console.log(listone);
+            form.verify({
+                num:function (value,item) {
+                    if( /^([1]?\d{1,2})$/.test(value)){
+                    } else{
+                        return '硬盘使用阈值输入有误'
+                    }
+                }
+            });
+            $.ajax({
+                type: "get",
+                url:a+'/getSystemInfo',
+                dataType:'json',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    var cpu = data.cpu;
+                    var disk = data.disk;//硬盘
+                    var memory = data.memory;//内存
+                    if(cpu>65) {
+                        $('#one').html('<div class="layui-progress-bar layui-bg-red" lay-percent=""><span class="layui-progress-text"></span></div>')
+                    }else{
+                        $('#one').html('<div class="layui-progress-bar layui-bg-blue" lay-percent=""><span class="layui-progress-text"></span></div>')
+                    }
+                    if(disk>65){
+                        $('#two').html('<div class="layui-progress-bar layui-bg-red" lay-percent=""><span class="layui-progress-text"></span></div>')
+                    }else{
+                        $('#two').html('<div class="layui-progress-bar layui-bg-blue" lay-percent=""><span class="layui-progress-text"></span></div>')
+                    }
+                    if(memory>65){
+                        $('#three').html('<div class="layui-progress-bar layui-bg-red" lay-percent=""><span class="layui-progress-text"></span></div>')
+                    }else{
+                        $('#three').html('<div class="layui-progress-bar layui-bg-blue" lay-percent=""><span class="layui-progress-text"></span></div>')
+                    }
+                    element.progress('listsone', cpu+'%');
+                    element.progress('liststwo', disk+'%');
+                    element.progress('liststhree', memory+'%');
+                }
+            })
+            //触发事件
+            var timer = setInterval(function (){
+                $.ajax({
+                    type: "get",
+                    url:a+'/getSystemInfo',
+                    dataType:'json',
+                    contentType:'application/json; charset=utf-8',
+                    async:'false',
+                    success:function (data) {
+                        console.log(data);
+                        var cpu = data.cpu;
+                        var disk = data.disk;//硬盘
+                        var memory = data.memory;//内存
+                        if(cpu>65) {
+                            $('#one').html('<div class="layui-progress-bar layui-bg-red" lay-percent=""><span class="layui-progress-text"></span></div>')
+                        }else{
+                            $('#one').html('<div class="layui-progress-bar layui-bg-blue" lay-percent=""><span class="layui-progress-text"></span></div>')
+                        }
+                        if(disk>65){
+                            $('#two').html('<div class="layui-progress-bar layui-bg-red" lay-percent=""><span class="layui-progress-text"></span></div>')
+                        }else{
+                            $('#two').html('<div class="layui-progress-bar layui-bg-blue" lay-percent=""><span class="layui-progress-text"></span></div>')
+                        }
+                        if(memory>65){
+                            $('#three').html('<div class="layui-progress-bar layui-bg-red" lay-percent=""><span class="layui-progress-text"></span></div>')
+                        }else{
+                            $('#three').html('<div class="layui-progress-bar layui-bg-blue" lay-percent=""><span class="layui-progress-text"></span></div>')
+                        }
+                        element.progress('listsone', cpu+'%');
+                        element.progress('liststwo', disk+'%');
+                        element.progress('liststhree', memory+'%');
+                    }
+                })
+            },3000)
+            $.ajax({
+                type: "get",
+                url:a+'/dbop/getGlobalLoginAddr',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    $('#address').val(data.login_addr);
+                }
+            })
+            $.ajax({
+                type: "get",
+                url:a+'/dbop/getGlobalNtpAddr',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    $('#ntp').val(data.ntp_addr);
+                }
+            })
+            $.ajax({
+                type: "get",
+                url:a+'/dbop/getGlobalDiskusedrate',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    $('#numsize').val(data.Diskusedrate);
+                }
+            })
+            form.on('submit(formDemo)', function(data){
+                var inpaddr = $('#address').val();
+                var dat = {
+                    Login_Addr : inpaddr
+                };
+                $.ajax({
+                    type: "post",
+                    url:a+'/dbop/setGlobalLoginAddr',
+                    dataType:'json',
+                    contentType:'application/json;',
+                    async:'false',
+                    data:JSON.stringify(dat),
+                    success:function (data) {
+                        console.log(data);
+                        if(data.status==200){
+                            layer.msg(data.msg,{icon:1});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    }
+                })
+                return false;
+            });
+            form.on('submit(formDemo2)', function(data){
+                var ntp = $('#ntp').val();
+                var dat = {
+                    ntp_Addr : ntp
+                };
+                $.ajax({
+                    type: "post",
+                    url:a+'/dbop/setGlobalNtpAddr',
+                    dataType:'json',
+                    contentType:'application/json;',
+                    async:'false',
+                    data:JSON.stringify(dat),
+                    success:function (data) {
+                        console.log(data);
+                        if(data.status==200){
+                            layer.msg(data.msg,{icon:1});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    }
+                })
+                return false;
+            });
+            form.on('submit(formDemo3)', function(data){
+                var numsize = $('#numsize').val();
+                var dat = {
+                    Diskusedrate : numsize
+                };
+                $.ajax({
+                    type: "post",
+                    url:a+'/dbop/setGlobalDiskusedrate',
+                    dataType:'json',
+                    contentType:'application/json;',
+                    async:'false',
+                    data:JSON.stringify(dat),
+                    success:function (data) {
+                        console.log(data);
+                        if(data.status==200){
+                            layer.msg(data.msg,{icon:1});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    }
+                })
+                return false;
+            });
+
+
+        });
+
+    </script>
+</body>
+</html>

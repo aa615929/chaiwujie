@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/mail.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+
+        <div class="layui-fluid" style="margin-top: 15px">
+            <!-- 内容主体区域 -->
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">邮箱配置</div>
+                            <div class="layui-card-body">
+                                <form class="layui-form" action="" style="margin-left: 40px">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">邮箱用户名</label>
+                                        <div class="layui-input-block" style="width: 200px">
+                                            <input type="text" lay-verify="email" placeholder="请输入用户名" autocomplete="off" class="layui-input" id="inp1" value="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">邮箱密码</label>
+                                            <div class="layui-input-block" style="width: 200px">
+                                                <input type="password" value="" required lay-verify="required" placeholder="请输入邮箱密码" autocomplete="off" class="layui-input" id="inp2">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline" style="margin-left: 40px">
+                                            <button class="layui-btn" style="width: 100px" id="btn0">修改配置</button>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">smtp地址</label>
+                                            <div class="layui-input-block" style="width: 200px">
+                                                <input type="text" value="" lay-verify="ip" placeholder="请输入地址" autocomplete="off" class="layui-input" id="inp3">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline" style="margin-left: 40px">
+                                            <button class="layui-btn"  data-type="reload" lay-filter="formDemo1" lay-submit style="width: 100px" id="btn1">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <p id="pp" style="height: 1px"></p>
+                                <form class="layui-form" action="" style="margin-left: 40px">
+                                    <div class="layui-form-item" style="margin-top: 20px">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">添加收件人</label>
+                                            <div class="layui-input-block" style="width: 200px">
+                                                <input type="text" value="" placeholder="请输入标题" autocomplete="off" class="layui-input" id="inp4" lay-verify="email">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline" style="margin-left: 40px">
+                                            <button class="layui-btn"  data-type="reload" lay-filter="formDemo2" lay-submit style="width: 100px">添加</button>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">收件人</label>
+                                        <div class="layui-input-block" style="width: 200px" id="list">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+        </div>
+
+</div>
+
+<script>
+    $('#out').click(function () {
+        $.ajax({
+            type: "GET",
+            url:'http://60.205.104.216:8000/userLogout',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                window.location.href = 'login.html';
+            }
+        })
+    });
+        //请求是否有收件人有的话写入收件人列表
+        $.ajax({
+            type: "get",
+            url:a+'/dbop/getMailIsNull',
+            dataType:'json',
+            contentType:'application/json;',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                if(data.isNull==false) {
+                    $('#inp1').val(data.username);
+                    $('#inp2').val(data.password);
+                    $('#inp3').val(data.sender);
+                    var str = data.receiver;
+                    var b = str.split(';');
+                    console.log(b);
+                    for (var i = 0; i < b.length; i++) {
+                        console.log(b[i]);
+                        $('#list').append("<p>" + b[i] + "</p>");
+                    }
+                    $('#btn1').addClass('layui-btn-disabled');
+                    $("#btn1").attr('disabled',"disabled");
+                    $('#inp1').addClass('layui-disabled');
+                    $('#inp2').addClass('layui-disabled');
+                    $('#inp3').addClass('layui-disabled');
+                    $('#btn0').click(function () {
+                        $('#btn1').removeClass('layui-btn-disabled');
+                        $("#btn1").attr('disabled',false);
+                        $('#inp1').removeClass('layui-disabled');
+                        $('#inp2').removeClass('layui-disabled');
+                        $('#inp3').removeClass('layui-disabled');
+                        return false;
+                    });
+
+                }else{
+                    $('#btn2').addClass('layui-btn-disabled');
+                    $("#btn2").attr('disabled','disabled');
+                    $('#inp4').addClass('layui-disabled');
+
+                }
+            }
+        })
+
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function(elem){
+            //console.log(elem)
+//            layer.msg(elem.text());
+        });
+    });
+    layui.use(['form','table','jquery','layer'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var $ = jQuery = layui.$;
+        var $ = layui.jquery, layer = layui.layer;
+        form.on('select',function (data) {
+            console.log(data.value);
+        })
+        form.verify({
+            ip : [
+                /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/||
+                /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9]):\d{0,5}$/
+                ,'地址不符合规则'
+            ]
+        });
+        $.ajax({
+            type: "get",
+            url:a+'/dbop/getMailIsNull',
+            dataType:'json',
+            contentType:'application/json;',
+            async:'false',
+            success:function (data) {
+                if(data.isNull==false) {
+                    form.on('submit(formDemo2)', function(data){
+                        var inp4 = $('#inp4').val();
+                        var dat = {
+                            "username":"",
+                            "password":"",
+                            "sender":"",
+                            "data":inp4
+                        }
+                        $.ajax({
+                            type: "post",
+                            url:a+'/dbop/setAlarmsettingMail',
+                            dataType:'json',
+                            contentType:'application/json;',
+                            async:'false',
+                            data:JSON.stringify(dat),
+                            success:function (data) {
+                                console.log(data);
+                                if(data.status==200){
+                                    layer.msg(data.msg,{icon:1});
+                                    $('#list').append("<p>" +inp4+ "</p>");
+                                }else{
+                                    layer.msg(data.msg,{icon:5});
+                                }
+                            }
+                        })
+                        return false;
+                    });
+                }
+            }
+        })
+        form.on('submit(formDemo1)', function(data){
+            var inp1 = $('#inp1').val();
+            var inp2 = $('#inp2').val();
+            var inp3 = $('#inp3').val();
+            var dat = {
+                "username":inp1,
+                "password":inp2,
+                "sender":inp3,
+                "data":""
+            }
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAlarmsettingMail',
+                dataType:'json',
+                contentType:'application/json;',
+                async:'false',
+                data:JSON.stringify(dat),
+                success:function (data) {
+                    console.log(data);
+                    if(data.status==200){
+                        layer.msg(data.msg,{icon:1});
+                        location.reload();
+                    }
+                }
+            })
+            return false;
+        });
+    });
+
+
+
+</script>
+</body>
+</html>

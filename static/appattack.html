@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/walden.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-input-block{
+            margin-left: 28px;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" value="" id="date1">
+<input type="hidden" value="" id="date2">
+<input type="hidden" value="" id="allname">
+<input type="hidden" value="" id="apptype">
+<input type="hidden" value="" id="apprisk">
+<input type="hidden" value="" id="witchh">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-fluid">
+        <div class="layui-tab layui-tab-card" lay-filter="demo">
+            <ul class="layui-tab-title">
+                <!--<li>风险概览</li>-->
+                <li class="layui-this">报表分析</li>
+                <li>通用配置</li>
+                <!--<li>白名单配置</li>-->
+            </ul>
+            <div class="layui-tab-content">
+                <!--<div class="layui-tab-item layui-show">-->
+                    <!--1-->
+                <!--</div>-->
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-row">
+                            <div class="layui-col-sm12">
+                                <div class="layui-row layui-col-space15">
+                                    <div class="layui-col-md6">
+                                        <div class="layui-card" id="card1">
+                                            <div class="layui-card-header">用户访问信息
+                                            </div>
+                                            <div class="layui-card-body" id="chart1par">
+                                                <div style="height: 300px;" id="chart1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-md6">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header">风险事件分布</div>
+                                            <div class="layui-card-body">
+                                                <div style="height: 300px" id="chart2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="layui-col-sm12">
+                            <form class="layui-form" action="" method="post" style="margin-top: 20px">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">全部系统</label>
+                                        <div class="layui-input-inline"  class="layui-form">
+                                            <select name="quiz"  lay-filter="sel" id="sel">
+                                                <option value="">全部系统</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">攻击类型</label>
+                                        <div class="layui-input-inline"  class="layui-form">
+                                            <select name="quiz" lay-filter="attacktype" id="attacktype">
+                                                <option value="">全部</option>
+                                                <option value="XSS">XSS</option>
+                                                <option value="SQL">SQL注入</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">时间范围</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="" class="layui-input" id="test6">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">风险级别</label>
+                                        <div class="layui-input-inline"  class="layui-form">
+                                            <select name="quiz" lay-filter="risk" id="risk">
+                                                <option value="">全部</option>
+                                                <option value="56">高</option>
+                                                <option value="34">中</option>
+                                                <option value="12">低</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label"></label>
+                                        <div class="layui-btn" data-type="reload" lay-filter="formDemo" lay-submit>提交</div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="layui-col-md12">
+                                <table id="tab" lay-filter="tab" data-type="reload"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                        <div class="layui-card" style="">
+                            <div class="layui-card-header" >
+                                <div class="layui-inline">通用配置</div>
+                            </div>
+                            <div class="layui-card-body">
+                                <div class="layui-row">
+                                    <form class="layui-form" action="">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" style="width: 120px">应用防护状态:</label>
+                                            <div class="layui-input-inline">
+                                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="是|否" id="switch1" lay-filter="switch1" value="" checked="">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" style="width: 120px">防护模式 : </label>
+                                            <div class="layui-input-inline" style="width: 230px">
+                                                <input type="radio" name="sex" value="1" title="拦截模式" id="stop" lay-filter="stop">
+                                                <input type="radio" name="sex" value="2" title="观察模式" id="watch" lay-filter="watch">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" style="width: 120px">防护策略 : </label>
+                                            <div class="layui-input-inline">
+                                                <select name="quiz" lay-filter="protectmethods">
+                                                    <option value="">正常</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card" style="">
+                            <div class="layui-card-header" >
+                                <div class="layui-inline">应用防护规则信息</div>
+                            </div>
+                            <div class="layui-card-body">
+                                <table  lay-filter="guardinfo" data-type="reload"></table>
+                            </div>
+                        </div>
+                </div>
+                <!--<div class="layui-tab-item">-->
+                    <!--4-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script type="text/html" id="barDemo">-->
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">查看报文</a>-->
+<!--</script>-->
+    <script>
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#test6'
+                ,range: true
+                ,type: 'datetime'
+                ,done:function (value, date, endDate) {
+                    console.log(date);
+                    if(JSON.stringify(date) == "{}"){
+                        $('#date1').attr('value','');
+                        $('#date2').attr('value','');
+                    }else{
+                        var beginYear = date.year;
+                        var beginMonth = date.month;
+                        var beginDay = date.date;
+                        var beginHours = date.hours;
+                        var beginMinutes = date.minutes;
+                        var beginSeconds = date.seconds;
+                        var endYear = endDate.year;
+                        var endMonth = endDate.month;
+                        var endDay = endDate.date;
+                        var endHours = date.hours;
+                        var endMinutes = date.minutes;
+                        var endSeconds = date.seconds;
+                        var begin = beginYear+"-"+beginMonth+"-"+beginDay+" "+beginHours+":"+beginMinutes+":"+beginSeconds;
+                        var end = endYear+"-"+endMonth+"-"+endDay+" "+endHours+":"+endMinutes+":"+endSeconds;
+//                        console.log(begin);
+//                        console.log(end);
+                        $('#date1').attr('value',begin);
+                        $('#date2').attr('value',end);
+                    }
+                    console.log($('#date1').val());
+                }
+            });
+        });
+        layui.use(['form','table','jquery','layer','element'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            var $ = jQuery = layui.$;
+            var element = layui.element;
+            element.on('tab(demo)', function(elem){
+                console.log(elem.index);
+                if(elem.index == 0){
+                    fun1();
+                    fun2();
+                }
+            });
+            fun1();
+            fun2();
+            //监听radio单选
+            form.on('radio(stop)', function(data){
+                console.log(data.elem); //得到radio原始DOM对象
+                console.log(data.value); //被点击的radio的value值
+                var dat = {
+                    Waf_sratus : "1"
+                };
+                $.ajax({
+                    type: "post",
+                    url:a+'/dbop/setWafStatusSetting',
+                    contentType:'application/json;',
+                    async:'true',
+                    data : JSON.stringify(dat),
+                    success:function (data) {
+                        console.log(data);
+                        if(data.status == 200){
+                            layer.msg(data.msg,{icon:1});
+                        }else {
+                            layer.msg(data.mag,{icon:5});
+                        }
+                    }
+                });
+            });
+            form.on('radio(watch)', function(data){
+                console.log(data.elem); //得到radio原始DOM对象
+                console.log(data.value); //被点击的radio的value值
+                var dat = {
+                    Waf_sratus : "2"
+                };
+                $.ajax({
+                    type: "post",
+                    url:a+'/dbop/setWafStatusSetting',
+                    contentType:'application/json;',
+                    async:'true',
+                    data : JSON.stringify(dat),
+                    success:function (data) {
+                        if(data.status == 200){
+                            layer.msg(data.msg,{icon:1});
+                        }else {
+                            layer.msg(data.mag,{icon:5});
+                        }
+                    }
+                });
+            });
+            //获取通用配置
+            $.ajax({
+                type: "get",
+                url:a+'/dbop/getWafStatusWatermark',
+                contentType:'application/json;',
+                async:'true',
+                success:function (data) {
+                    console.log(data);
+                    if(data.waf_Status == 0){
+//                        $('#switch1').next().removeClass('layui-form-onswitch');
+//                        $('#switch1').attr('checked',false);
+                        $('#switch1').removeAttr("checked");
+                        var x = document.getElementsByClassName("layui-unselect layui-form-switch layui-form-onswitch");
+                        x[0].setAttribute("class", "layui-unselect layui-form-switch");
+                        var d = document.getElementsByTagName('em')[0];
+                        d.firstChild.nodeValue = '否';
+                        $('#witchh').val("0");
+                        $('[name=sex]').each(function(i,item){
+                                $(item).prop('disabled',true);
+                                form.render('radio');
+                        });
+                    }
+                    else if(data.waf_Status == 1){
+//                        $('#switch1').attr('checked',true);
+//                        $('#switch1').next().addClass('layui-form-onswitch');
+                        $("#switch1").attr("checked", "checked");
+                        $('#witchh').val("1");
+                        $('[name=sex]').each(function(i,item){
+                            if($(item).val()==data.waf_Status){
+                                $(item).prop('checked',true);
+                                form.render('radio');
+                            }
+                        });
+                    }
+                    else{
+//                        $('#switch1').attr('checked',true);
+//                        $('#switch1').next().addClass('layui-form-onswitch');
+                        $("#switch1").attr("checked", "checked");
+                        $('#witchh').val("2");
+                        $('[name=sex]').each(function(i,item){
+//                            console.log(data.waf_Status);
+//                            console.log(i,item);
+                            if($(item).val()==data.waf_Status){
+                                $(item).prop('checked',true);
+                                form.render('radio');
+                            }
+                        });
+                    }
+                }
+            });
+            console.log($('#witchh').val());
+            //监听是否1
+            form.on('switch(switch1)', function (data) {
+//                console.log(data);
+//                console.log(data.elem); //得到checkbox原始DOM对象
+//                console.log(data.elem.checked); //开关是否开启，true或者false
+//                console.log(data.value); //开关value值，也可以通过data.elem.value得到
+//                console.log(data.othis); //得到美化后的DOM对象
+//                if(data.elem.checked == true){
+//                    $('[name=sex]').each(function(i,item){
+//                        console.log(i,item);
+//                        $(item).prop('checked',false);
+//                        $(item).prop('disabled',true);
+//                        form.render('radio');
+//                    });
+//                }else{
+//                    $('#witchh').val("0");
+//                    $('[name=sex]').each(function(i,item){
+//                                    console.log(i,item);
+//                                    $(item).prop('checked',false);
+//                                    $(item).prop('disabled',true);
+//                                    form.render('radio');
+//                            });
+//                }
+//                var flag = $('#witchh').val();
+                if(data.elem.checked == false){
+                    var dat = {
+                        Waf_sratus : "0"
+                    };
+                    $.ajax({
+                        type: "post",
+                        url:a+'/dbop/setWafStatusSetting',
+                        contentType:'application/json;',
+                        async:'true',
+                        data : JSON.stringify(dat),
+                        success:function (data) {
+                            if(data.status == 200){
+                                $('[name=sex]').each(function(i,item){
+                                    console.log(i,item);
+                                    $(item).prop('checked',false);
+                                    $(item).prop('disabled',true);
+                                    form.render('radio');
+                                });
+                                layer.msg(data.msg,{icon:1});
+                            }else {
+                                layer.msg(data.mag,{icon:5});
+                            }
+                        }
+                    });
+                }else {
+                    var dat = {
+                        Waf_sratus : "1"
+                    };
+                    $.ajax({
+                        type: "post",
+                        url:a+'/dbop/setWafStatusSetting',
+                        contentType:'application/json;',
+                        async:'true',
+                        data : JSON.stringify(dat),
+                        success:function (data) {
+                            if(data.status == 200){
+                                $('[name=sex]').each(function(i,item){
+                                    console.log(i,item);
+                                    if($(item).val()=="1"){
+                                        $(item).prop('checked',true);
+                                    }
+                                    console.log(i,item);
+                                    $(item).prop('disabled',false);
+                                    form.render('radio');
+                                });
+                                layer.msg(data.msg,{icon:1});
+                            }else {
+                                layer.msg(data.mag,{icon:5});
+                            }
+                        }
+                    });
+                }
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+            $.ajax({
+                type: "get",
+                url:a+'/dbop/getAllName',
+                contentType:'application/json;',
+                async:'true',
+                success:function (data) {
+                    console.log(data);
+                    var dat = data.data;
+                    if(dat == null){
+
+                    }else{
+                        for(var i=0; i<dat.length; i++){
+                            $('#sel').append("<option>"+dat[i]+"</option>");
+                        }
+                        form.render('select');
+                    }
+                }
+            });
+
+            form.on('select(sel)',function (data){
+                console.log(data.value);
+                $('#allname').val(data.value);
+            });
+            form.on('select(attacktype)',function (data){
+                console.log(data.value);
+                $('#apptype').val(data.value);
+            });
+            form.on('select(risk)',function (data){
+                console.log(data.value);
+                $('#apprisk').val(data.value);
+            });
+            function fun1(){
+                 myChart1 = echarts.init(document.getElementById('chart1'),'walden');
+                var option1 = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                    },
+                    series: [
+                        {
+                            name:'访问来源',
+                            type:'pie',
+                            radius: ['50%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '30',
+                                        fontWeight: 'bold'
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data:[
+                                {value:335, name:'直接访问'},
+                                {value:310, name:'邮件营销'},
+                                {value:234, name:'联盟广告'},
+                                {value:135, name:'视频广告'},
+                                {value:1548, name:'搜索引擎'}
+                            ]
+                        }
+                    ]
+                };
+                myChart1.setOption(option1);
+                function userInfo(size,tim){
+                    myChart1.showLoading();
+                    var dat = {
+                        "date_Size":size,
+                        "date_data" : tim
+                    };
+                    $.ajax({
+                        type: "post",
+                        url:a+'/dbop/getHaifAppAttackRickByDate',
+                        dataType:'json',
+                        contentType:'application/json; charset=utf-8',
+                        async:'false',
+                        data : JSON.stringify(dat),
+                        success:function (data) {
+                            if(data.status == 200){
+                                myChart1.hideLoading();
+                            }
+                            var lists = data.tableData.series;
+                            if(lists.length == 0){
+                                myChart1.showLoading({text:'暂无数据'});
+                            }
+//                            console.log(lists);
+//                            console.log(lists.slice(0));
+                            option1.series[0].data  = lists.slice(0);
+                            option1.legend.data = data.tableData.legend;
+//                            console.log(option1.series.data);
+//                            console.log(option1.legend.data);
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart1.setOption(option1);
+                        }
+                    })
+                }
+                userInfo('','');
+            };
+//
+            function fun2() {
+                myChart2 = echarts.init(document.getElementById('chart2'),'walden');
+                var option2 = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['周一','周二','周三','周四','周五','周六','周日']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+
+                    ]
+                };
+                myChart2.setOption(option2);
+                function danger(size,tim){
+                    myChart2.showLoading();
+                    var dat = {
+                        "date_Size":size,
+                        "date_data" : tim
+                    };
+                    $.ajax({
+                        type: "post",
+                        url:a+'/dbop/getAppPileByDay',
+                        dataType:'json',
+                        contentType:'application/json; charset=utf-8',
+                        async:'false',
+                        data : JSON.stringify(dat),
+                        success:function (data) {
+                            console.log(data);
+                            if(data.data == 200){
+                                myChart2.hideLoading();
+                            }
+//                            if(lists.length == 0){
+//                                myChart2.showLoading({text:'暂无数据'});
+//                            }
+                            option2.legend.data = data.tableData.legend;
+                            option2.xAxis.data = data.tableData.xAxis;
+                            var lists = data.tableData.series;
+                            option2.series  = lists.slice(0);
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart2.setOption(option2);
+                        }
+                    })
+                }
+                danger('','');
+            }
+
+            //第一个实例
+            table.render({
+                elem: '#tab'
+                , url: a+'/dbop/getWafLogByTerms' //数据接口
+                , contentType: 'application/json'
+                , method: 'post'
+                ,where: {
+                    "Target_name"        : "",
+                    "Start_time"         : "",
+                    "End_time"           : "",
+                    "Attack_tpye"        : "",
+                    "Attack_level"       : ""
+                }
+                ,even: true //开启隔行背景
+                ,page:true
+                , cellMinWidth: 208
+                ,width : '100%'
+                , align: 'center'
+                , cols: [[ //表头
+//                    {field: 'LAY_TABLE_INDEX', title: 'LAY_TABLE_INDEX'}
+                    {field: 'attack_level', title: '风险级别', sort:'true'}
+                    , {field: 'attack_tpye', title: '攻击类型',}
+                    , {field: 'date', title: '最后攻击时间',}
+                    , {field: 'http_method', title: '请求方式',}
+                    , {field: 'source_ip', title: '源地址',}
+                    , {field: 'target_ip', title: '攻击来源',}
+                    , {field: 'target_name', title: '所属业务',}
+//                    ,{fixed: 'right', width:180, align:'center', toolbar: '#barDemo',title: '操作'}
+                ]]
+                , response: {
+                    statusName: 'status' //数据状态的字段名称，默认：code
+                    , statusCode: 200 //成功的状态码，默认：0
+                    , msgName: 'error' //状态信息的字段名称，默认：msg
+                    , countName: 'count' //数据总数的字段名称，默认：count
+                    , dataName: 'data' //数据列表的字段名称，默认：data
+                }
+                , request: {
+                    pageName: 'pageNo',
+                    limitName: 'pageSize'
+                }
+                , done: function (res, curr, count) {
+                    console.log(res);
+                    console.log(curr);
+                    console.log(count);
+                }
+            });
+
+            form.on('submit(formDemo)', function(data){
+                var name = $('#allname').val();
+                var risk = $('#apprisk').val();
+                var apptype = $('#apptype').val();
+                var start = $('#date1').val();
+                var end = $('#date2').val();
+                table.reload('tab',{
+                    where: {
+                        "Target_name"        : name,
+                        "Start_time"         : start,
+                        "End_time"           : end,
+                        "Attack_tpye"        : apptype,
+                        "Attack_level"       : risk
+                    },
+                    done: function (res, curr, count) {
+                        console.log(res);
+                        if(res.status == 200){
+                            layer.msg(res.msg,{icon:1});
+                        }else{
+                            layer.msg(res.msg,{icon:5});
+                        }
+                    }
+                });
+                return false;
+            });
+            window.addEventListener("resize",function(){
+                myChart1.resize();
+                myChart2.resize();
+            });
+
+        });
+
+
+    </script>
+</body>
+</html>

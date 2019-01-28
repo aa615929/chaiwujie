@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-input-block{
+            margin-left: 28px;
+        }
+        .layui-form-checkbox[lay-skin=primary] span{
+            width: 90px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-fluid" >
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">网页水印</li>
+                <!--<li>文件水印</li>-->
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-card">
+                        <div class="layui-card-header" >
+                            <div class="layui-inline">全局配置</div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row">
+                                <form class="layui-form" action="">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" style="width: 150px; text-align: left">开启网页水印功能</label>
+                                        <div class="layui-input-inline">
+                                            <input type="checkbox" name="one" lay-skin="switch" lay-text="是|否" id="switch1" lay-filter="switch1" value="" checked="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" style="width: 150px; text-align: left">所有页面开启水印</label>
+                                        <div class="layui-input-inline">
+                                            <input type="checkbox" name="two" lay-skin="switch" lay-text="是|否" id="switch2" lay-filter="switch2" value="" checked="">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-card" style="margin-top: 15px">
+                        <div class="layui-card-header" >
+                            <div class="layui-inline">水印内容配置</div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-form" lay-filter="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="时间日期" checked="" id="dat" lay-filter="dat" value="">
+                                        <input type="checkbox" name="like1[read]" lay-skin="primary" title="系统用户名" checked="" id="username" lay-filter="username" value="">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="客户端地址" checked="" id="address" lay-filter="address" value="">
+                                        <input type="checkbox" name="like1[read]" lay-skin="primary" title="系统名称" checked="" id="sysname"  lay-filter="sysname" value="s">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn"  id="submit" data-type="reload" lay-filter="formDemo" lay-submit>提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="layui-tab-item">2</div>-->
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        layui.use('element', function(){
+            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+            //监听导航点击
+            element.on('nav()', function(elem){
+            });
+        });
+        layui.use(['form','table','jquery','layer'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            var $ = jQuery = layui.$;
+            $.ajax({
+                type: "get",
+                url:a+'/dbop/getGlobalWatermark',
+                dataType:'json',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                success:function (data) {
+                    console.log(data);
+                    //ifAllOpenWatermark 全部ifOpenWatermark开启
+                    console.log(data.ifOpenWatermark); //开启网页水印功能
+                    console.log(data.ifAllOpenWatermark);     //所有页面水印
+                    console.log(data.ifOpenData);     //时间日期
+                    console.log(data.ifOpenUser);     //系统用户名
+                    console.log(data.ifOpenClient);     //客户端地址
+                    console.log(data.ifOpenSystem);     //系统名称
+                    $('#switch1').val(data.ifOpenWatermark);
+                    $('#switch2').val(data.ifAllOpenWatermark);
+                    $('#username').val(data.ifOpenUser);
+                    $('#dat').val(data.ifOpenData);
+                    $('#address').val(data.ifOpenClient);
+                    $('#sysname').val(data.ifOpenSystem);
+                    // var switch1 = $('#switch1').val(data.ifOpenWatermark);
+                    // var switch2 = $('#switch2').val(data.ifAllOpenWatermark);
+                    // var username = $('#username').val(data.ifOpenUser);
+                    // var dat = $('#dat').val(data.ifOpenData);
+                    // var address = $('#address').val(data.ifOpenClient);
+                    // var sysname = $('#sysname').val(data.ifOpenSystem);
+                    if(data.ifAllOpenWatermark == "true"){
+                        $('#switch2').next().addClass('layui-form-onswitch');
+                        $('#switch2').attr('checked',true);
+//                        $("input[name='one']").prop('checked','true');
+                    }else {
+                        $('#switch2').next().removeClass('layui-form-onswitch');
+                        $('#switch2').attr('checked',false);
+//                        $("input[name='one']").prop('checked','false');
+
+                    }
+                    if(data.ifOpenWatermark == "true"){
+                        $('#switch1').next().addClass('layui-form-onswitch');
+                        $('#switch1').attr('checked',true);
+                        form.on('switch(switch2)', function(data){
+                            console.log(data.elem.checked); //开关是否开启，true或者false
+                            var switch2 = data.elem.checked;
+                            $('#switch2').val(switch2);
+                            console.log($('#switch2').val());
+                        });
+                    }else {
+                        $('#switch1').next().removeClass('layui-form-onswitch');
+                        $('#switch1').attr('checked',false);
+                        //如果为否switch2禁用
+                        $('#switch2').attr('disabled',true);
+                        $('#switch2').next().addClass("layui-checkbox-disbaled layui-disabled");
+                    }
+                    if(data.ifOpenData == "true"){
+                        $("#dat").next().addClass('layui-form-checked');
+                        $('#dat').attr('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $("#dat").next().removeClass('layui-form-checked');
+                        $('#dat').attr('checked',false);
+                        form.render('checkbox');
+                    };
+                    if(data.ifOpenUser == "true"){
+                        $("#username").next().addClass('layui-form-checked');
+                        $('#username').attr('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $("#username").next().removeClass('layui-form-checked');
+                        $('#username').attr('checked',false);
+                        form.render('checkbox');
+                    };
+                    if(data.ifOpenClient == "true"){
+                        $("#address").next().addClass('layui-form-checked');
+                        $('#address').attr('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $("#address").next().removeClass('layui-form-checked');
+                        $('#address').attr('checked',false);
+                        form.render('checkbox');
+                    };
+                    if(data.ifOpenSystem == "true"){
+                        $("#sysname").next().addClass('layui-form-checked');
+                        $('#sysname').attr('checked',true);
+                        form.render('checkbox');
+                    }else{
+                        $("#sysname").next().removeClass('layui-form-checked');
+                        $('#sysname').attr('checked',false);
+                        form.render('checkbox');
+                    };
+                },
+                error:function () {
+                    layer.msg('查看您的网络连接',{icon:5});
+                }
+            });
+
+            form.on('switch(switch1)', function(data){
+                console.log(data.elem.checked); //开关是否开启，true或者false
+                var switch1 = data.elem.checked;
+                $('#switch1').val(switch1);
+                console.log($('#switch1').val());
+                if(switch1==true){
+                    console.log("ok");
+                    $('#switch2').next().addClass('layui-form-onswitch');
+                    $('#switch2').attr('checked',true);
+                    $('#switch2').next().children('em').text("是");
+                    $('#switch2').val("true");
+                    $('#switch2').attr('disabled',false);
+                    $('#switch2').next().removeClass("layui-checkbox-disbaled layui-disabled");
+                    form.on('switch(switch2)', function(data){
+                        console.log(data.elem.checked); //开关是否开启，true或者false
+                        var switch2 = data.elem.checked;
+                        $('#switch2').val(switch2);
+                        console.log($('#switch2').val());
+                    });
+                }else {
+                    console.log("!ok");
+                    $('#switch2').attr('disabled',true);
+                    $('#switch2').next().addClass("layui-checkbox-disbaled layui-disabled");
+                    $('#switch2').val("false");
+                    $('#switch2').next().removeClass('layui-form-onswitch');
+                    $('#switch2').attr('checked',false);
+                    $('#switch2').next().children('em').text("否");
+                }
+            });
+
+            form.on('checkbox(dat)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var dat = data.elem.checked;
+                $('#dat').val(dat);
+            });
+            form.on('checkbox(username)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var username = data.elem.checked;
+                $('#username').val(username);
+            });
+            form.on('checkbox(address)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var address = data.elem.checked;
+                $('#address').val(address);
+            });
+            form.on('checkbox(sysname)', function(data){
+                console.log(data.elem.checked); //是否被选中，true或者false
+                var sysname = data.elem.checked;
+                $('#sysname').val(sysname);
+                console.log($('#sysname').val());
+            });
+
+            form.on('submit(formDemo)', function(data){
+                var switch1 = $('#switch1').val();
+                var switch2 = $('#switch2').val();
+                var username = $('#username').val();
+                var dat = $('#dat').val();
+                var address = $('#address').val();
+                var sysname = $('#sysname').val();
+
+                var kk = {
+                    "ifAllOpenWatermark":switch2,
+                    "ifOpenClient":address,//客户端地址
+                    "ifOpenData":dat,    //时间日其
+                    "ifOpenUser":username,    //系统用户名
+                    "ifOpenSystem":sysname,   //系统名称
+                    "ifOpenWatermark":switch1
+                };
+                $.ajax({
+                    type: "post",
+                    url: a + '/dbop/setGlobalWatermark',
+                    contentType: 'application/json; charset=utf-8',
+                    async: 'false',
+                    data: JSON.stringify(kk),
+                    success: function (data) {
+                        console.log(data);
+                        if(data.status == 200){
+                            layer.msg(data.msg,{icon:1});
+                        }else {
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    }
+                })
+                return false;
+            });
+        });
+
+
+
+    </script>
+</body>
+</html>

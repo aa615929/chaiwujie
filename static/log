@@ -1,0 +1,11 @@
+index  t 青笠业务安全访问审计系统  p 首页
+opAudit.html   t 青笠业务安全访问审计系统 p 业务访问审计
+mail.html -》 setalarm.html  t 青笠业务安全访问审计系统 p 邮件告警配置
+report.html  t 青笠业务安全访问审计系统 p 报表管理
+applied.html -> appmana.html  t 青笠业务安全访问审计系统 p 业务代理设置
+trend.html 审计模块
+usermana.html  t 青笠业务安全访问审计系统 p 用户管理
+useCompu.html-》 sysoplog.html   t 青笠业务安全访问审计系统 p 系统操作日志
+appser  》应用业务配置
+usecon 》业务代理设置
+antisdata.html 网页脱敏

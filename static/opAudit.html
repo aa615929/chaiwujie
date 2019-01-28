@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <!-- 内容主体区域 -->
+    <div class="layui-fluid"  style="padding-top: 15px">
+        <div class="layui-card" style="padding-top: 15px">
+            <div class="layui-card-header" style=" height: auto;">
+                <form class="layui-form" action="" method="post">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">客户端IP</label>
+                            <div class="layui-input-inline">
+                                <input type="" name=""  autocomplete="off" class="layui-input" id="inp1">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="" autocomplete="off" class="layui-input" id="inp2">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">提交参数</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name=""  autocomplete="off" class="layui-input" id="inp3">
+                            </div>
+                        </div>
+                        <!--//新增-->
+                        <div class="layui-inline">
+                            <label class="layui-form-label">搜索路径</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="" class="layui-input" id="path">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">时间范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="" class="layui-input" id="test6">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">选择系统</label>
+                            <div class="layui-input-inline"  class="layui-form">
+                                <select name="quiz"  lay-filter="sel" id="sel">
+                                    <option value="">选择指定系统</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--</div>-->
+                        <!--<div class="layui-form-item">-->
+                        <!--<input type="checkbox" name="" title="敏感操作" lay-skin="primary" id="numberPage" lay-filter="filter">-->
+                        <!--<input type="checkbox" name="" title="包含敏感信息" lay-skin="primary" lay-filter="filter2">-->
+                        <!--<input type="checkbox" name="" title="全文检索" lay-skin="primary" lay-filter="filter3">-->
+                        <!--<input type="checkbox" name="" title="响应报错" lay-skin="primary" lay-filter="filter4">-->
+                        <!--<input type="checkbox" name="" title="非常用环境" lay-skin="primary" lay-filter="filter5">-->
+                        <input type="hidden" value="" id="numb">
+                        <input type="hidden" value="" id="numb2">
+                        <input type="hidden" value="" id="numb3">
+                        <input type="hidden" value="" id="numb4">
+                        <input type="hidden" value="" id="numb5">
+                        <input type="hidden" value="" id="numb6">
+                        <input type="hidden" value="" id="risk">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">敏感操作</label>
+                            <div class="layui-input-inline"  class="layui-form">
+                                <select name="quiz" lay-filter="sel2">
+                                    <option value="">敏感操作</option>
+                                    <option value="true">是敏感操作</option>
+                                    <option value="false">非敏感操作</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">敏感信息</label>
+                            <div class="layui-input-inline"  class="layui-form" >
+                                <select name="quiz" lay-filter="sel3">
+                                    <option value="">敏感信息</option>
+                                    <option value="true">包含敏感信息</option>
+                                    <option value="false">不包含敏感信息</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">全文检索</label>
+                            <div class="layui-input-inline"  class="layui-form">
+                                <select name="quiz"  lay-filter="sel4">
+                                    <option value="">全文检索</option>
+                                    <option value="true">选择全文检索</option>
+                                    <option value="false">非全文检索</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">响应报错</label>
+                            <div class="layui-input-inline"  class="layui-form">
+                                <select name="quiz"  lay-filter="sel5">
+                                    <option value="">响应报错</option>
+                                    <option value="200">成功</option>
+                                    <option value="300">重定向</option>
+                                    <option value="400">请求错误</option>
+                                    <option value="500">服务器错误</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">常用环境</label>
+                            <div class="layui-input-inline"  class="layui-form">
+                                <select name="quiz" lay-filter="sel6">
+                                    <option value="">常用环境</option>
+                                    <option value="true">是常用环境</option>
+                                    <option value="false">非常用环境</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">风险等级</label>
+                            <div class="layui-input-inline"  class="layui-form">
+                                <select name="quiz" lay-filter="risk">
+                                    <option value="">风险等级</option>
+                                    <option value="高风险">高风险</option>
+                                    <option value="中风险">中风险</option>
+                                    <option value="低风险">低风险</option>
+                                    <option value="无风险">无风险</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-btn"  id="submit" data-type="reload">提交</div>
+                        </div>
+                    </div>
+
+                    <!--<div class="layui-form-item">-->
+                    <!--<div class="layui-input-block">-->
+                    <!--<div class="layui-btn"  id="submit" data-type="reload">提交</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </form>
+            </div>
+
+            <div class="layui-card-body">
+                <table id="demo" lay-filter="test" data-type="reload"></table>
+            </div>
+        </div>
+
+        <input type="hidden" id="date1" value="">
+        <input type="hidden" id="date2" value="">
+    </div>
+</div>
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="敏感数据" value="{{d.Have_sdata}}" lay-skin="switch" lay-text="是|否" numbe="{{d.Id}}"
+           lay-filter="sexDemo"  data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.Have_sdata == true ? 'checked' : '' }} disabled>
+</script>
+<script type="text/html" id="switchTp2">
+    <input type="checkbox" name="敏感操作" value="{{d.Is_risk_req}}" lay-skin="switch" lay-text="是|否" numbe="{{d.Id}}"
+           lay-filter="sexDemo2"  data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.Is_risk_req == true ? 'checked' : '' }} disabled>
+</script>
+<script type="text/html" id="switchTp3">
+    <input type="checkbox" name="非常用环境" value="{{d.Is_usually_agent}}" lay-skin="switch" lay-text="是|否" numbe="{{d.Id}}"
+           lay-filter="sexDemo3"  data-json="{{ encodeURIComponent(JSON.stringify(d)) }}"  {{ d.Is_usually_agent == true ? 'checked' : '' }} disabled>
+</script>
+<script>
+    $('#out').click(function () {
+        $.ajax({
+            type: "GET",
+            url:'http://60.205.104.216:8000/userLogout',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                window.location.href = 'login.html';
+            }
+        })
+    });
+    layui.use(['form','table','jquery','layer'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var $ = jQuery = layui.$;
+        var $ = layui.jquery, layer = layui.layer;
+        //监听是否1
+        form.on('switch(sexDemo)', function (obj) {
+            console.log(obj);
+            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+            json = table.clearCacheKey(json);
+            console.log(json); //当前行数据
+        });
+//        form.on('switch(sexDemo2)', function (obj) {
+//            console.log(obj);
+//            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+//            json = table.clearCacheKey(json);
+//            console.log(json); //当前行数据
+//        });
+//        form.on('switch(sexDemo3)', function (obj) {
+//            console.log(obj);
+//            var json = JSON.parse(decodeURIComponent($(this).data('json')));
+//            json = table.clearCacheKey(json);
+//            console.log(json); //当前行数据
+//        });
+        $.ajax({
+            type: "get",
+            url:a+'/dbop/getAllName',
+            contentType:'application/json;',
+            async:'true',
+            success:function (data) {
+                console.log(data);
+                var dat = data.data;
+                if(dat == null){
+
+                }else{
+                    for(var i=0; i<dat.length; i++){
+                        console.log(dat[i]);
+                        $('#sel').append("<option>"+dat[i]+"</option>");
+                    }
+                    form.render('select');
+                }
+
+            }
+        });
+//        form.on('checkbox(filter)', function (data) {
+//            var page1 = data.elem.checked;
+//            $('#numb').attr('value', page1);
+//        });
+//        form.on('checkbox(filter2)', function (data) {
+//            var page2 = data.elem.checked;
+//            $('#numb2').attr('value', page2);
+//        });
+//        form.on('checkbox(filter3)', function (data) {
+//            var page3 = data.elem.checked;
+//            $('#numb3').attr('value', page3);
+//        });
+//        form.on('checkbox(filter4)', function (data) {
+//            var page4 = data.elem.checked;
+//            $('#numb4').attr('value', page4);
+//        });
+//        form.on('checkbox(filter5)', function (data) {
+//            var page5 = data.elem.checked;
+//            $('#numb5').attr('value', page5);
+//        });
+        form.on('select(risk)',function (data){
+            console.log(data.value);
+            var risk = data.value;
+            $('#risk').attr('value', risk);
+        });
+        form.on('select(sel)',function (data){
+            console.log(data.value);
+            var num6 = data.value;
+            $('#numb6').attr('value', num6);
+        });
+        form.on('select(sel2)',function (data) {
+            console.log(data.value);
+            var page = data.value;
+            $('#numb').attr('value', page);
+            console.log($('#numb').val());
+        });
+        form.on('select(sel3)',function (data) {
+            console.log(data.value); //得到被选中的值]
+            var page2 = data.value;
+            $('#numb2').attr('value', page2);  //ok
+        });
+        form.on('select(sel4)',function (data) {
+            console.log(data.value); //得到被选中的值]
+            var page3 = data.value;
+            $('#numb3').attr('value', page3);
+        })
+        form.on('select(sel5)',function (data) {
+            console.log(data.value); //得到被选中的值]
+            var page4 = data.value;
+            $('#numb4').attr('value', page4); //ok
+        });
+        form.on('select(sel6)',function (data) {
+            console.log(data.value); //得到被选中的值]
+            var page5 = data.value;
+            $('#numb5').attr('value', page5);//ok
+        });
+
+//        form.on('select', function(data){
+//            console.log(data.elem); //得到select原始DOM对象
+//            console.log(data.value); //得到被选中的值]
+//
+//        });
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: a+'/dbop/getReqlogAll' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            //,where: {"pageNo": "2", "pageSize":"3"}
+            , cellMinWidth: 108
+            , align: 'center'
+            , page: true //开启分页
+            ,even:true
+            ,id: 'testReload'
+            , cols: [[ //表头
+                {field: 'App_name', title: '应用名称',}
+                , {field: 'File_info', title: '页面信息',}
+                , {field: 'Clusername', title: '应用用户',}
+                , {field: 'Url_path', title: '页面路径',}
+                , {field: 'User_ip', title: '客户端IP', sort: true}
+                , {field: 'Req_date', title: '访问时间', sort: true}
+//                , {field: 'Have_sdata', title: ' 敏感数据',}
+//                , {field: 'Is_risk_req', title: '敏感操作',}
+//                , {field: 'Is_usually_agent', title: '非常用环境',}
+                , {title: '敏感数据',templet: '#switchTpl', }
+                ,{title: '敏感操作',templet: '#switchTp2', }
+                ,{title: '非常用环境',templet: '#switchTp3', }
+                , {field: 'Req_body', title: '提交数据',}
+                , {field: 'Risk', title: '风险等级',}
+                , {field: 'Resp_status', title: '响应码',}
+//                , {field: 'Elk_req_id', title: '报文id',}
+                // , {field: 'Id', title: 'ID', width: 80,}
+//                , {field: 'Req_method', title: '请求方法',}
+//                , {field: 'Resp_body_lenth', title: '报文长度',}
+//                , {field: 'Resp_body_type', title: '响应类型',}
+//                , {field: 'Url_host', title: '应用地址',}
+            ]]
+            , response: {
+                statusName: 'status' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , limits: [10, 30, 90]
+            , done: function (res, curr, count) {
+                console.log(res);
+                console.log(curr);
+                console.log(count);
+            }
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var num1 = $('#numb').val();
+                console.log(num1);
+                var num2 = $('#numb2').val();
+                var num3 = $('#numb3').val();
+                var num4 = $('#numb4').val();
+                var num5 = $('#numb5').val();
+                var dd1 = $('#date1').val();
+                var dd2 = $('#date2').val();
+                var inp1 = $('#inp1').val();
+                var inp2 = $('#inp2').val();
+                var inp3 = $('#inp3').val();
+                var inp4 = $('#numb6').val();
+                var risk = $('#risk').val();
+                var path =$('#path').val();
+                var aa = {
+                    "User_ip": inp1,                            //客户端IP
+                    "Clusername": inp2,                      //用户名
+                    "Req_body": inp3,                      //请求传送的数据
+                    "app_name" : inp4,                      //系统名称
+                    "End_time" : dd2,                       //开始时间
+                    "Start_time" : dd1,                     //结束时间
+                    "Is_risk_req": num1,                   //是否敏感页面
+                    "Have_sdata": num2,                  //是否敏感数据
+                    "Is_usually_agent": num5,                   //是否常用环境
+                    "Is_resp_status": num4,                     //响应码
+                    "Risk" : risk,
+                    "path" :path                //路径
+                }
+                // //执行重载
+                // var dd = {}
+                // var content = JSON.stringify(dtext);
+                table.reload('testReload', {
+                    url:a+'/dbop/getReqlogByTerms',
+                    type:'post',
+                    where: aa
+                    , done: function (res, curr, count) {
+                        console.log(res);
+                        if(res.status == 200){
+                            layer.msg(res.msg,{icon:1});
+                        }else{
+                            layer.msg(res.msg,{icon:5});
+                        }
+                    }
+                });
+            }
+        };
+
+        $('#submit').click(function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        })
+
+    });
+
+
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function(elem){
+            //console.log(elem)
+//            layer.msg(elem.text());
+        });
+    });
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test6'
+            ,range: true
+            ,type: 'datetime'
+            ,done:function (value, date, endDate) {;
+                console.log(date);
+                if(JSON.stringify(date) == "{}"){
+                    $('#date1').attr('value','');
+                    $('#date2').attr('value','');
+                }else{
+                    var beginYear = date.year;
+                    var beginMonth = date.month;
+                    var beginDay = date.date;
+                    var beginHours = date.hours;
+                    var beginMinutes = date.minutes;
+                    var beginSeconds = date.seconds;
+                    var endYear = endDate.year;
+                    var endMonth = endDate.month;
+                    var endDay = endDate.date;
+                    var endHours = date.hours;
+                    var endMinutes = date.minutes;
+                    var endSeconds = date.seconds;
+                    var begin = beginYear+"-"+beginMonth+"-"+beginDay+" "+beginHours+":"+beginMinutes+":"+beginSeconds;
+                    var end = endYear+"-"+endMonth+"-"+endDay+" "+endHours+":"+endMinutes+":"+endSeconds;
+                    console.log(begin);
+                    console.log(end);
+                    $('#date1').attr('value',begin);
+                    $('#date2').attr('value',end);
+                }
+                // sessionStorage.setItem('timeFir',dd1);
+                // sessionStorage.setItem('timeLast',dd2);
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

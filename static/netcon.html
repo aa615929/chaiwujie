@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-form-label{
+            font-weight: 600;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 200px;
+        }
+        .layui-card-header .layui-inline{
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" value="" id="inp1">
+<input type="hidden" value="" id="inp2">
+<input type="hidden" value="" id="inp3">
+<input type="hidden" value="" id="inp4">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-fluid" style="padding-top: 15px">
+            <div class="layui-card">
+                <div class="layui-card-header" >
+                    <div class="layui-inline">全局配置</div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">DNS:</label>
+                                <div class="layui-input-inline">
+                                    <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="dns" style="width: 200px" value="" lay-verify="ip">
+                                </div>
+                                <div class="layui-input-inline" style="margin-left: 20px">
+                                    <button class="layui-btn" data-type="reload" lay-filter="formDemodns" lay-submit>提交</button>
+                                </div>
+                            </div>
+                        </form>
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">默认网关:</label>
+                                <div class="layui-input-inline">
+                                    <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="net" style="width: 200px" value="" lay-verify="ip">
+                                </div>
+                                <div class="layui-input-inline" style="margin-left: 20px">
+                                    <button class="layui-btn" data-type="reload" lay-filter="formDemonet" lay-submit>提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card" style="margin-top: 15px">
+                <div class="layui-card-header" >
+                    <div class="layui-inline">网卡配置</div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">选择网卡:</label>
+                                    <div class="layui-input-inline">
+                                        <select name="quiz" id="sel" lay-filter="sel" style="width: 200px" value="">
+                                            <option value="选择网卡">选择网卡</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">IP地址:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input" id="ipaddr" style="" value="" lay-verify="ip">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                        <label class="layui-form-label">网络掩码:</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input" id="netcode" style="" value="" lay-verify="ip">
+                                        </div>
+                                        <div class="layui-input-inline" style="margin-left: 20px">
+                                            <button class="layui-btn" data-type="reload" lay-filter="formDemonetcon" lay-submit>提交</button>
+                                        </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        <div class="layui-card" style="margin-top: 15px">
+            <div class="layui-card-header" >
+                <div class="layui-inline">新增路由</div>
+            </div>
+            <div class="layui-card-body">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">网络地址:</label>
+                            <div class="layui-input-inline">
+                                <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="netaddr" style="width: 200px" value="" lay-verify="ip">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">网络掩码:</label>
+                            <div class="layui-input-inline">
+                                <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="yancode" style="width: 200px" value="" lay-verify="ip">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">网关:</label>
+                            <div class="layui-input-inline">
+                                <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="wangguan" style="width: 200px" value="">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">选择网卡:</label>
+                            <div class="layui-input-inline">
+                                <select name="quiz" id="selT" lay-filter="selT" style="width: 200px" value="">
+                                    <option value="选择网卡">选择网卡</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline" style="margin-left: 20px">
+                                <button class="layui-btn" data-type="reload" lay-filter="formDemodnscon" lay-submit>新增</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-header" >
+                <div class="layui-inline">已有路由</div>
+            </div>
+            <div class="layui-col-md12" id="tab">
+                <table id="demo" lay-filter="demo" data-type="reload"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="tesss2" style="display: none">
+    <form class="layui-form" style="margin-top: 20px">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">网络地址:</label>
+                <div class="layui-input-inline">
+                    <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="netaddr2" style="width: 200px" value="" lay-verify="ip">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">掩码:</label>
+                <div class="layui-input-inline">
+                    <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="yancode2" style="width: 200px" value="" lay-verify="ip">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">网关:</label>
+                <div class="layui-input-inline">
+                    <input type="ip" name="title" placeholder="" autocomplete="off" class="layui-input" id="wangguan2" style="width: 200px" value="">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">选择网卡:</label>
+                <div class="layui-input-inline">
+                    <select name="quiz" id="selT2" lay-filter="selT2" style="width: 200px" value="">
+                        <option value="选择网卡">选择网卡</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <button class="layui-btn" data-type="reload" lay-filter="formDemodnscon2" lay-submit>提交</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function(elem){
+        });
+    });
+    layui.use(['form','table','jquery','layer'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = jQuery = layui.$;
+        //ip正则
+        form.verify({
+            ip:function (value,item) {
+                if(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value)){
+                } else if(/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9]):\d{0,5}$/.test(value)){
+                }else{
+                    return '地址不符合规则'
+                }
+            }
+        });
+        //获取sel
+        $.ajax({
+            type: "get",
+            url:a+'/dbop/getnetwork',
+            contentType:'application/json;',
+            async:'true',
+            success:function (data) {
+                console.log(data);
+                var dat = data.data;
+                if(dat == null){
+                }else{
+                    for(var i=0; i<dat.length; i++){
+                        $('#sel').append("<option>"+dat[i]+"</option>");
+                        $('#selT').append("<option>"+dat[i]+"</option>");
+                        $('#selT2').append("<option>"+dat[i]+"</option>");
+                    }
+                    form.render('select');
+                }
+            }
+        });
+
+        form.on('select(sel)',function (data) {
+            var nam = data.value;
+            console.log(nam);
+            $('#sel').val(nam);
+            //点击网卡设置ip和网络掩码
+            var kk = {
+                devName:$('#sel').val()
+            };
+            $.ajax({
+                type: "post",
+                url: a + '/dbop/netShowDevice',
+                contentType: 'application/json; charset=utf-8',
+                async: 'false',
+                data: JSON.stringify(kk),
+                success: function (data) {
+                    console.log(data);
+                    if(data.status == 200){
+                        console.log("ok");
+                        $('#ipaddr').val(data.data.IP);
+                        $('#netcode').val(data.data.Netmask);
+                    }else {
+                        layer.msg("获取失败",{icon:5});
+                    }
+                }
+            })
+        })
+        form.on('select(selT)',function (data) {
+
+            var nam = data.value;
+            console.log(nam);
+            $('#selT').val(nam);
+        })
+        form.on('select(selT2)',function (data) {
+            var nam = data.value;
+            console.log(nam);
+            $('#selT2').val(nam);
+        })
+        //获取dns
+        $.ajax({
+            type: "GET",
+            url:a+'/dbop/getGlobalDNS',
+            contentType:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                $('#dns').val(data.DNS);
+            },
+            error: function () {
+                layer.msg('请检查您的网络连接',{icon:5});
+            }
+        })
+        //获取默认网关
+        $.ajax({
+            type: "GET",
+            url:a+'/dbop/getGlobalGateway',
+            contentTyp:'application/json; charset=utf-8',
+            async:'false',
+            success:function (data) {
+                console.log(data);
+                $('#net').val(data.gateway);
+            },
+            error: function () {
+                layer.msg('请检查您的网络连接',{icon:5});
+            }
+        })
+        //设置dns
+        form.on('submit(formDemodns)', function(data){
+            layer.open({
+                type:3
+            })
+            var kk = {
+                DNS:$('#dns').val()
+            };
+            $.ajax({
+                type: "post",
+                url: a + '/dbop/setGlobalDNS',
+                contentType: 'application/json; charset=utf-8',
+                async: 'false',
+                data: JSON.stringify(kk),
+                success: function (data) {
+                    layer.closeAll();
+                    console.log(data);
+                    if(data.status == 200){
+                        layer.msg(data.msg,{icon:1});
+                    }else {
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+            return false;
+        });
+        //设置网关配置
+        form.on('submit(formDemonet)', function(data){
+            var kk = {
+                gateway:$('#net').val()
+            };
+            $.ajax({
+                type: "post",
+                url: a + '/dbop/setGlobalGateway',
+                contentType: 'application/json; charset=utf-8',
+                async: 'false',
+                data: JSON.stringify(kk),
+                success: function (data) {
+                    console.log(data);
+                    if(data.status == 200){
+                        layer.msg(data.msg,{icon:1});
+                    }else {
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+            return false;
+        });
+        //网卡配置
+        form.on('submit(formDemonetcon)', function(data){
+            var kk = {
+                netmask:$('#netcode').val(), //掩码
+                devName:$('#sel').val(), //网卡名
+                iP:$('#ipaddr').val()   //ip
+            };
+            $.ajax({
+                type: "post",
+                url: a + '/dbop/netSetDevice',
+                contentType: 'application/json; charset=utf-8',
+                async: 'false',
+                data: JSON.stringify(kk),
+                success: function (data) {
+                    console.log(data);
+                    if(data.status == 200){
+                        layer.msg(data.msg,{icon:1});
+                    }else {
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+            return false;
+        });
+        //新增路由
+        form.on('submit(formDemodnscon)', function(data){
+            var kk = {
+                D_net:$("#netaddr").val(),
+                Netmask:$("#yancode").val(),
+                Net_dev:$('#selT').val(),
+                Gateway:$('#wangguan').val(),
+        };
+            $.ajax({
+                type: "post",
+                url: a + '/dbop/insertRoute',
+                contentType: 'application/json; charset=utf-8',
+                async: 'false',
+                data: JSON.stringify(kk),
+                success: function (data) {
+                    console.log(data);
+                    if(data.code == 200){
+                        layer.msg(data.msg,{icon:1});
+                        table.reload('demo',{
+                            where: kk,
+                            done:function (res) {
+                                console.log(res);
+                                if(res.status==200){
+
+                                }else{
+                                    layer.msg(res.msg,{icon:5});
+                                }
+                            }
+                        });
+                    }else {
+                        layer.msg(data.msg,{icon:5});
+                    }
+                }
+            })
+            return false;
+        });
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: a+'/dbop/getRoute' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            ,where: {
+            }
+            ,even: true //开启隔行背景
+            ,page:false
+            , align: 'center'
+            , cellMinWidth: 208
+            ,width : '100%'
+            , cols: [[ //表头
+                {field: 'LAY_TABLE_INDEX', title: '序列号',}
+                ,{field: 'Network', title: '目的网络',}
+                , {field: 'Device', title: '网卡', }
+                , {field: 'Netmask', title: '网络掩码',}
+                , {field: 'Gateway', title: '网关',}
+                ,{fixed: 'right', toolbar: '#barDemo',title: '操作',}
+            ]]
+            , response: {
+                statusName: 'status' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            , request: {
+                pageName: 'pageNo',
+                limitName: 'pageSize'
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+                console.log(curr);
+                console.log(count);
+            }
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'del'){
+                console.log(data);
+                console.log(data.id);
+                $('#inp1').val(data.Network);
+                $('#inp2').val(data.Netmask);
+                $('#inp3').val(data.Device);
+                $('#inp4').val(data.Gateway);
+                layer.confirm('真的删除这行么', function(index){
+                    var ind = {
+                        d_net:$("#inp1").val(),
+                        netmask:$("#inp2").val(),
+                        net_dev:$('#inp3').val(),
+                        Gateway:$('#inp4').val(),
+                    };
+                    $.ajax({
+                        type: "DELETE",
+                        url:a+'/dbop/deleteRouteById',
+                        dataType:'json',
+                        contentType:'application/json;',
+                        async:'false',
+                        data:JSON.stringify(ind),
+                        success:function (data) {
+                            console.log(data);
+                            if(data.status == 200){
+                                obj.del(); //删除对应行（tr）的DOM结构
+                                layer.close(index);
+                                layer.msg(data.msg,{icon:1});
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        }
+                    })
+
+                });
+            } else if(layEvent === 'edit'){
+                console.log(data);
+                // var idd = data.id;
+                // var d_ne = data.d_net;
+                // var netmas = data.netmask;
+                // var net_de = data.net_dev;
+                $('#inp1').val(data.Network);
+                $('#inp2').val(data.Netmask);
+                $('#inp3').val(data.Device);
+                $('#inp4').val(data.Gateway);
+                $('#netaddr2').val(data.Network);
+                $('#yancode2').val(data.Netmask);
+                $('#wangguan2').val(data.Gateway);
+                $('#selT2').val(data.Device);//弹出层的下拉框复制
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['420px', '420px']
+                    ,title: '请输入您的信息'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#tesss2')
+                    ,success: function(){
+                        // $('#selT option:selected').text("xu")；
+                        //获取option值;
+                        $('#selT2 option').each(
+                            function () {
+                                console.log($(this).val());
+                                console.log($(this).text());
+                                if($(this).text() == data.Device){
+                                    $(this).attr('selected',true);
+                                    console.log(this);
+                                }
+                                form.render('select');
+                            }
+
+                        )
+
+                    }
+                });
+
+                form.on('submit(formDemodnscon2)', function(data){
+                    var mm={
+                        NewD_net:$("#netaddr2").val(),
+                        NewNetmask:$("#yancode2").val(),
+                        NewNet_dev:$('#selT2').val(),
+                        NewGateway:$('#wangguan2').val(),
+                        OldD_net:$('#inp1').val(),
+                        OldNetmask:$('#inp2').val(),
+                        OldNet_dev:$('#inp3').val(),
+                        OldGateway:$('#inp4').val(),
+                    }
+                        $.ajax({
+                            type: "post",
+                            url: a+'/dbop/setRouteById',
+                            contentType: 'application/json; charset=utf-8',
+                            async: 'true',
+                            data: JSON.stringify(mm),
+                            success: function (data) {
+                                console.log(data);
+                                layer.closeAll();
+                                if(data.status == 200){
+                                    layer.msg(data.msg,{icon:1});
+                                    table.reload('demo',{
+                                        where: JSON.stringify(mm),
+                                        done:function (res) {
+                                            console.log(res);
+                                            if(res.status==200){
+                                                // layer.closeAll();
+                                            }else{
+                                                layer.closeAll();
+                                                layer.msg(res.msg,{icon:5});
+                                            }
+                                        }
+                                    });
+                                }else {
+                                    layer.msg(data.msg,{icon:5});
+                                }
+                            },
+                            error:function () {
+                                layer.msg('请检查您的网络连接',{icon:5});
+                            }
+                        })
+                    return false;
+                });
+
+            }
+        });
+
+    });
+
+
+
+</script>
+</body>
+</html>

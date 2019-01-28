@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>青笠业务安全访问审计系统</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/applied.css">
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/pp.js"></script>
+    <script src="js/public.js"></script>
+    <style>
+        .layui-form-item{
+            overflow: hidden;
+        }
+        .layui-form-item i{
+            margin-bottom: -12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid">
+            <div class="layui-card" style="margin-top: 15px">
+                    <div class="layui-card-header" >
+                            <div class="layui-inline">已添加系统</div>
+                            <div class="layui-inline" style="margin-left: 60px"><div class="layui-btn layui-btn-normal layui-btn-sm" id="add">添加新系统</div></div>
+                    </div>
+
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md12" id="tab">
+                            <table id="demo" lay-filter="test" data-type="reload"></table>
+                            <script type="text/html" id="barDemo">
+                                <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+                                <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+                                <a class="layui-btn layui-btn-xs" lay-event="change">用户识别设置</a>
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+<div id="chan" style="display: none">
+    <form class="layui-form" action="" style="padding: 20px 30px 0 0;">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 90px">登录验证路径</label>
+            <div class="layui-input-inline" style="width: 200px">
+                <input type="text"  required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" id="path" value="">
+            </div>
+            <div class="layui-form-mid layui-word-aux">示例:/check.php</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"  style="width: 90px">用户名字段</label>
+            <div class="layui-input-inline" style="width: 200px">
+                <input type="ip" name="title" lay-verify="" placeholder="" autocomplete="off" class="layui-input" id="username" value="">
+            </div>
+            <div class="layui-form-mid layui-word-aux">示例:username</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 90px">密码字段</label>
+            <div class="layui-input-inline" style="width: 200px">
+                <input type="ip" name="title" lay-verify="" placeholder="" autocomplete="off" class="layui-input" id="passwd" value="">
+            </div>
+            <div class="layui-form-mid layui-word-aux">示例:password</div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn"  data-type="reload" lay-filter="subForm" lay-submit>提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--<div id="show">-->
+    <!--<form class="layui-form" action="" style="padding: 20px 30px 0 0;">-->
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">应用名称</label>-->
+            <!--<div class="layui-input-inline" style="width: 200px">-->
+                <!--<input type="text"  required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" id="nameO">-->
+            <!--</div>-->
+            <!--<i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">应用地址</label>-->
+            <!--<div class="layui-input-inline" style="width: 200px">-->
+                <!--<input type="ip" name="title" lay-verify="ip" placeholder="请输入应用地址" autocomplete="off" class="layui-input" id="addr">-->
+            <!--</div>-->
+            <!--<i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">网关地址</label>-->
+            <!--<div class="layui-input-inline" style="width: 200px">-->
+                <!--<input type="ip" name="title" lay-verify="ip" placeholder="请输入网关地址" autocomplete="off" class="layui-input" id="network">-->
+            <!--</div>-->
+            <!--<i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+            <!--<div class="layui-input-block">-->
+                <!--<button class="layui-btn"  data-type="reload" lay-filter="formDemo2" lay-submit>添加</button>-->
+                <!--</div>-->
+            <!--</div>-->
+    <!--</form>-->
+<!--</div>-->
+<div id="addform" style="display: none">
+    <form class="layui-form" action="" style="padding: 20px 30px 0 0;">
+        <div class="layui-form-item">
+                <label class="layui-form-label">应用名称</label>
+                <div class="layui-input-inline" style="width: 200px">
+                    <input type="text"  required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" id="nameOne">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用地址</label>
+                <div class="layui-input-inline" style="width: 200px">
+                    <input type="ip" name="title" lay-verify="ip" placeholder="请输入应用地址" autocomplete="off" class="layui-input" id="ip1">
+                </div>
+                <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+            </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">网关地址</label>
+                <div class="layui-input-inline" style="width: 200px">
+                    <input type="ip" name="title" lay-verify="ip" placeholder="请输入网关地址" autocomplete="off" class="layui-input" id="ip2">
+                </div>
+            <i class="layui-icon layui-icon-edit layui-inline" style="font-size: 20px; color: #1E9FFF; margin-bottom: -12px"></i>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+            <button class="layui-btn" data-type="reload" lay-filter="formDemo" lay-submit>添加</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
+        element.on('nav()', function(elem){
+            //console.log(elem)
+//            layer.msg(elem.text());
+        });
+    });
+    layui.use(['form','table','jquery','layer'], function() {
+        var form = layui.form;
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = jQuery = layui.$;
+        $('#add').click(function () {
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['420px', '420px']
+                    ,title: '请输入您的信息'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#addform')
+                    ,success: function(layero){
+                        $('#nodown').click(function () {
+                            layer.closeAll();
+                        });
+                    }
+                });
+        })
+
+        form.verify({
+            ip:function (value,item) {
+                if(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value)){
+                } else if(/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9]):\d{0,5}$/.test(value)){
+                }else{
+                    return '地址不符合规则'
+                }
+            }
+        });
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , url: a+'/dbop/getNameHostOrghost' //数据接口
+            , contentType: 'application/json'
+            , method: 'post'
+            //,where: {"pageNo": "2", "pageSize":"3"}
+            , align: 'center'
+            ,even:true
+            ,page:true
+            , cols: [[ //表头
+                {field: 'Name', title: '应用名称',}
+                , {field: 'Host', title: '应用地址',}
+                , {field: 'Org_host', title: '安全访问地址',}
+                ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo',title: '操作'}
+            ]]
+            , response: {
+                statusName: 'code' //数据状态的字段名称，默认：code
+                , statusCode: 200 //成功的状态码，默认：0
+                , msgName: 'error' //状态信息的字段名称，默认：msg
+                , countName: 'count' //数据总数的字段名称，默认：count
+                , dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            ,where : {
+                PageNo : 1,
+                PageSize : 10
+            }
+            , done: function (res, curr, count) {
+                console.log(res);
+                console.log(curr);
+                console.log(count);
+            }
+        });
+
+        form.on('submit(formDemo)', function(data){
+            var name = $('#nameOne').val();
+            var inpId1 = $('#ip1').val();
+            var inpId2 = $('#ip2').val();
+            var kk = {
+                "name":name,
+                "host":inpId2,
+                "org_host":inpId1
+            };
+            $.ajax({
+                type: "post",
+                url:a+'/dbop/setAppnames',
+                contentType:'application/json; charset=utf-8',
+                async:'false',
+                data: JSON.stringify(kk),
+                success:function (data) {
+                    if(data.code==200){
+                        layer.closeAll();
+                        table.render({
+                            elem: '#demo'
+                            , url: a+'/dbop/getNameHostOrghost' //数据接口
+                            , contentType: 'application/json'
+                            , method: 'post'
+                            //,where: {"pageNo": "2", "pageSize":"3"}
+                            , align: 'center'
+                            ,even:true
+//                            ,page:true
+                            , cols: [[ //表头
+                                {field: 'Name', title: '应用名称',}
+                                , {field: 'Host', title: '应用地址',}
+                                , {field: 'Org_host', title: '安全访问地址',}
+                                ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo',title: '操作'}
+                            ]]
+                            , response: {
+                                statusName: 'code' //数据状态的字段名称，默认：code
+                                , statusCode: 200 //成功的状态码，默认：0
+                                , msgName: 'error' //状态信息的字段名称，默认：msg
+                                , countName: 'count' //数据总数的字段名称，默认：count
+                                , dataName: 'data' //数据列表的字段名称，默认：data
+                            }
+                            , request: {
+                                pageName: 'pageNo',
+                                limitName: 'pageSize'
+                            }
+                            , done: function (res, curr, count) {
+                                layer.msg(data.data,{icon:1});
+                                console.log(res);
+                                console.log(curr);
+                                console.log(count);
+                            }
+                        });
+                    }
+                    else{
+                        layer.closeAll();
+                        layer.msg(data.data,{icon:5});
+                    }
+                }
+            })
+            return false;
+        });
+        //监听工具条
+        table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            var that = data;
+            console.log(that);
+            $('#username').val(data.Username);
+            $('#passwd').val(data.Password);
+            $('#path').val(data.Path);
+            if(layEvent === 'change'){
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['470px', '420px']
+                    ,title: '请输入您的信息'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#chan')
+                    ,success: function(layero){
+//
+                    }
+                });
+                // var dat = {
+                //     host : data.Host,
+                //     username : $('#username').val(),
+                //     password : $('#passwd').val(),
+                //     path : $('#path').val()
+                // };
+                // $.ajax({
+                //     type: "POST",
+                //     url:a+'/dbop/updateAppLoginData',
+                //     dataType:'json',
+                //     contentType:'application/json; charset=utf-8',
+                //     data: JSON.stringify(dat),
+                //     async:'false',
+                //     success:function (data) {
+                //         if(data.code == 200){
+                //             console.log($('#path').val());
+                //             var trId = obj.tr[0].rowIndex;
+                //             console.log(data);
+                //             var dat = data.data;
+                //             $('#path').val(dat.path);
+                //             $('#username').val(dat.username);
+                //             $('#passwd').val(dat.password);
+                //         }else{
+                //             layer.msg(data.msg,{icon:5});
+                //         }
+                //     }
+                // })
+                    form.on('submit(subForm)', function(data){
+                        console.log(that);
+                        layer.closeAll();
+                        //第一个实例
+                        var inp1 = $('#path').val();
+                        var inp2 = $('#username').val();
+                        var inp3 = $('#passwd').val();
+                        var dat = {
+                            host : that.Org_host,
+                            username : inp2,
+                            password : inp3,
+                            path : inp1
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url:a+'/dbop/updateAppLoginData',
+                            dataType:'json',
+                            contentType:'application/json; charset=utf-8',
+                            data: JSON.stringify(dat),
+                            async:'false',
+                            success:function (data) {
+                                console.log(data);
+                                if(data.code == 200){
+                                    layer.msg(data.msg,{icon:1});
+                                }else{
+                                    layer.msg(data.msg,{icon:5});
+                                }
+                            }
+                        })
+                        return false;
+                    });
+            } else if(layEvent === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    var trId = obj.tr[0].rowIndex;
+                    console.log(data);
+                    obj.del(); //删除对应行（tr）的DOM结构
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    var ind = {
+                        "id" : trId
+                    };
+                    $.ajax({
+                        type: "DELETE",
+                        url:a+'/dbop/deleteAppname',
+                        dataType:'json',
+                        contentType:'application/json;',
+                        async:'false',
+                        data:JSON.stringify(ind),
+                        success:function (data) {
+                            console.log(data);
+                        }
+                    })
+                });
+            } else if(layEvent === 'edit'){
+                $('#nameO').val(data.Name);
+                $('#addr').val(data.Host);
+                $('#network').val(data.Org_host);
+                var trId = obj.tr[0].rowIndex;
+                layer.open({
+                    type: 1 //Page层类型
+                    ,area: ['420px', '420px']
+                    ,title: '请输入您的信息'
+                    ,shade: 0.6 //遮罩透明度
+                    ,anim: 0 //0-6的动画形式，-1不开启
+                    ,content: $('#show')
+                    ,success: function(layero){
+//                        $('#nodown').click(function () {
+//                            layer.closeAll();
+//                        });
+                    }
+                });
+                form.on('submit(formDemo2)', function(data){
+                    layer.closeAll();
+                    //第一个实例
+                    var inp1 = $('#nameO').val();
+                    var inp2 = $('#addr').val();
+                    var inp3 = $('#network').val();
+
+                    table.reload('demo',{
+                        where: {
+                            "id": trId,
+                            "name": inp1,
+                            "host":inp3,
+                            "org_host": inp2
+                        },
+                        done: function (res, curr, count) {
+                            layer.msg(data.data,{icon:1});
+                        }
+                        ,error:function () {
+                            layer.msg(data.data,{icon:5});
+                        }
+                    });
+                    return false;
+                });
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
